@@ -1,0 +1,4 @@
+name: PracticeHubCore
+version: '1.0.0'
+main: me.dunescifye.practicehubcore.PracticeHubCore
+api-version: '1.21'
