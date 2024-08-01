@@ -1,4 +1,4 @@
 name: PracticeHubCore
 version: '${version}'
 main: me.dunescifye.practicehubcore.PracticeHubCore
-api-version: '1.21'
+api-version: '1.20'

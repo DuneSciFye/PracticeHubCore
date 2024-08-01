@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class BridgeCommand {
 
-    public static HashMap<Player, String> gamemode;
+    public static HashMap<Player, String> gamemode = new HashMap<>();
 
     public static void register() {
         new CommandTree("bridge")
