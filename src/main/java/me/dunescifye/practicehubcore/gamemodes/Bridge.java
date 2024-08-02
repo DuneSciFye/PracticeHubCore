@@ -4,10 +4,7 @@ import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,6 +34,17 @@ public class Bridge implements Listener {
                     //Setting up world
                     PracticeHubCore.worldManager.cloneWorld("baseBridge", "bridge" + player.getName());
 
+                    //Teleport player
+                    World world = Bukkit.getWorld("bridge" + player.getName());
+                    if (world == null) {
+                        player.sendMessage(Component.text("Invalid world. Please contact an administrator."));
+                        return;
+                    }
+                    Location loc = new Location(world, 0, 100, 0);
+                    player.teleport(loc);
+                    player.setGameMode(GameMode.SURVIVAL);
+                    player.setFoodLevel(20);
+
                     //Setting up inventory
                     inventories.put(player, player.getInventory().getContents());
                     Inventory inv = player.getInventory();
@@ -45,15 +53,6 @@ public class Bridge implements Listener {
                     player.getInventory().setHeldItemSlot(0);
                     gamemode.put(player, "bridge");
 
-                    //Teleport player
-                    World world = Bukkit.getWorld("bridge" + player.getName());
-                    if (world == null) {
-                        player.sendMessage(Component.text("Invalid world. Please contact an administrator."));
-                        return;
-                    }
-
-                    Location loc = new Location(world, 0, 100, 0);
-                    player.teleport(loc);
 
                     placedBlocks.put(player, new ArrayList<>());
 
@@ -64,11 +63,24 @@ public class Bridge implements Listener {
                             //Player fell
                             if (player.getVelocity().getY() < -1) {
                                 player.sendMessage(Component.text("You fell!"));
-                                player.teleport(loc);
+                                //Blocks
+                                int blocksPlaced = 0;
                                 for (Block b : placedBlocks.get(player)) {
                                     b.setType(Material.AIR);
+                                    blocksPlaced++;
                                 }
+                                player.sendMessage(Component.text("You placed " + blocksPlaced + " blocks!"));
                                 placedBlocks.put(player, new ArrayList<>());
+
+                                //Distance
+                                Location newLoc = player.getLocation();
+                                player.sendMessage(Component.text("You went " + newLoc.getX() + " blocks in the X"));
+                                player.sendMessage(Component.text("You went " + (newLoc.getY() - 100) + " blocks in the Y"));
+                                player.sendMessage(Component.text("You went " + newLoc.getZ() + " blocks in the Z"));
+                                player.sendMessage(Component.text("You went " + newLoc.distance(loc) + " blocks from 0 0"));
+
+                                player.teleport(loc);
+                                player.setFoodLevel(20);
                             }
                         }
                     }.runTaskTimer(plugin, 0L, 5L);
