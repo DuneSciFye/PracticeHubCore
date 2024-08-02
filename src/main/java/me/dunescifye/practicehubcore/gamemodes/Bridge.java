@@ -1,4 +1,4 @@
-package me.dunescifye.practicehubcore.commands;
+package me.dunescifye.practicehubcore.gamemodes;
 
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
@@ -8,20 +8,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class BridgeCommand {
-
+public class Bridge implements Listener {
     public static HashMap<Player, String> gamemode = new HashMap<>();
     public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    public static HashMap<Player, BukkitTask> placedBlocks = new HashMap<>();
+    public static HashMap<Player, List<Block>> placedBlocks = new HashMap<>();
 
     public static void register(PracticeHubCore plugin) {
         new CommandTree("bridge")
@@ -50,13 +55,20 @@ public class BridgeCommand {
                     Location loc = new Location(world, 0, 100, 0);
                     player.teleport(loc);
 
+                    placedBlocks.put(player, new ArrayList<>());
+
                     //Loop to check player falling
                     BukkitTask task = new BukkitRunnable() {
                         @Override
                         public void run() {
+                            //Player fell
                             if (player.getVelocity().getY() < -1) {
                                 player.sendMessage(Component.text("You fell!"));
                                 player.teleport(loc);
+                                for (Block b : placedBlocks.get(player)) {
+                                    b.setType(Material.AIR);
+                                }
+                                placedBlocks.put(player, new ArrayList<>());
                             }
                         }
                     }.runTaskTimer(plugin, 0L, 5L);
@@ -82,5 +94,18 @@ public class BridgeCommand {
             .withPermission("practicehub.command.bridge")
             .register("practicehub");
     }
+    public void playerBlockPlaceHandler(PracticeHubCore plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
 
+    @EventHandler
+    public void onPlayerBlockPlace(BlockPlaceEvent e) {
+        Player p = e.getPlayer();
+        String currentGamemode = gamemode.get(p);
+        if (currentGamemode == null) return;
+        if (currentGamemode.equals("bridge")) {
+            e.getItemInHand().setAmount(64);
+            placedBlocks.get(p).add(e.getBlockPlaced());
+        }
+    }
 }
