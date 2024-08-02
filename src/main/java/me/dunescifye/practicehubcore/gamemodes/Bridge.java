@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,83 +26,113 @@ public class Bridge implements Listener {
     public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static HashMap<Player, List<Block>> placedBlocks = new HashMap<>();
+    private static final HashMap<Player, Instant> times = new HashMap<>();
 
     public static void register(PracticeHubCore plugin) {
         new CommandTree("bridge")
             .then(new LiteralArgument("start")
-                .executesPlayer((player, args) -> {
-                    player.sendMessage(Component.text("Starting!"));
+                .executesPlayer((p, args) -> {
+                    p.sendMessage(Component.text("Starting!"));
 
                     //Setting up world
-                    PracticeHubCore.worldManager.cloneWorld("baseBridge", "bridge" + player.getName());
+                    PracticeHubCore.worldManager.cloneWorld("baseBridge", "bridge" + p.getName());
 
                     //Teleport player
-                    World world = Bukkit.getWorld("bridge" + player.getName());
+                    World world = Bukkit.getWorld("bridge" + p.getName());
                     if (world == null) {
-                        player.sendMessage(Component.text("Invalid world. Please contact an administrator."));
+                        p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
                         return;
                     }
                     Location loc = new Location(world, 0, 100, 0);
-                    player.teleport(loc);
-                    player.setGameMode(GameMode.SURVIVAL);
-                    player.setFoodLevel(20);
+                    p.teleport(loc);
+                    p.setGameMode(GameMode.SURVIVAL);
+                    p.setFoodLevel(20);
 
                     //Setting up inventory
-                    inventories.put(player, player.getInventory().getContents());
-                    Inventory inv = player.getInventory();
+                    inventories.put(p, p.getInventory().getContents());
+                    Inventory inv = p.getInventory();
                     inv.clear();
                     inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
-                    player.getInventory().setHeldItemSlot(0);
-                    gamemode.put(player, "bridge");
+                    p.getInventory().setHeldItemSlot(0);
+                    
+                    gamemode.put(p, "bridge");
+                    placedBlocks.put(p, new ArrayList<>());
+                    times.put(p, Instant.now());
 
-
-                    placedBlocks.put(player, new ArrayList<>());
-
-                    //Loop to check player falling
+                    //Loop to check p falling
                     BukkitTask task = new BukkitRunnable() {
                         @Override
                         public void run() {
                             //Player fell
-                            if (player.getVelocity().getY() < -1) {
-                                player.sendMessage(Component.text("You fell!"));
+                            if (p.getVelocity().getY() < -1) {
+                                p.sendMessage(Component.text("You fell!"));
                                 //Blocks
-                                int blocksPlaced = 0;
-                                for (Block b : placedBlocks.get(player)) {
+                                int blockCounter = 0;
+                                List<Block> blocks = placedBlocks.get(p);
+                                for (Block b : placedBlocks.get(p)) {
                                     b.setType(Material.AIR);
-                                    blocksPlaced++;
+                                    blockCounter++;
                                 }
-                                player.sendMessage(Component.text("You placed " + blocksPlaced + " blocks!"));
-                                placedBlocks.put(player, new ArrayList<>());
+                                p.sendMessage(Component.text("You placed " + blockCounter + " blocks!"));
+                                placedBlocks.put(p, new ArrayList<>());
+
+                                //Time
+                                Duration duration = Duration.between(times.get(p), Instant.now());
 
                                 //Distance
-                                Location newLoc = player.getLocation();
-                                player.sendMessage(Component.text("You went " + newLoc.getX() + " blocks in the X"));
-                                player.sendMessage(Component.text("You went " + (newLoc.getY() - 100) + " blocks in the Y"));
-                                player.sendMessage(Component.text("You went " + newLoc.getZ() + " blocks in the Z"));
-                                player.sendMessage(Component.text("You went " + newLoc.distance(loc) + " blocks from 0 0"));
+                                if (!blocks.isEmpty()) {
+                                    Location newLoc = blocks.get(blocks.size() - 1).getLocation();
+                                    double distance = newLoc.distance(loc);
+                                    int x = Math.abs(newLoc.getBlockX());
+                                    int y = Math.abs(newLoc.getBlockY() - 100);
+                                    int z = Math.abs(newLoc.getBlockZ());
+                                    p.sendMessage(Component.text("You went " + String.format("%.2f", distance) + " blocks from 0 0" + "(" + x + ", " + y + ", " + z + ")"));
 
-                                player.teleport(loc);
-                                player.setFoodLevel(20);
+                                    //Speed
+                                    double time = (double) duration.toMillis() / 1000;
+                                    p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s," + String.format("%.2f", z / time) + "m/s)"));
+
+                                }
+
+                                //Times
+                                if (duration.compareTo(Duration.ofHours(1)) > 0){
+                                    p.sendMessage(Component.text("You lasted "
+                                        + duration.toHoursPart() + " hours, "
+                                        + duration.toMinutesPart() + " minutes, & "
+                                        + duration.toSecondsPart() + " seconds."));
+                                } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
+                                    p.sendMessage(Component.text("You lasted "
+                                        + duration.toMinutesPart() + " minutes & "
+                                        + duration.toSecondsPart() + " seconds."));
+                                } else {
+                                    p.sendMessage(Component.text("You lasted "
+                                        + duration.toSecondsPart() + " seconds."));
+                                }
+
+                                times.put(p, Instant.now());
+
+                                p.teleport(loc);
+                                p.setFoodLevel(20);
                             }
                         }
                     }.runTaskTimer(plugin, 0L, 5L);
 
-                    tasks.put(player, task);
+                    tasks.put(p, task);
                 })
             )
             .then(new LiteralArgument("end")
-                .executesPlayer((player, args) -> {
-                    String currentGamemode = gamemode.get(player);
+                .executesPlayer((p, args) -> {
+                    String currentGamemode = gamemode.get(p);
                     if (currentGamemode == null) {
-                        player.sendMessage(Component.text("You are not in any game!"));
+                        p.sendMessage(Component.text("You are not in any game!"));
                         return;
                     }
-                    player.getInventory().clear();
-                    player.getInventory().setContents(inventories.remove(player));
-                    gamemode.remove(player);
-                    tasks.remove(player).cancel();
-                    player.sendMessage(Component.text("Ended game!"));
-                    PracticeHubCore.worldManager.deleteWorld("bridge" + player.getName());
+                    p.getInventory().clear();
+                    p.getInventory().setContents(inventories.remove(p));
+                    gamemode.remove(p);
+                    tasks.remove(p).cancel();
+                    p.sendMessage(Component.text("Ended game!"));
+                    PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
                 })
             )
             .withPermission("practicehub.command.bridge")
@@ -116,8 +148,13 @@ public class Bridge implements Listener {
         String currentGamemode = gamemode.get(p);
         if (currentGamemode == null) return;
         if (currentGamemode.equals("bridge")) {
+            Block b = e.getBlockPlaced();
             e.getItemInHand().setAmount(64);
-            placedBlocks.get(p).add(e.getBlockPlaced());
+            List<Block> blocks = placedBlocks.get(p);
+            if (blocks.isEmpty()) {
+                times.put(p, Instant.now());
+            }
+            placedBlocks.get(p).add(b);
         }
     }
 }
