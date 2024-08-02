@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class BridgeCommand {
@@ -22,13 +21,18 @@ public class BridgeCommand {
     public static HashMap<Player, String> gamemode = new HashMap<>();
     public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
+    public static HashMap<Player, BukkitTask> placedBlocks = new HashMap<>();
 
     public static void register(PracticeHubCore plugin) {
         new CommandTree("bridge")
             .then(new LiteralArgument("start")
                 .executesPlayer((player, args) -> {
-                    //Setting up inventory
                     player.sendMessage(Component.text("Starting!"));
+
+                    //Setting up world
+                    PracticeHubCore.worldManager.cloneWorld("baseBridge", "bridge" + player.getName());
+
+                    //Setting up inventory
                     inventories.put(player, player.getInventory().getContents());
                     Inventory inv = player.getInventory();
                     inv.clear();
@@ -37,7 +41,7 @@ public class BridgeCommand {
                     gamemode.put(player, "bridge");
 
                     //Teleport player
-                    World world = Bukkit.getWorld("bridge");
+                    World world = Bukkit.getWorld("bridge" + player.getName());
                     if (world == null) {
                         player.sendMessage(Component.text("Invalid world. Please contact an administrator."));
                         return;
@@ -51,11 +55,6 @@ public class BridgeCommand {
                         @Override
                         public void run() {
                             if (player.getVelocity().getY() < -1) {
-                                this.cancel();
-                                player.getInventory().clear();
-                                player.getInventory().setContents(inventories.remove(player));
-                                gamemode.remove(player);
-                                tasks.remove(player).cancel();
                                 player.sendMessage(Component.text("You fell!"));
                                 player.teleport(loc);
                             }
@@ -77,6 +76,7 @@ public class BridgeCommand {
                     gamemode.remove(player);
                     tasks.remove(player).cancel();
                     player.sendMessage(Component.text("Ended game!"));
+                    PracticeHubCore.worldManager.deleteWorld("bridge" + player.getName());
                 })
             )
             .withPermission("practicehub.command.bridge")
