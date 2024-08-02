@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -172,5 +173,13 @@ public class Bridge implements Listener {
         if (e.getAction().isLeftClick()) return;
         Player p = e.getPlayer();
         cps.put(p, cps.getOrDefault(p, 0) + 1);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        if (gamemode.containsKey(p) && gamemode.remove(p).equals("bridge")) {
+            PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
+        }
     }
 }
