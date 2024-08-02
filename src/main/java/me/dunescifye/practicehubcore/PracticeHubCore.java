@@ -13,7 +13,7 @@ public final class PracticeHubCore extends JavaPlugin {
     public void onEnable() {
         Logger logger = Bukkit.getLogger();
         logger.info("PracticeHubCore Starting.");
-        BridgeCommand.register();
+        BridgeCommand.register(this);
         new PlayerBlockPlaceListener().playerBlockPlaceHandler(this);
 
     }

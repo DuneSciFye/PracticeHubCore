@@ -17,8 +17,9 @@ public class PlayerBlockPlaceListener implements Listener {
     @EventHandler
     public void onPlayerBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        String gamemode = BridgeCommand.gamemode.get(p);
-        if (gamemode.equals("bridge")) {
+        String currentGamemode = BridgeCommand.gamemode.get(p);
+        if (currentGamemode == null) return;
+        if (currentGamemode.equals("bridge")) {
             e.getItemInHand().setAmount(64);
         }
     }
