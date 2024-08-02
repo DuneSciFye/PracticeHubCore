@@ -3,6 +3,7 @@ package me.dunescifye.practicehubcore.gamemodes;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.utils.TimedBlock;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,16 +19,15 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Bridge implements Listener {
     public static HashMap<Player, String> gamemode = new HashMap<>();
     public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    public static HashMap<Player, List<Block>> placedBlocks = new HashMap<>();
-    private static final HashMap<Player, Instant> times = new HashMap<>();
+    public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
 
     public static void register(PracticeHubCore plugin) {
         new CommandTree("bridge")
@@ -56,8 +57,6 @@ public class Bridge implements Listener {
                     p.getInventory().setHeldItemSlot(0);
                     
                     gamemode.put(p, "bridge");
-                    placedBlocks.put(p, new ArrayList<>());
-                    times.put(p, Instant.now());
 
                     //Loop to check p falling
                     BukkitTask task = new BukkitRunnable() {
@@ -68,20 +67,20 @@ public class Bridge implements Listener {
                                 p.sendMessage(Component.text("You fell!"));
                                 //Blocks
                                 int blockCounter = 0;
-                                List<Block> blocks = placedBlocks.get(p);
-                                for (Block b : placedBlocks.get(p)) {
-                                    b.setType(Material.AIR);
-                                    blockCounter++;
-                                }
-                                p.sendMessage(Component.text("You placed " + blockCounter + " blocks!"));
-                                placedBlocks.put(p, new ArrayList<>());
-
-                                //Time
-                                Duration duration = Duration.between(times.get(p), Instant.now());
+                                LinkedList<TimedBlock> blocks = placedBlocks.remove(p);
 
                                 //Distance
-                                if (!blocks.isEmpty()) {
-                                    Location newLoc = blocks.get(blocks.size() - 1).getLocation();
+                                if (blocks != null && !blocks.isEmpty()) {
+                                    for (TimedBlock b : blocks) {
+                                        b.getBlock().setType(Material.AIR);
+                                        blockCounter++;
+                                    }
+                                    p.sendMessage(Component.text("You placed " + blockCounter + " blocks!"));
+
+                                    //Time
+                                    Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
+
+                                    Location newLoc = blocks.getLast().getBlock().getLocation();
                                     double distance = newLoc.distance(loc);
                                     int x = Math.abs(newLoc.getBlockX());
                                     int y = Math.abs(newLoc.getBlockY() - 100);
@@ -90,26 +89,23 @@ public class Bridge implements Listener {
 
                                     //Speed
                                     double time = (double) duration.toMillis() / 1000;
-                                    p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s," + String.format("%.2f", z / time) + "m/s)"));
+                                    p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s, " + String.format("%.2f", z / time) + "m/s)"));
 
+                                    //Times
+                                    if (duration.compareTo(Duration.ofHours(1)) > 0){
+                                        p.sendMessage(Component.text("You lasted "
+                                            + duration.toHoursPart() + " hours, "
+                                            + duration.toMinutesPart() + " minutes, & "
+                                            + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                                    } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
+                                        p.sendMessage(Component.text("You lasted "
+                                            + duration.toMinutesPart() + " minutes & "
+                                            + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                                    } else {
+                                        p.sendMessage(Component.text("You lasted "
+                                            + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                                    }
                                 }
-
-                                //Times
-                                if (duration.compareTo(Duration.ofHours(1)) > 0){
-                                    p.sendMessage(Component.text("You lasted "
-                                        + duration.toHoursPart() + " hours, "
-                                        + duration.toMinutesPart() + " minutes, & "
-                                        + duration.toSecondsPart() + " seconds."));
-                                } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
-                                    p.sendMessage(Component.text("You lasted "
-                                        + duration.toMinutesPart() + " minutes & "
-                                        + duration.toSecondsPart() + " seconds."));
-                                } else {
-                                    p.sendMessage(Component.text("You lasted "
-                                        + duration.toSecondsPart() + " seconds."));
-                                }
-
-                                times.put(p, Instant.now());
 
                                 p.teleport(loc);
                                 p.setFoodLevel(20);
@@ -150,11 +146,18 @@ public class Bridge implements Listener {
         if (currentGamemode.equals("bridge")) {
             Block b = e.getBlockPlaced();
             e.getItemInHand().setAmount(64);
-            List<Block> blocks = placedBlocks.get(p);
-            if (blocks.isEmpty()) {
-                times.put(p, Instant.now());
+            List<TimedBlock> blocks = placedBlocks.get(p);
+            if (blocks == null) {
+                placedBlocks.put(p, new LinkedList<>(List.of(new TimedBlock(b, Instant.now()))));
+                return;
             }
-            placedBlocks.get(p).add(b);
+            placedBlocks.get(p).add(new TimedBlock(b, Instant.now()));
         }
+    }
+
+    @EventHandler
+    public void onPlayerRightClick(PlayerInteractEvent e) {
+        if (e.getAction().isLeftClick()) return;
+
     }
 }
