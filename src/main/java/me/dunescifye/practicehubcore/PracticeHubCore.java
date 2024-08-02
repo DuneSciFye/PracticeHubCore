@@ -3,6 +3,7 @@ package me.dunescifye.practicehubcore;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import me.dunescifye.practicehubcore.gamemodes.Bridge;
+import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,6 +18,8 @@ public final class PracticeHubCore extends JavaPlugin {
         logger.info("PracticeHubCore Starting.");
         Bridge.register(this);
         new Bridge().playerBlockPlaceHandler(this);
+
+        //Multiverse
         MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
         if (core == null) {
             logger.warning("PracticeHubCore could not hook into Multiverse-Core. This is required.");
@@ -24,6 +27,10 @@ public final class PracticeHubCore extends JavaPlugin {
             worldManager = core.getMVWorldManager();
         }
 
+        //PlaceholderAPI
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new Placeholders().register();
+        }
     }
 
     @Override

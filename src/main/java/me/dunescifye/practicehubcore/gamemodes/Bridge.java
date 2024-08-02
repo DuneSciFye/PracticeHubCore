@@ -78,37 +78,44 @@ public class Bridge implements Listener {
                                     }
                                     p.sendMessage(Component.text("You placed " + blockCounter + " blocks!"));
 
-                                    //Time
-                                    Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
+                                    if (blocks.size() > 2) {
+                                        //Time
+                                        Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
 
-                                    Location newLoc = blocks.getLast().getBlock().getLocation();
-                                    double distance = newLoc.distance(loc);
-                                    int x = Math.abs(newLoc.getBlockX());
-                                    int y = Math.abs(newLoc.getBlockY() - 100);
-                                    int z = Math.abs(newLoc.getBlockZ());
-                                    p.sendMessage(Component.text("You went " + String.format("%.2f", distance) + " blocks from 0 0" + "(" + x + ", " + y + ", " + z + ")"));
+                                        Location newLoc = blocks.getLast().getBlock().getLocation();
+                                        double distance = newLoc.distance(loc);
+                                        int x = Math.abs(newLoc.getBlockX());
+                                        int y = Math.abs(newLoc.getBlockY() - 100);
+                                        int z = Math.abs(newLoc.getBlockZ());
+                                        p.sendMessage(Component.text("You went " + String.format("%.2f", distance) + " blocks from 0 0" + "(" + x + ", " + y + ", " + z + ")"));
 
-                                    //Speed
-                                    double time = (double) duration.toMillis() / 1000;
-                                    p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s, " + String.format("%.2f", z / time) + "m/s)"));
+                                        //Speed
+                                        double time = (double) duration.toMillis() / 1000;
+                                        p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s, " + String.format("%.2f", z / time) + "m/s)"));
 
-                                    //Times
-                                    if (duration.compareTo(Duration.ofHours(1)) > 0){
-                                        p.sendMessage(Component.text("You lasted "
-                                            + duration.toHoursPart() + " hours, "
-                                            + duration.toMinutesPart() + " minutes, & "
-                                            + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                                    } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
-                                        p.sendMessage(Component.text("You lasted "
-                                            + duration.toMinutesPart() + " minutes & "
-                                            + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                                    } else {
-                                        p.sendMessage(Component.text("You lasted "
-                                            + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                                        //Times
+                                        if (duration.compareTo(Duration.ofHours(1)) > 0) {
+                                            p.sendMessage(Component.text("You lasted "
+                                                + duration.toHoursPart() + " hours, "
+                                                + duration.toMinutesPart() + " minutes, & "
+                                                + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                                        } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
+                                            p.sendMessage(Component.text("You lasted "
+                                                + duration.toMinutesPart() + " minutes & "
+                                                + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                                        } else {
+                                            p.sendMessage(Component.text("You lasted "
+                                                + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                                        }
+
+                                        //CPS
+                                        if (time > 1) {
+                                            p.sendMessage(Component.text("You clicked " + String.format("%.2f", cps.get(p) / time) + " times per second."));
+                                            cps.remove(p);
+                                        } else {
+                                            p.sendMessage(Component.text("You didn't last long enough to get a CPS"));
+                                        }
                                     }
-
-                                    //CPS
-                                    p.sendMessage(Component.text("You clicked " + cps.get(p) / time + " times per second."));
 
                                 }
 
