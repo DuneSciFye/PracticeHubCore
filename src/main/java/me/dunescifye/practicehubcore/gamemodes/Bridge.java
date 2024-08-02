@@ -28,6 +28,7 @@ public class Bridge implements Listener {
     public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
+    public static HashMap<Player, Integer> cps = new HashMap<>();
 
     public static void register(PracticeHubCore plugin) {
         new CommandTree("bridge")
@@ -105,6 +106,10 @@ public class Bridge implements Listener {
                                         p.sendMessage(Component.text("You lasted "
                                             + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
                                     }
+
+                                    //CPS
+                                    p.sendMessage(Component.text("You clicked " + cps.get(p) / time + " times per second."));
+
                                 }
 
                                 p.teleport(loc);
@@ -158,6 +163,7 @@ public class Bridge implements Listener {
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEvent e) {
         if (e.getAction().isLeftClick()) return;
-
+        Player p = e.getPlayer();
+        cps.put(p, cps.getOrDefault(p, 0) + 1);
     }
 }
