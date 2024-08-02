@@ -1,7 +1,7 @@
 package me.dunescifye.practicehubcore.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.dunescifye.practicehubcore.gamemodes.Bridge;
+import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -24,10 +24,19 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     @Override
-    public @Nullable String onRequest(OfflinePlayer p, @NotNull String arg) {
+    public @Nullable String onRequest(OfflinePlayer player, @NotNull String arg) {
+        if (!(player instanceof Player p))
+            return null;
+
         String[] args = arg.split("_", 2);
-        if (args[0].equals("cps")) {
-            return String.valueOf(Bridge.cps.get((Player) p));
+        switch (args[0]) {
+            case "leftcps" -> {
+                return String.valueOf(ClicksPerSecond.leftClicksPerSecond.get(p).size());
+            }
+            case "rightcps" -> {
+                return String.valueOf(ClicksPerSecond.rightClicksPerSecond.get(p).size());
+            }
+
         }
         return null;
     }
