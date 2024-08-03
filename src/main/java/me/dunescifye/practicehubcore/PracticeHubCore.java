@@ -14,8 +14,10 @@ import java.util.logging.Logger;
 public final class PracticeHubCore extends JavaPlugin {
 
     public static MVWorldManager worldManager;
+    private static PracticeHubCore plugin;
     @Override
     public void onEnable() {
+        plugin = this;
         Logger logger = this.getLogger();
         logger.info("PracticeHubCore Starting.");
         Bridge.register(this);
@@ -38,7 +40,11 @@ public final class PracticeHubCore extends JavaPlugin {
         new ClicksPerSecond().setup(this);
 
         //Files
-        Config.setup(this);
+        Config.setup();
+    }
+
+    public static PracticeHubCore getPlugin() {
+        return plugin;
     }
 
     @Override
