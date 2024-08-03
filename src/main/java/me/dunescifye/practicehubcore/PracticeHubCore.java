@@ -56,6 +56,7 @@ public final class PracticeHubCore extends JavaPlugin {
         BridgeCommand.register();
         MainCommand.register();
         MiscCommands.register();
+        BridgeCommand.register();
     }
 
     private void setupListeners() {

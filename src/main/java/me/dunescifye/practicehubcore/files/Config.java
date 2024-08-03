@@ -30,7 +30,7 @@ public class Config {
 
         } catch (
             IOException e) {
-            plugin.getLogger().severe("Failed to load config.yml");
+            plugin.getLogger().severe("Failed to load file config.yml");
             throw new RuntimeException(e);
         }
 
