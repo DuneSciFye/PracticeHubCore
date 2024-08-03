@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import me.dunescifye.practicehubcore.commands.BridgeCommand;
 import me.dunescifye.practicehubcore.commands.MainCommand;
 import me.dunescifye.practicehubcore.commands.MiscCommands;
 import me.dunescifye.practicehubcore.files.Config;
@@ -52,7 +53,7 @@ public final class PracticeHubCore extends JavaPlugin {
     }
 
     private void setupCommands() {
-        Bridge.register(this);
+        BridgeCommand.register();
         MainCommand.register();
         MiscCommands.register();
     }

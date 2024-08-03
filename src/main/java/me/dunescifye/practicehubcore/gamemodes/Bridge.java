@@ -33,129 +33,101 @@ public class Bridge implements Listener {
     public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
     public static HashMap<Player, Integer> cps = new HashMap<>();
 
-    public static void register(PracticeHubCore plugin) {
-        new CommandTree("bridge")
-            .then(new LiteralArgument("start")
-                .executesPlayer((p, args) -> {
-                    p.sendMessage(Component.text("Starting!"));
+    public static void startBridgeGame(Player p) {
+        p.sendMessage(Component.text("Starting!"));
 
-                    //Setting up world
-                    PracticeHubCore.worldManager.cloneWorld("baseBridge", "bridge" + p.getName());
+        //Setting up world
+        PracticeHubCore.worldManager.cloneWorld("baseBridge", "bridge" + p.getName());
 
-                    //Teleport player
-                    World world = Bukkit.getWorld("bridge" + p.getName());
-                    if (world == null) {
-                        p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
-                        return;
-                    }
-                    Location loc = new Location(world, 0, 100, 0);
-                    p.teleport(loc);
-                    p.setGameMode(GameMode.SURVIVAL);
-                    p.setFoodLevel(20);
+        //Teleport player
+        World world = Bukkit.getWorld("bridge" + p.getName());
+        if (world == null) {
+            p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
+            return;
+        }
+        Location loc = new Location(world, 0, 100, 0);
+        p.teleport(loc);
+        p.setGameMode(GameMode.SURVIVAL);
+        p.setFoodLevel(20);
 
-                    //Setting up inventory
-                    inventories.put(p, p.getInventory().getContents());
-                    Inventory inv = p.getInventory();
-                    inv.clear();
-                    inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
-                    p.getInventory().setHeldItemSlot(0);
-                    
-                    gamemode.put(p, "bridge");
+        //Setting up inventory
+        inventories.put(p, p.getInventory().getContents());
+        Inventory inv = p.getInventory();
+        inv.clear();
+        inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
+        p.getInventory().setHeldItemSlot(0);
 
-                    //Loop to check p falling
-                    BukkitTask task = new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            //Player fell
-                            if (p.getVelocity().getY() < -1) {
-                                p.sendMessage(Component.text("You fell!"));
-                                //Blocks
-                                int blockCounter = 0;
-                                LinkedList<TimedBlock> blocks = placedBlocks.remove(p);
+        gamemode.put(p, "bridge");
 
-                                //Distance
-                                if (blocks != null && !blocks.isEmpty()) {
-                                    for (TimedBlock b : blocks) {
-                                        b.getBlock().setType(Material.AIR);
-                                        blockCounter++;
-                                    }
-                                    p.sendMessage(Component.text("You placed " + blockCounter + " blocks!"));
+        //Loop to check p falling
+        BukkitTask task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                //Player fell
+                if (p.getVelocity().getY() < -1) {
+                    p.sendMessage(Component.text("You fell!"));
+                    //Blocks
+                    int blockCounter = 0;
+                    LinkedList<TimedBlock> blocks = placedBlocks.remove(p);
 
-                                    if (blocks.size() > 2) {
-                                        //Time
-                                        Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
+                    //Distance
+                    if (blocks != null && !blocks.isEmpty()) {
+                        for (TimedBlock b : blocks) {
+                            b.getBlock().setType(Material.AIR);
+                            blockCounter++;
+                        }
+                        p.sendMessage(Component.text("You placed " + blockCounter + " blocks!"));
 
-                                        Location newLoc = blocks.getLast().getBlock().getLocation();
-                                        double distance = newLoc.distance(loc);
-                                        int x = Math.abs(newLoc.getBlockX());
-                                        int y = Math.abs(newLoc.getBlockY() - 100);
-                                        int z = Math.abs(newLoc.getBlockZ());
-                                        p.sendMessage(Component.text("You went " + String.format("%.2f", distance) + " blocks from 0 0" + "(" + x + ", " + y + ", " + z + ")"));
+                        if (blocks.size() > 2) {
+                            //Time
+                            Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
 
-                                        //Speed
-                                        double time = (double) duration.toMillis() / 1000;
-                                        p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s, " + String.format("%.2f", z / time) + "m/s)"));
+                            Location newLoc = blocks.getLast().getBlock().getLocation();
+                            double distance = newLoc.distance(loc);
+                            int x = Math.abs(newLoc.getBlockX());
+                            int y = Math.abs(newLoc.getBlockY() - 100);
+                            int z = Math.abs(newLoc.getBlockZ());
+                            p.sendMessage(Component.text("You went " + String.format("%.2f", distance) + " blocks from 0 0" + "(" + x + ", " + y + ", " + z + ")"));
 
-                                        //Times
-                                        if (duration.compareTo(Duration.ofHours(1)) > 0) {
-                                            p.sendMessage(Component.text("You lasted "
-                                                + duration.toHoursPart() + " hours, "
-                                                + duration.toMinutesPart() + " minutes, & "
-                                                + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                                        } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
-                                            p.sendMessage(Component.text("You lasted "
-                                                + duration.toMinutesPart() + " minutes & "
-                                                + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                                        } else {
-                                            p.sendMessage(Component.text("You lasted "
-                                                + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                                        }
+                            //Speed
+                            double time = (double) duration.toMillis() / 1000;
+                            p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s, " + String.format("%.2f", z / time) + "m/s)"));
 
-                                        //CPS
-                                        if (time > 1) {
-                                            p.sendMessage(Component.text("You clicked " + String.format("%.2f", cps.get(p) / time) + " times per second."));
-                                            cps.remove(p);
-                                        } else {
-                                            p.sendMessage(Component.text("You didn't last long enough to get a CPS"));
-                                        }
-                                    }
+                            //Times
+                            if (duration.compareTo(Duration.ofHours(1)) > 0) {
+                                p.sendMessage(Component.text("You lasted "
+                                    + duration.toHoursPart() + " hours, "
+                                    + duration.toMinutesPart() + " minutes, & "
+                                    + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                            } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
+                                p.sendMessage(Component.text("You lasted "
+                                    + duration.toMinutesPart() + " minutes & "
+                                    + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                            } else {
+                                p.sendMessage(Component.text("You lasted "
+                                    + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
+                            }
 
-                                }
-
-                                p.teleport(loc);
-                                p.setFoodLevel(20);
+                            //CPS
+                            if (time > 1) {
+                                p.sendMessage(Component.text("You clicked " + String.format("%.2f", cps.get(p) / time) + " times per second."));
+                                cps.remove(p);
+                            } else {
+                                p.sendMessage(Component.text("You didn't last long enough to get a CPS"));
                             }
                         }
-                    }.runTaskTimer(plugin, 0L, 5L);
 
-                    tasks.put(p, task);
-                })
-                .then(new PlayerArgument("Player")
-                    .executes((sender, args) -> {
-
-                    })
-                    .withPermission("practicehub.command.bridge.other")
-                )
-            )
-            .then(new LiteralArgument("end")
-                .executesPlayer((p, args) -> {
-                    String currentGamemode = gamemode.get(p);
-                    if (currentGamemode == null) {
-                        p.sendMessage(Component.text("You are not in any game!"));
-                        return;
                     }
-                    p.getInventory().clear();
-                    p.getInventory().setContents(inventories.remove(p));
-                    gamemode.remove(p);
-                    tasks.remove(p).cancel();
-                    p.sendMessage(Component.text("Ended game!"));
-                    p.teleport(Config.spawn);
-                    PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
-                })
-            )
-            .withPermission("practicehub.command.bridge")
-            .register("practicehub");
+
+                    p.teleport(loc);
+                    p.setFoodLevel(20);
+                }
+            }
+        }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 5L);
+
+        tasks.put(p, task);
     }
+
     public void playerBlockPlaceHandler(PracticeHubCore plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
