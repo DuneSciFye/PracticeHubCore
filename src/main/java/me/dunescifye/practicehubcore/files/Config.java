@@ -4,6 +4,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +16,18 @@ public class Config {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
         try {
             YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "config.yml"), Objects.requireNonNull(plugin.getResource("config.yml")));
-            config.set("Spawn.World", "world");
-            config.set("Spawn.X", "0");
-            config.set("Spawn.Y", "100");
-            config.set("Spawn.Z", "0");
-            spawn = new Location(Bukkit.getWorld(config.getString("Spawn.World")), config.getDouble("Spawn.X"), config.getDouble("Spawn.Y"), config.getDouble("Spawn.Z"));
+
+            //Spawn
+            World world = Bukkit.getWorld(config.getString("Spawn.World"));
+            if (world == null) {
+                plugin.getLogger().warning("Spawn world is invalid. Check config.yml");
+                String defaultWorld = Bukkit.getWorlds().get(0).getName();
+                config.set("Spawn.World", defaultWorld);
+                plugin.getLogger().warning("Setting spawn to \"" + defaultWorld + "\"");
+            } else {
+                spawn = new Location(Bukkit.getWorld(config.getString("Spawn.World")), config.getDouble("Spawn.X"), config.getDouble("Spawn.Y"), config.getDouble("Spawn.Z"));
+            }
+
         } catch (
             IOException e) {
             plugin.getLogger().severe("Failed to load config.yml");

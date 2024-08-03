@@ -1,0 +1,4 @@
+Commands:
+  Ping:
+    OnSelf: "&aYour ping is &f%ping%&ams"
+    OnOther: "&b%player%'s &aping is &f%ping%&ams"
