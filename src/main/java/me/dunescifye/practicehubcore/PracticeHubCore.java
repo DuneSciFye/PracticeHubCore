@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.gamemodes.Bridge;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
@@ -15,7 +16,7 @@ public final class PracticeHubCore extends JavaPlugin {
     public static MVWorldManager worldManager;
     @Override
     public void onEnable() {
-        Logger logger = Bukkit.getLogger();
+        Logger logger = this.getLogger();
         logger.info("PracticeHubCore Starting.");
         Bridge.register(this);
         new Bridge().playerBlockPlaceHandler(this);
@@ -35,6 +36,9 @@ public final class PracticeHubCore extends JavaPlugin {
 
         //CPS
         new ClicksPerSecond().setup(this);
+
+        //Files
+        Config.setup(this);
     }
 
     @Override
