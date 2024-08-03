@@ -2,23 +2,35 @@ package me.dunescifye.practicehubcore.files;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public class BridgeConfig {
 
-    public static
+    public static String bridgeCopyWorld = null;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
+        Logger logger = plugin.getLogger();
 
         try {
-            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/bridge.yml"), plugin.getResource("bridge.yml"));
-            config.get
+            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/bridge.yml"), Objects.requireNonNull(plugin.getResource("bridge.yml")));
+            //Copy World
+            String worldName = config.getString("CopyWorld");
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                logger.severe("World \"" + worldName + "\" not found! Bridge gamemode disabled until fixed.");
+            } else {
+                bridgeCopyWorld = worldName;
+            }
         } catch (
             IOException e) {
-            plugin.getLogger().severe("Failed to load file gamemodes/bridge.yml");
+            logger.severe("Failed to load file gamemodes/bridge.yml");
             throw new RuntimeException(e);
         }
     }

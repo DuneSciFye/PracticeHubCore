@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore.commands;
 
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
+import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
 
 public class MainCommand {
@@ -11,6 +12,7 @@ public class MainCommand {
             .then(new LiteralArgument("reload")
                 .executes((sender, args) -> {
                     Config.setup();
+                    BridgeConfig.setup();
                     sender.sendMessage("Reloaded Config!");
                 })
             )

@@ -4,6 +4,7 @@ import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import net.kyori.adventure.text.Component;
@@ -37,7 +38,7 @@ public class Bridge implements Listener {
         p.sendMessage(Component.text("Starting!"));
 
         //Setting up world
-        PracticeHubCore.worldManager.cloneWorld("baseBridge", "bridge" + p.getName());
+        PracticeHubCore.worldManager.cloneWorld(BridgeConfig.bridgeCopyWorld, "bridge" + p.getName());
 
         //Teleport player
         World world = Bukkit.getWorld("bridge" + p.getName());

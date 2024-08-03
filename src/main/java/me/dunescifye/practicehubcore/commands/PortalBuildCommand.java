@@ -8,7 +8,9 @@ public class PortalBuildCommand {
     public static void register() {
         new CommandTree("portalbuild")
             .then(new LiteralArgument("start")
+                .executesPlayer((p, args) -> {
 
+                })
             )
             .withPermission("practicehub.command.portalbuild")
             .register("practicehub");

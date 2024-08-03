@@ -5,6 +5,8 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import me.dunescifye.practicehubcore.commands.BridgeCommand;
 import me.dunescifye.practicehubcore.commands.MainCommand;
 import me.dunescifye.practicehubcore.commands.MiscCommands;
+import me.dunescifye.practicehubcore.commands.PortalBuildCommand;
+import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.gamemodes.Bridge;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
@@ -57,6 +59,7 @@ public final class PracticeHubCore extends JavaPlugin {
         MainCommand.register();
         MiscCommands.register();
         BridgeCommand.register();
+        PortalBuildCommand.register();
     }
 
     private void setupListeners() {
@@ -65,6 +68,7 @@ public final class PracticeHubCore extends JavaPlugin {
 
     private void setupFiles() {
         Config.setup();
+        BridgeConfig.setup();
     }
 
     @Override
