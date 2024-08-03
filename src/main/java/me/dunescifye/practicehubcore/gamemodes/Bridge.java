@@ -3,6 +3,7 @@ package me.dunescifye.practicehubcore.gamemodes;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -141,6 +142,7 @@ public class Bridge implements Listener {
                     gamemode.remove(p);
                     tasks.remove(p).cancel();
                     p.sendMessage(Component.text("Ended game!"));
+                    p.teleport(Config.spawn);
                     PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
                 })
             )
@@ -180,6 +182,7 @@ public class Bridge implements Listener {
         Player p = e.getPlayer();
         if (gamemode.containsKey(p) && gamemode.remove(p).equals("bridge")) {
             PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
+            p.teleport(Config.spawn);
         }
     }
 }
