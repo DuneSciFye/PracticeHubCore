@@ -7,13 +7,14 @@ import org.bukkit.Location;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Config {
     public static Location spawn;
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
         try {
-            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "config.yml"), plugin.getResource("config.yml"));
+            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "config.yml"), Objects.requireNonNull(plugin.getResource("config.yml")));
             config.set("Spawn.World", "world");
             config.set("Spawn.X", "0");
             config.set("Spawn.Y", "100");

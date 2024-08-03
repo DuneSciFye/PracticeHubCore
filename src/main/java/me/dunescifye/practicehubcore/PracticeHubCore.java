@@ -2,6 +2,8 @@ package me.dunescifye.practicehubcore;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import me.dunescifye.practicehubcore.commands.MainCommand;
+import me.dunescifye.practicehubcore.commands.MiscCommands;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.gamemodes.Bridge;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
@@ -15,13 +17,18 @@ public final class PracticeHubCore extends JavaPlugin {
 
     public static MVWorldManager worldManager;
     private static PracticeHubCore plugin;
+
     @Override
     public void onEnable() {
+        //Logger
         plugin = this;
         Logger logger = this.getLogger();
         logger.info("PracticeHubCore Starting.");
-        Bridge.register(this);
-        new Bridge().playerBlockPlaceHandler(this);
+
+        //Setup
+        setupCommands();
+        setupListeners();
+        setupFiles();
 
         //Multiverse
         MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
@@ -38,17 +45,28 @@ public final class PracticeHubCore extends JavaPlugin {
 
         //CPS
         new ClicksPerSecond().setup(this);
-
-        //Files
-        Config.setup();
     }
 
     public static PracticeHubCore getPlugin() {
         return plugin;
     }
 
+    private void setupCommands() {
+        Bridge.register(this);
+        MainCommand.register();
+        MiscCommands.register();
+    }
+
+    private void setupListeners() {
+        new Bridge().playerBlockPlaceHandler(this);
+    }
+
+    private void setupFiles() {
+        Config.setup();
+    }
+
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        this.getLogger().info("PracticeHubCore Stopping.");
     }
 }

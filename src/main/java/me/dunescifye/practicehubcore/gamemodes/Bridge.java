@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore.gamemodes;
 
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
+import dev.jorel.commandapi.arguments.PlayerArgument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
@@ -129,6 +130,12 @@ public class Bridge implements Listener {
 
                     tasks.put(p, task);
                 })
+                .then(new PlayerArgument("Player")
+                    .executes((sender, args) -> {
+
+                    })
+                    .withPermission("practicehub.command.bridge.other")
+                )
             )
             .then(new LiteralArgument("end")
                 .executesPlayer((p, args) -> {
