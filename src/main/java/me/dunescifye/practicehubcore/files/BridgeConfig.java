@@ -19,7 +19,7 @@ public class BridgeConfig {
         Logger logger = plugin.getLogger();
 
         try {
-            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/bridge.yml"), Objects.requireNonNull(plugin.getResource("bridge.yml")));
+            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/Bridge.yml"), Objects.requireNonNull(plugin.getResource("Bridge.yml")));
             //Copy World
             String worldName = config.getString("CopyWorld");
             World world = Bukkit.getWorld(worldName);
@@ -30,7 +30,7 @@ public class BridgeConfig {
             }
         } catch (
             IOException e) {
-            logger.severe("Failed to load file gamemodes/bridge.yml");
+            logger.severe("Failed to load file gamemodes/Bridge.yml");
             throw new RuntimeException(e);
         }
     }
