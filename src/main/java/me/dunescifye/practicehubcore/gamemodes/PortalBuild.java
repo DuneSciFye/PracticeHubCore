@@ -13,6 +13,7 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import me.dunescifye.practicehubcore.PracticeHubCore;
@@ -114,8 +115,8 @@ public class PortalBuild implements Listener {
 
             //Cleanup schem area
             try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
-                CuboidRegion region = new CuboidRegion(new BlockVector3(-10, -64, -10), new BlockVector3(100, 320, 100));
-                editSession.setBlocks(region, BlockTypes.AIR.getDefaultState());
+                CuboidRegion region = new CuboidRegion(BlockVector3.at(-10, -64, -10), BlockVector3.at(100, 320, 100));
+                editSession.setBlocks((Region) region, BlockTypes.AIR.getDefaultState());
             } catch (MaxChangedBlocksException ex) {
                 throw new RuntimeException(ex);
             }
