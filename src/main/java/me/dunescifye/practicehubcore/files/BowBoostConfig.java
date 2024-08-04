@@ -13,7 +13,7 @@ public class BowBoostConfig {
         Logger logger = plugin.getLogger();
 
         try {
-            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/BowBoost.yml"), plugin.getResource("BowBoost.yml"));
+            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/BowBoost.yml"), plugin.getResource("gamemodes/BowBoost.yml"));
         } catch (
             IOException e) {
             logger.severe("Failed to load file gamemodes/BowBoost.yml");

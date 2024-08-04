@@ -7,7 +7,6 @@ import org.bukkit.World;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 public class BridgeConfig {
@@ -19,7 +18,7 @@ public class BridgeConfig {
         Logger logger = plugin.getLogger();
 
         try {
-            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/Bridge.yml"), Objects.requireNonNull(plugin.getResource("Bridge.yml")));
+            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/Bridge.yml"), plugin.getResource("gamemodes/Bridge.yml"));
             //Copy World
             String worldName = config.getString("CopyWorld");
             World world = Bukkit.getWorld(worldName);
