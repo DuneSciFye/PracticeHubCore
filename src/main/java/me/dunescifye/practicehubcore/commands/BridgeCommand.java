@@ -44,7 +44,7 @@ public class BridgeCommand {
                         return;
                     }
                     p.getInventory().clear();
-                    p.getInventory().setContents(Bridge.inventories.remove(p));
+                    p.getInventory().setContents(PracticeHubCore.inventories.remove(p));
                     Bridge.gamemode.remove(p);
                     Bridge.tasks.remove(p).cancel();
                     p.sendMessage(Component.text("Ended game!"));
@@ -66,7 +66,7 @@ public class BridgeCommand {
                             return;
                         }
                         p.getInventory().clear();
-                        p.getInventory().setContents(Bridge.inventories.remove(p));
+                        p.getInventory().setContents(PracticeHubCore.inventories.remove(p));
                         Bridge.gamemode.remove(p);
                         Bridge.tasks.remove(p).cancel();
                         p.sendMessage(Component.text("Ended game!"));

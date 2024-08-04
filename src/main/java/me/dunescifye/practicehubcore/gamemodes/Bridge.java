@@ -1,8 +1,5 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
-import dev.jorel.commandapi.CommandTree;
-import dev.jorel.commandapi.arguments.LiteralArgument;
-import dev.jorel.commandapi.arguments.PlayerArgument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
@@ -29,7 +26,6 @@ import java.util.List;
 
 public class Bridge implements Listener {
     public static HashMap<Player, String> gamemode = new HashMap<>();
-    public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
     public static HashMap<Player, Integer> cps = new HashMap<>();
@@ -52,7 +48,7 @@ public class Bridge implements Listener {
         p.setFoodLevel(20);
 
         //Setting up inventory
-        inventories.put(p, p.getInventory().getContents());
+        PracticeHubCore.inventories.put(p, p.getInventory().getContents());
         Inventory inv = p.getInventory();
         inv.clear();
         inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
