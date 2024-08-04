@@ -38,14 +38,14 @@ public class BridgeCommand {
             )
             .then(new LiteralArgument("end")
                 .executesPlayer((p, args) -> {
-                    String currentGamemode = Bridge.gamemode.get(p);
+                    String currentGamemode = PracticeHubCore.gamemode.get(p);
                     if (currentGamemode == null) {
                         p.sendMessage(Component.text("You are not in any game!"));
                         return;
                     }
                     p.getInventory().clear();
                     p.getInventory().setContents(PracticeHubCore.inventories.remove(p));
-                    Bridge.gamemode.remove(p);
+                    PracticeHubCore.gamemode.remove(p);
                     Bridge.tasks.remove(p).cancel();
                     p.sendMessage(Component.text("Ended game!"));
                     p.teleport(Config.spawn);
@@ -60,14 +60,14 @@ public class BridgeCommand {
                         }
                         Player p = args.getUnchecked("Player");
                         assert p != null;
-                        String currentGamemode = Bridge.gamemode.get(p);
+                        String currentGamemode = PracticeHubCore.gamemode.get(p);
                         if (currentGamemode == null) {
                             sender.sendMessage(Component.text(p.getName() + " is not in any game!"));
                             return;
                         }
                         p.getInventory().clear();
                         p.getInventory().setContents(PracticeHubCore.inventories.remove(p));
-                        Bridge.gamemode.remove(p);
+                        PracticeHubCore.gamemode.remove(p);
                         Bridge.tasks.remove(p).cancel();
                         p.sendMessage(Component.text("Ended game!"));
                         p.teleport(Config.spawn);

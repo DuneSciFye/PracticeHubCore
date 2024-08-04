@@ -25,7 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Bridge implements Listener {
-    public static HashMap<Player, String> gamemode = new HashMap<>();
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
     public static HashMap<Player, Integer> cps = new HashMap<>();
@@ -54,7 +53,7 @@ public class Bridge implements Listener {
         inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
         p.getInventory().setHeldItemSlot(0);
 
-        gamemode.put(p, "bridge");
+        PracticeHubCore.gamemode.put(p, "bridge");
 
         //Loop to check p falling
         BukkitTask task = new BukkitRunnable() {
@@ -132,7 +131,7 @@ public class Bridge implements Listener {
     @EventHandler
     public void onPlayerBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        String currentGamemode = gamemode.get(p);
+        String currentGamemode = PracticeHubCore.gamemode.get(p);
         if (currentGamemode == null) return;
         if (currentGamemode.equals("bridge")) {
             Block b = e.getBlockPlaced();
@@ -156,7 +155,7 @@ public class Bridge implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if (gamemode.containsKey(p) && gamemode.remove(p).equals("bridge")) {
+        if (PracticeHubCore.gamemode.containsKey(p) && PracticeHubCore.gamemode.remove(p).equals("bridge")) {
             PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
             p.teleport(Config.spawn);
         }

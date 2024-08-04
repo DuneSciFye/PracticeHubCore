@@ -8,6 +8,7 @@ import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
 import me.dunescifye.practicehubcore.gamemodes.Bridge;
+import me.dunescifye.practicehubcore.gamemodes.PortalBuild;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
 import org.bukkit.Bukkit;
@@ -23,6 +24,7 @@ public final class PracticeHubCore extends JavaPlugin {
     public static MVWorldManager worldManager;
     private static PracticeHubCore plugin;
     public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
+    public static HashMap<Player, String> gamemode = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -68,6 +70,7 @@ public final class PracticeHubCore extends JavaPlugin {
 
     private void setupListeners() {
         new Bridge().playerBlockPlaceHandler(this);
+        new PortalBuild().portalCreateHandler(this);
     }
 
     private void setupFiles() {
