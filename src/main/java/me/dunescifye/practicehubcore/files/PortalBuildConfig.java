@@ -9,6 +9,7 @@ import org.bukkit.World;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
 public class PortalBuildConfig {
 
     public static World portalBuildWorld = null;
-    public static HashMap<World, List<Location>> lavaPools = new HashMap<>();
+    public static HashMap<String, List<Location>> lavaPools = new HashMap<>();
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
@@ -28,13 +29,27 @@ public class PortalBuildConfig {
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
                 logger.severe("World \"" + worldName + "\" not found! Portal Build gamemode disabled until fixed.");
+                return;
             } else {
                 portalBuildWorld = world;
             }
 
             //Lava Pools
             Section schematics = config.getSection("Schematics");
-            for (schematics.getKeys()
+            if (schematics != null) {
+                for (Object key : schematics.getKeys()) {
+                    if (key instanceof String keyString) {
+                        Section keySection = schematics.getSection(keyString);
+                        String file = keySection.getString("file");
+                        List<Location> locations = new ArrayList<>();
+                        for (String location : keySection.getStringList("locations")) {
+                            String[] coords = location.split(",", 5);
+                            locations.add(new Location(portalBuildWorld, Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), Double.parseDouble(coords[2])));
+                        }
+                        lavaPools.put(file, locations);
+                    }
+                }
+            }
 
         } catch (
             IOException e) {

@@ -1,6 +1,6 @@
 BuildWorld: PortalBuild
 Schematics:
-  1:
+  schem1:
     file: lava1.schem
     #X,Y,Z,Yaw,Pitch
     locations:
