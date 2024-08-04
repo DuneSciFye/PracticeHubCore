@@ -44,7 +44,10 @@ public class PortalBuildConfig {
                         List<Location> locations = new ArrayList<>();
                         for (String location : keySection.getStringList("locations")) {
                             String[] coords = location.split(",", 5);
-                            locations.add(new Location(portalBuildWorld, Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), Double.parseDouble(coords[2])));
+                            Location loc = new Location(portalBuildWorld, Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
+                            loc.setYaw(Float.parseFloat(coords[3]));
+                            loc.setPitch(Float.parseFloat(coords[3]));
+                            locations.add(loc);
                         }
                         lavaPools.put(file, locations);
                     }
