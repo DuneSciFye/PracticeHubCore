@@ -1,6 +1,7 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -11,7 +12,9 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.block.BlockTypes;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
@@ -30,11 +33,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 public class PortalBuild implements Listener {
+
+    public static HashMap<Player, String> lavaSchem = new HashMap<>();
 
     public static void startPortalBridgeGame(Player p) {
         Plugin plugin = PracticeHubCore.getPlugin();
@@ -55,6 +61,7 @@ public class PortalBuild implements Listener {
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             clipboard = reader.read();
         } catch (IOException e) {
+            p.sendMessage("There was nothing on the clipboard! Report to an administrator!");
             throw new RuntimeException(e);
         }
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
@@ -66,8 +73,10 @@ public class PortalBuild implements Listener {
                 .build();
             Operations.complete(operation);
         } catch (WorldEditException e) {
+            p.sendMessage("An error occurred! Report to an administrator!");
             throw new RuntimeException(e);
         }
+        lavaSchem.put(p, fileName);
 
         //Setting up inventory
         PracticeHubCore.inventories.put(p, p.getInventory().getContents());
@@ -101,6 +110,15 @@ public class PortalBuild implements Listener {
             p.getInventory().clear();
             p.getInventory().setContents(PracticeHubCore.inventories.get(p));
             p.teleport(Config.spawn);
+            lavaSchem.remove(p);
+
+            //Cleanup schem area
+            try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
+                CuboidRegion region = new CuboidRegion(new BlockVector3(-10, -64, -10), new BlockVector3(100, 320, 100));
+                editSession.setBlocks(region, BlockTypes.AIR.getDefaultState());
+            } catch (MaxChangedBlocksException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
