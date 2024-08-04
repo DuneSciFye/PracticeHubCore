@@ -1,7 +1,7 @@
 package me.dunescifye.practicehubcore.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.dunescifye.practicehubcore.gamemodes.PortalBuild;
+import me.dunescifye.practicehubcore.gamemodes.portalbuild.PortalBuild;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package me.dunescifye.practicehubcore.gamemodes;
+package me.dunescifye.practicehubcore.gamemodes.portalbuild;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -19,6 +19,8 @@ import com.sk89q.worldedit.world.block.BlockTypes;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
+import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
+import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,6 +38,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
@@ -95,6 +98,7 @@ public class PortalBuild implements Listener {
 
         //Other
         PracticeHubCore.gamemode.put(p, "PortalBuild");
+        PortalBuildPlayer player = new PortalBuildPlayer(p);
 
     }
 
@@ -123,6 +127,10 @@ public class PortalBuild implements Listener {
                 }
             }
         }
+
+        //Get times
+        LinkedList<TimedBlock> blocks = BlockPlaceListener.placedBlocks.remove(p);
+
     }
 
     public void portalCreateHandler(PracticeHubCore plugin) {

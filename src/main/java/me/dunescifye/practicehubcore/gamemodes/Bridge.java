@@ -3,6 +3,7 @@ package me.dunescifye.practicehubcore.gamemodes;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
+import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -26,7 +27,6 @@ import java.util.List;
 
 public class Bridge implements Listener {
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
     public static HashMap<Player, Integer> cps = new HashMap<>();
 
     public static void startBridgeGame(Player p) {
@@ -64,7 +64,7 @@ public class Bridge implements Listener {
                     p.sendMessage(Component.text("You fell!"));
                     //Blocks
                     int blockCounter = 0;
-                    LinkedList<TimedBlock> blocks = placedBlocks.remove(p);
+                    LinkedList<TimedBlock> blocks = BlockPlaceListener.placedBlocks.remove(p);
 
                     //Distance
                     if (blocks != null && !blocks.isEmpty()) {
@@ -124,26 +124,6 @@ public class Bridge implements Listener {
         tasks.put(p, task);
     }
 
-    public void playerBlockPlaceHandler(PracticeHubCore plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-
-    @EventHandler
-    public void onPlayerBlockPlace(BlockPlaceEvent e) {
-        Player p = e.getPlayer();
-        String currentGamemode = PracticeHubCore.gamemode.get(p);
-        if (currentGamemode == null) return;
-        if (currentGamemode.equals("bridge")) {
-            Block b = e.getBlockPlaced();
-            e.getItemInHand().setAmount(64);
-            List<TimedBlock> blocks = placedBlocks.get(p);
-            if (blocks == null) {
-                placedBlocks.put(p, new LinkedList<>(List.of(new TimedBlock(b, Instant.now()))));
-                return;
-            }
-            placedBlocks.get(p).add(new TimedBlock(b, Instant.now()));
-        }
-    }
 
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEvent e) {
