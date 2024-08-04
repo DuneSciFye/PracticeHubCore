@@ -44,7 +44,15 @@ public class PortalBuildConfig {
                         List<Location> locations = new ArrayList<>();
                         for (String location : keySection.getStringList("locations")) {
                             String[] coords = location.split(",", 5);
+                            if (coords.length < 3) {
+                                logger.warning("Schematic location " + file + " for Portal Build gamemode is malformed! Current: " + location);
+                                continue;
+                            }
                             Location loc = new Location(portalBuildWorld, Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
+                            if (coords.length < 5) {
+                                locations.add(loc);
+                                continue;
+                            }
                             loc.setYaw(Float.parseFloat(coords[3]));
                             loc.setPitch(Float.parseFloat(coords[3]));
                             locations.add(loc);

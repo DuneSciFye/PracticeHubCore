@@ -22,6 +22,7 @@ import me.dunescifye.practicehubcore.files.PortalBuildConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -97,6 +98,33 @@ public class PortalBuild implements Listener {
 
     }
 
+    public static void endPortalBuildGame(Player p) {
+        p.sendMessage("You win!");
+        p.getInventory().clear();
+        p.getInventory().setContents(PracticeHubCore.inventories.get(p));
+        p.teleport(Config.spawn);
+        lavaSchem.remove(p);
+
+        //Cleanup schem area
+            /*
+            try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
+                CuboidRegion region = new CuboidRegion(BlockVector3.at(-10, -64, -10), BlockVector3.at(100, 320, 100));
+                editSession.setBlocks(region, BlockTypes.AIR.getDefaultState());
+            } catch (MaxChangedBlocksException ex) {
+                throw new RuntimeException(ex);
+            }
+             */
+        Block origin = PortalBuildConfig.portalBuildWorld.getBlockAt(0, 0, 0);
+        for (int x = -100; x < 100; x++) {
+            for (int y = -64; y < 320; y++) {
+                for (int z = -100; z < 100; z++) {
+                    Block relative = origin.getRelative(x, y, z);
+                    relative.setType(Material.AIR);
+                }
+            }
+        }
+    }
+
     public void portalCreateHandler(PracticeHubCore plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -106,20 +134,9 @@ public class PortalBuild implements Listener {
         if (e.getReason() != PortalCreateEvent.CreateReason.FIRE) return;
         if (e.getEntity() instanceof Player p) {
             if (!PracticeHubCore.gamemode.remove(p).equals("PortalBuild")) return;
+            e.setCancelled(true);
+            endPortalBuildGame(p);
 
-            p.sendMessage("You win!");
-            p.getInventory().clear();
-            p.getInventory().setContents(PracticeHubCore.inventories.get(p));
-            p.teleport(Config.spawn);
-            lavaSchem.remove(p);
-
-            //Cleanup schem area
-            try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
-                CuboidRegion region = new CuboidRegion(BlockVector3.at(-10, -64, -10), BlockVector3.at(100, 320, 100));
-                editSession.setBlocks((Region) region, BlockTypes.AIR.getDefaultState());
-            } catch (MaxChangedBlocksException ex) {
-                throw new RuntimeException(ex);
-            }
         }
     }
 

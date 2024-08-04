@@ -22,6 +22,16 @@ public class PortalBuildCommand {
                     PortalBuild.startPortalBridgeGame(p);
                 })
             )
+            .then(new LiteralArgument("end")
+                .executesPlayer((p, args) -> {
+                    if (PortalBuildConfig.portalBuildWorld == null) {
+                        p.sendMessage(Component.text("Portal Build is disabled!"));
+                        return;
+                    }
+
+                    PortalBuild.endPortalBuildGame(p);
+                })
+            )
             .withPermission("practicehub.command.portalbuild")
             .register("practicehub");
     }
