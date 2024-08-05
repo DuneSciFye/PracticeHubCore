@@ -17,6 +17,8 @@ import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
+import me.dunescifye.practicehubcore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,6 +34,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,6 +131,10 @@ public class PortalBuild implements Listener {
 
         //Get times
         LinkedList<TimedBlock> blocks = BlockPlaceListener.placedBlocks.remove(p);
+        PortalBuildPlayer player = portalBuildPlayers.get(p);
+        Duration duration = Duration.between(player.getStartTime(), Instant.now());
+
+        p.sendMessage(Component.text(Utils.getFormattedTime(duration)));
 
         portalBuildPlayers.remove(p);
 

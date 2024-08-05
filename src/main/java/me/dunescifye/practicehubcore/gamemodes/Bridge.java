@@ -5,6 +5,7 @@ import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
+import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -90,19 +91,7 @@ public class Bridge implements Listener {
                             p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s, " + String.format("%.2f", z / time) + "m/s)"));
 
                             //Times
-                            if (duration.compareTo(Duration.ofHours(1)) > 0) {
-                                p.sendMessage(Component.text("You lasted "
-                                    + duration.toHoursPart() + " hours, "
-                                    + duration.toMinutesPart() + " minutes, & "
-                                    + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                            } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
-                                p.sendMessage(Component.text("You lasted "
-                                    + duration.toMinutesPart() + " minutes & "
-                                    + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                            } else {
-                                p.sendMessage(Component.text("You lasted "
-                                    + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds."));
-                            }
+                            p.sendMessage(Component.text(Utils.getFormattedTime(duration)));
 
                             //CPS
                             if (time > 1) {

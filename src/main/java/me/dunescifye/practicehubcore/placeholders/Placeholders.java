@@ -38,7 +38,7 @@ public class Placeholders extends PlaceholderExpansion {
                 return String.valueOf(ClicksPerSecond.rightClicksPerSecond.get(p).size());
             }
             case "lavaSchem" -> {
-                return PortalBuild.lavaSchem.get(p);
+                return PortalBuild.portalBuildPlayers.get(p).getLavaSchem();
             }
 
         }
