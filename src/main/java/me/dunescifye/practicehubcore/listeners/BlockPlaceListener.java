@@ -1,6 +1,8 @@
 package me.dunescifye.practicehubcore.listeners;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.PracticeHubPlayer;
+import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -15,7 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BlockPlaceListener implements Listener {
-    public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
 
     public void playerBlockPlaceHandler(PracticeHubCore plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -30,9 +31,10 @@ public class BlockPlaceListener implements Listener {
         switch (currentGamemode) {
             case "bridge" -> {
                 e.getItemInHand().setAmount(64);
-                List<TimedBlock> blocks = placedBlocks.get(p);
+                PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+                List<TimedBlock> blocks = player.getPlacedBlocks();
                 if (blocks == null) {
-                    placedBlocks.put(p, new LinkedList<>(List.of(new TimedBlock(b, Instant.now()))));
+                    blocks.put(p, new LinkedList<>(List.of(new TimedBlock(b, Instant.now()))));
                     return;
                 }
                 placedBlocks.get(p).add(new TimedBlock(b, Instant.now()));

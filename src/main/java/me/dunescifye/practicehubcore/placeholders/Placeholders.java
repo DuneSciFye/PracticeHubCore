@@ -1,6 +1,7 @@
 package me.dunescifye.practicehubcore.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.gamemodes.portalbuild.PortalBuild;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
 import org.bukkit.OfflinePlayer;
@@ -38,7 +39,7 @@ public class Placeholders extends PlaceholderExpansion {
                 return String.valueOf(ClicksPerSecond.rightClicksPerSecond.get(p).size());
             }
             case "lavaSchem" -> {
-                return PortalBuild.portalBuildPlayers.get(p).getLavaSchem();
+                return PracticeHubPlayer.linkedPlayers.get(p).getLavaSchem();
             }
 
         }

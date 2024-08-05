@@ -15,6 +15,7 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
+import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import me.dunescifye.practicehubcore.utils.Utils;
@@ -37,15 +38,12 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 public class PortalBuild implements Listener {
-
-    public static HashMap<Player, PortalBuildPlayer> portalBuildPlayers = new HashMap<>();
 
     public static void startPortalBridgeGame(Player p) {
         Plugin plugin = PracticeHubCore.getPlugin();
@@ -97,10 +95,10 @@ public class PortalBuild implements Listener {
 
         //Other
         PracticeHubCore.gamemode.put(p, "PortalBuild");
-        PortalBuildPlayer player = new PortalBuildPlayer(p);
+        PracticeHubPlayer player = new PracticeHubPlayer();
         player.setLavaSchem(fileName);
         player.setStartTime(Instant.now());
-        portalBuildPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p, player);
 
     }
 
@@ -130,13 +128,13 @@ public class PortalBuild implements Listener {
         }
 
         //Get times
-        LinkedList<TimedBlock> blocks = BlockPlaceListener.placedBlocks.remove(p);
-        PortalBuildPlayer player = portalBuildPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        LinkedList<TimedBlock> blocks = player.getPlacedBlocks();
         Duration duration = Duration.between(player.getStartTime(), Instant.now());
 
         p.sendMessage(Component.text(Utils.getFormattedTime(duration)));
 
-        portalBuildPlayers.remove(p);
+        PracticeHubPlayer.linkedPlayers.remove(p);
 
     }
 

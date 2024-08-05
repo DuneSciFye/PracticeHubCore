@@ -1,23 +1,21 @@
-package me.dunescifye.practicehubcore.gamemodes.portalbuild;
+package me.dunescifye.practicehubcore.gamemodes;
 
+import me.dunescifye.practicehubcore.utils.TimedBlock;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.LinkedList;
 
-public class PortalBuildPlayer {
+public class PracticeHubPlayer {
 
-    private final Player player;
+    public static HashMap<Player, PracticeHubPlayer> linkedPlayers = new HashMap<>();
+
     private Instant startTime;
     private Instant finishTime;
     private String lavaSchem;
-
-    public PortalBuildPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
+    private LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
 
     public void setStartTime(Instant startTime) {
         this.startTime = startTime;
@@ -38,6 +36,14 @@ public class PortalBuildPlayer {
     }
     public String getLavaSchem() {
         return lavaSchem;
+    }
+
+    public LinkedList<TimedBlock> getPlacedBlocks() {
+        return placedBlocks;
+    }
+
+    public void addPlacedBlock(Block b, Instant time) {
+        placedBlocks.push(new TimedBlock(b, time));
     }
 
 }

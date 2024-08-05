@@ -3,16 +3,13 @@ package me.dunescifye.practicehubcore.gamemodes;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
-import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -21,10 +18,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Bridge implements Listener {
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
@@ -65,7 +60,7 @@ public class Bridge implements Listener {
                     p.sendMessage(Component.text("You fell!"));
                     //Blocks
                     int blockCounter = 0;
-                    LinkedList<TimedBlock> blocks = BlockPlaceListener.placedBlocks.remove(p);
+                    LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p).getPlacedBlocks();
 
                     //Distance
                     if (blocks != null && !blocks.isEmpty()) {
