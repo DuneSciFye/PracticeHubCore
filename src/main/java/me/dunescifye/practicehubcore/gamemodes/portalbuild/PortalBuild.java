@@ -49,6 +49,12 @@ public class PortalBuild implements Listener {
         Plugin plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
 
+        //Get Location
+        Location location = new Location(PortalBuildConfig.portalBuildWorld, 0, 100, 0);
+        while (PortalBuildConfig.grid.contains(location)) {
+            location.add(PortalBuildConfig.gridSpacing, 0, 0);
+        }
+
         //Paste schematic
         List<String> schematics = new ArrayList<>(PortalBuildConfig.lavaPools.keySet());
         String fileName = schematics.get(ThreadLocalRandom.current().nextInt(schematics.size()));

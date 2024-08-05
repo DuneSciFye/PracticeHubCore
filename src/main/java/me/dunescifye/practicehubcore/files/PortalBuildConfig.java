@@ -18,6 +18,9 @@ public class PortalBuildConfig {
 
     public static World portalBuildWorld = null;
     public static HashMap<String, List<Location>> lavaPools = new HashMap<>();
+    public static int gridSpacing;
+    public static ArrayList<Location> grid = new ArrayList<>();
+
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
@@ -25,7 +28,7 @@ public class PortalBuildConfig {
         try {
             YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/PortalBuild/PortalBuild.yml"), plugin.getResource("gamemodes/PortalBuild/PortalBuild.yml"));
             //Copy World
-            String worldName = config.getString("BuildWorld");
+            String worldName = config.getString("BuildWorld.World");
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
                 logger.severe("World \"" + worldName + "\" not found! Portal Build gamemode disabled until fixed.");
@@ -61,6 +64,9 @@ public class PortalBuildConfig {
                     }
                 }
             }
+
+            //Grid Spacing
+            gridSpacing = config.getInt("BuildWorld.Spacing");
 
         } catch (
             IOException e) {

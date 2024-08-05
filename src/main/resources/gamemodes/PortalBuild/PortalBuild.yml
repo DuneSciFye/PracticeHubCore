@@ -1,4 +1,6 @@
-BuildWorld: PortalBuild
+BuildWorld:
+  World: PortalBuild
+  Spacing: 200
 Schematics:
   schem1:
     file: lava1.schem

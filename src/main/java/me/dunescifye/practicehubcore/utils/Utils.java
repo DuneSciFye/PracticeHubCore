@@ -6,17 +6,14 @@ public class Utils {
 
     public static String getFormattedTime(Duration duration) {
         if (duration.compareTo(Duration.ofHours(1)) > 0) {
-            return "You lasted "
-                + duration.toHoursPart() + " hours, "
+            return duration.toHoursPart() + " hours, "
                 + duration.toMinutesPart() + " minutes, & "
                 + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds.";
         } else if (duration.compareTo(Duration.ofMinutes(1)) > 0) {
-            return "You lasted "
-                + duration.toMinutesPart() + " minutes & "
+            return duration.toMinutesPart() + " minutes & "
                 + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds.";
         } else {
-            return "You lasted "
-                + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds.";
+            return duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds.";
         }
     }
 
