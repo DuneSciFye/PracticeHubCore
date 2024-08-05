@@ -42,8 +42,8 @@ public class PracticeHubPlayer {
         return placedBlocks;
     }
 
-    public void addPlacedBlock(Block b, Instant time) {
-        placedBlocks.push(new TimedBlock(b, time));
+    public void addPlacedBlock(TimedBlock b) {
+        placedBlocks.add(b);
     }
 
 }

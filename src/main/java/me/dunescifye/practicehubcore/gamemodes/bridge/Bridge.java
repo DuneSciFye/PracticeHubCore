@@ -1,8 +1,9 @@
-package me.dunescifye.practicehubcore.gamemodes;
+package me.dunescifye.practicehubcore.gamemodes.bridge;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
+import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;

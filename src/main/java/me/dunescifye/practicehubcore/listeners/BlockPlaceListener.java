@@ -1,7 +1,6 @@
 package me.dunescifye.practicehubcore.listeners;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.Bukkit;
@@ -12,9 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class BlockPlaceListener implements Listener {
 
@@ -32,20 +28,11 @@ public class BlockPlaceListener implements Listener {
             case "bridge" -> {
                 e.getItemInHand().setAmount(64);
                 PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
-                List<TimedBlock> blocks = player.getPlacedBlocks();
-                if (blocks == null) {
-                    blocks.put(p, new LinkedList<>(List.of(new TimedBlock(b, Instant.now()))));
-                    return;
-                }
-                placedBlocks.get(p).add(new TimedBlock(b, Instant.now()));
+                player.addPlacedBlock(new TimedBlock(b, Instant.now()));
             }
             case "PortalBuild" -> {
-                List<TimedBlock> blocks = placedBlocks.get(p);
-                if (blocks == null) {
-                    placedBlocks.put(p, new LinkedList<>(List.of(new TimedBlock(b, Instant.now()))));
-                    return;
-                }
-                placedBlocks.get(p).add(new TimedBlock(b, Instant.now()));
+                PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+                player.addPlacedBlock(new TimedBlock(b, Instant.now()));
             }
         }
     }
