@@ -9,6 +9,7 @@ public class PortalBuildPlayer {
     private final Player player;
     private Instant startTime;
     private Instant finishTime;
+    private String lavaSchem;
 
     public PortalBuildPlayer(Player player) {
         this.player = player;
@@ -31,6 +32,12 @@ public class PortalBuildPlayer {
 
     public Instant getFinishTime() {
         return finishTime;
+    }
+    public void setLavaSchem(String lavaSchem) {
+        this.lavaSchem = lavaSchem;
+    }
+    public String getLavaSchem() {
+        return lavaSchem;
     }
 
 }

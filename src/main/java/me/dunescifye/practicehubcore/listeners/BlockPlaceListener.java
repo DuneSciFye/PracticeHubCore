@@ -1,12 +1,12 @@
 package me.dunescifye.practicehubcore.listeners;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.gamemodes.Bridge;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.time.Instant;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BlockPlaceListener {
+public class BlockPlaceListener implements Listener {
     public static HashMap<Player, LinkedList<TimedBlock>> placedBlocks = new HashMap<>();
 
     public void playerBlockPlaceHandler(PracticeHubCore plugin) {
