@@ -130,9 +130,13 @@ public class PortalBuild implements Listener {
         //Get times
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         LinkedList<TimedBlock> blocks = player.getPlacedBlocks();
-        Duration duration = Duration.between(player.getStartTime(), Instant.now());
 
-        p.sendMessage(Component.text(Utils.getFormattedTime(duration)));
+        p.sendMessage(Component.text("Total time of " + Utils.getFormattedTime(Duration.between(player.getStartTime(), Instant.now()))));
+        p.sendMessage(Component.text("Time from first block place: " + Utils.getFormattedTime(Duration.between(blocks.getFirst().getTime(), Instant.now()))));
+        p.sendMessage(Component.text("Time for portal frame build: " + Utils.getFormattedTime(Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime()))));
+
+        //
+
 
         PracticeHubPlayer.linkedPlayers.remove(p);
 

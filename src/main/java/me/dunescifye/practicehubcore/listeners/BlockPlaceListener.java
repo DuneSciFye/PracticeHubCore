@@ -21,19 +21,17 @@ public class BlockPlaceListener implements Listener {
     @EventHandler
     public void onPlayerBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        String currentGamemode = PracticeHubCore.gamemode.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        String currentGamemode = player.getGamemode();
         if (currentGamemode == null) return;
         Block b = e.getBlockPlaced();
         switch (currentGamemode) {
-            case "bridge" -> {
+            case "Bridge" -> {
                 e.getItemInHand().setAmount(64);
-                PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
                 player.addPlacedBlock(new TimedBlock(b, Instant.now()));
             }
-            case "PortalBuild" -> {
-                PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+            case "PortalBuild" ->
                 player.addPlacedBlock(new TimedBlock(b, Instant.now()));
-            }
         }
     }
 }

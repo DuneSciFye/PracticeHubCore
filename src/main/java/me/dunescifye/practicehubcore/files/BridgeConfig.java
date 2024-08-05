@@ -18,7 +18,7 @@ public class BridgeConfig {
         Logger logger = plugin.getLogger();
 
         try {
-            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/Bridge.yml"), plugin.getResource("gamemodes/Bridge.yml"));
+            YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/Bridge/Bridge.yml"), plugin.getResource("gamemodes/Bridge/Bridge.yml"));
             //Copy World
             String worldName = config.getString("CopyWorld");
             World world = Bukkit.getWorld(worldName);

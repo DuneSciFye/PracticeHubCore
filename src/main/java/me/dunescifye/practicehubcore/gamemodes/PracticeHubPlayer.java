@@ -1,7 +1,6 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.utils.TimedBlock;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
@@ -15,6 +14,7 @@ public class PracticeHubPlayer {
     private Instant startTime;
     private Instant finishTime;
     private String lavaSchem;
+    private String gamemode;
     private LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
 
     public void setStartTime(Instant startTime) {
@@ -45,5 +45,14 @@ public class PracticeHubPlayer {
     public void addPlacedBlock(TimedBlock b) {
         placedBlocks.add(b);
     }
+
+    public String getGamemode() {
+        return gamemode;
+    }
+
+    public void setGamemode(String gamemode) {
+        this.gamemode = gamemode;
+    }
+
 
 }

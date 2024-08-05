@@ -50,7 +50,9 @@ public class Bridge implements Listener {
         inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
         p.getInventory().setHeldItemSlot(0);
 
-        PracticeHubCore.gamemode.put(p, "bridge");
+        PracticeHubPlayer player = new PracticeHubPlayer();
+        player.setGamemode("Bridge");
+        PracticeHubPlayer.linkedPlayers.put(p, player);
 
         //Loop to check p falling
         BukkitTask task = new BukkitRunnable() {
@@ -120,7 +122,8 @@ public class Bridge implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if (PracticeHubCore.gamemode.containsKey(p) && PracticeHubCore.gamemode.remove(p).equals("bridge")) {
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (player.getGamemode().equals("Bridge")) {
             PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
             p.teleport(Config.spawn);
         }
