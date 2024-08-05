@@ -1,6 +1,7 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.utils.TimedBlock;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +19,15 @@ public class PracticeHubPlayer {
     private String gamemode;
     private LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
     private ItemStack[] savedInventory;
+    private Location location;
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public void setStartTime(Instant startTime) {
         this.startTime = startTime;

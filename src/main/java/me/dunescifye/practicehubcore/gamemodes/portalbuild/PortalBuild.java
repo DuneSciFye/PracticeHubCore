@@ -54,6 +54,8 @@ public class PortalBuild implements Listener {
         while (PortalBuildConfig.grid.contains(location)) {
             location.add(PortalBuildConfig.gridSpacing, 0, 0);
         }
+        player.setLocation(location);
+        PortalBuildConfig.grid.add(location);
 
         //Paste schematic
         List<String> schematics = new ArrayList<>(PortalBuildConfig.lavaPools.keySet());
@@ -76,7 +78,7 @@ public class PortalBuild implements Listener {
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
             Operation operation = new ClipboardHolder(clipboard)
                 .createPaste(editSession)
-                .to(BlockVector3.at(0, 100, 0))
+                .to(BlockVector3.at(location.getX(), 100, 0))
                 .copyBiomes(false)
                 .copyEntities(false)
                 .build();
@@ -115,6 +117,7 @@ public class PortalBuild implements Listener {
         p.teleport(Config.spawn);
 
         //Cleanup schem area
+        Location location = player.getLocation();
             /*
             try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
                 CuboidRegion region = new CuboidRegion(BlockVector3.at(-10, -64, -10), BlockVector3.at(100, 320, 100));
@@ -123,7 +126,7 @@ public class PortalBuild implements Listener {
                 throw new RuntimeException(ex);
             }
              */
-        Block origin = PortalBuildConfig.portalBuildWorld.getBlockAt(0, 0, 0);
+        Block origin = PortalBuildConfig.portalBuildWorld.getBlockAt(location);
         for (int x = -100; x < 100; x++) {
             for (int y = -64; y < 320; y++) {
                 for (int z = -100; z < 100; z++) {
@@ -142,8 +145,8 @@ public class PortalBuild implements Listener {
 
         //
 
-
         PracticeHubPlayer.linkedPlayers.remove(p);
+        PortalBuildConfig.grid.remove(location);
 
     }
 
