@@ -44,13 +44,13 @@ public class Bridge implements Listener {
         p.setFoodLevel(20);
 
         //Setting up inventory
-        PracticeHubCore.inventories.put(p, p.getInventory().getContents());
+        PracticeHubPlayer player = new PracticeHubPlayer();
+        player.setSavedInventory(p.getInventory().getContents());
         Inventory inv = p.getInventory();
         inv.clear();
         inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
         p.getInventory().setHeldItemSlot(0);
 
-        PracticeHubPlayer player = new PracticeHubPlayer();
         player.setGamemode("Bridge");
         PracticeHubPlayer.linkedPlayers.put(p, player);
 
@@ -111,6 +111,15 @@ public class Bridge implements Listener {
         tasks.put(p, task);
     }
 
+    public static void endBridgeGame(Player p) {
+        p.getInventory().clear();
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        p.getInventory().setContents(player.getSavedInventory());
+        Bridge.tasks.remove(p).cancel();
+        p.sendMessage(Component.text("Ended game!"));
+        p.teleport(Config.spawn);
+        PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
+    }
 
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEvent e) {
@@ -123,7 +132,7 @@ public class Bridge implements Listener {
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
-        if (player.getGamemode().equals("Bridge")) {
+        if (player.getGamemode().equals("Bridged")) {
             PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
             p.teleport(Config.spawn);
         }

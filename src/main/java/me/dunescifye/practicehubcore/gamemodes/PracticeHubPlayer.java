@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class PracticeHubPlayer {
     private String lavaSchem;
     private String gamemode;
     private LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
+    private ItemStack[] savedInventory;
 
     public void setStartTime(Instant startTime) {
         this.startTime = startTime;
@@ -52,6 +54,14 @@ public class PracticeHubPlayer {
 
     public void setGamemode(String gamemode) {
         this.gamemode = gamemode;
+    }
+
+    public ItemStack[] getSavedInventory() {
+        return savedInventory;
+    }
+
+    public void setSavedInventory(ItemStack[] savedInventory) {
+        this.savedInventory = savedInventory;
     }
 
 

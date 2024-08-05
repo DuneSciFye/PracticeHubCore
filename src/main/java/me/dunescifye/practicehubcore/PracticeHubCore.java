@@ -23,7 +23,6 @@ public final class PracticeHubCore extends JavaPlugin {
 
     public static MVWorldManager worldManager;
     private static PracticeHubCore plugin;
-    public static HashMap<Player, ItemStack[]> inventories = new HashMap<>();
 
     @Override
     public void onEnable() {

@@ -16,7 +16,6 @@ import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
-import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;
@@ -46,6 +45,7 @@ import java.util.logging.Logger;
 public class PortalBuild implements Listener {
 
     public static void startPortalBridgeGame(Player p) {
+        PracticeHubPlayer player = new PracticeHubPlayer();
         Plugin plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
 
@@ -81,7 +81,7 @@ public class PortalBuild implements Listener {
         }
 
         //Setting up inventory
-        PracticeHubCore.inventories.put(p, p.getInventory().getContents());
+        player.setSavedInventory(p.getInventory().getContents());
         Inventory inv = p.getInventory();
         inv.clear();
         inv.setItem(0, new ItemStack(Material.COBBLESTONE, 64));
@@ -94,8 +94,7 @@ public class PortalBuild implements Listener {
         p.teleport(teleportLoc.get(ThreadLocalRandom.current().nextInt(teleportLoc.size())));
 
         //Other
-        PracticeHubCore.gamemode.put(p, "PortalBuild");
-        PracticeHubPlayer player = new PracticeHubPlayer();
+        player.setGamemode("PortalBuild");
         player.setLavaSchem(fileName);
         player.setStartTime(Instant.now());
         PracticeHubPlayer.linkedPlayers.put(p, player);
@@ -103,9 +102,10 @@ public class PortalBuild implements Listener {
     }
 
     public static void endPortalBuildGame(Player p) {
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         p.sendMessage("You win!");
         p.getInventory().clear();
-        p.getInventory().setContents(PracticeHubCore.inventories.get(p));
+        p.getInventory().setContents(player.getSavedInventory());
         p.teleport(Config.spawn);
 
         //Cleanup schem area
@@ -128,7 +128,6 @@ public class PortalBuild implements Listener {
         }
 
         //Get times
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         LinkedList<TimedBlock> blocks = player.getPlacedBlocks();
 
         p.sendMessage(Component.text("Total time of " + Utils.getFormattedTime(Duration.between(player.getStartTime(), Instant.now()))));
@@ -150,7 +149,8 @@ public class PortalBuild implements Listener {
     public void onPortalCreateEvent(PortalCreateEvent e) {
         if (e.getReason() != PortalCreateEvent.CreateReason.FIRE) return;
         if (e.getEntity() instanceof Player p) {
-            if (!PracticeHubCore.gamemode.remove(p).equals("PortalBuild")) return;
+            PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+            if (!player.getGamemode().equals("PortalBuild")) return;
             e.setCancelled(true);
             endPortalBuildGame(p);
 
