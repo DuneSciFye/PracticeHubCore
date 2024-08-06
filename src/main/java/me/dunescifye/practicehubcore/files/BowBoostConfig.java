@@ -25,6 +25,14 @@ public class BowBoostConfig {
             } else {
                 BowBoost.bowBoostCopyWorld = worldName;
             }
+            //100m Copy World
+            worldName = config.getString("100mCopyWorld");
+            world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                logger.severe("World \"" + worldName + "\" not found! 100m Bridge gamemode disabled until fixed.");
+            } else {
+                BowBoost.bowBoost100mCopyWorld = worldName;
+            }
 
             //Hit Message
             BowBoost.hitMessage = config.getString("Messages.HitMessage");
