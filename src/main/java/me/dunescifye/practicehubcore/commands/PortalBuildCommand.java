@@ -3,7 +3,7 @@ package me.dunescifye.practicehubcore.commands;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
-import me.dunescifye.practicehubcore.gamemodes.portalbuild.PortalBuild;
+import me.dunescifye.practicehubcore.gamemodes.PortalBuild;
 import net.kyori.adventure.text.Component;
 
 public class PortalBuildCommand {

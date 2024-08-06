@@ -1,8 +1,7 @@
-package me.dunescifye.practicehubcore.gamemodes.bowboost;
+package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
-import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -22,7 +21,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class BowBoost implements Listener {
 

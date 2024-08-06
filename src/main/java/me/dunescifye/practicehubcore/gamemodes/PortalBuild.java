@@ -1,4 +1,4 @@
-package me.dunescifye.practicehubcore.gamemodes.portalbuild;
+package me.dunescifye.practicehubcore.gamemodes;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -15,7 +15,6 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
-import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;

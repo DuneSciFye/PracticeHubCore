@@ -2,7 +2,7 @@ package me.dunescifye.practicehubcore.files;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.gamemodes.bowboost.BowBoost;
+import me.dunescifye.practicehubcore.gamemodes.BowBoost;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

@@ -5,7 +5,7 @@ import dev.jorel.commandapi.arguments.LiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
-import me.dunescifye.practicehubcore.gamemodes.bridge.Bridge;
+import me.dunescifye.practicehubcore.gamemodes.Bridge;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 

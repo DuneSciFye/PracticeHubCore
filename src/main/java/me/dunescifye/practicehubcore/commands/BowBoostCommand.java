@@ -2,11 +2,9 @@ package me.dunescifye.practicehubcore.commands;
 
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
-import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
-import me.dunescifye.practicehubcore.gamemodes.bowboost.BowBoost;
+import me.dunescifye.practicehubcore.gamemodes.BowBoost;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 
 public class BowBoostCommand {
     public static void register() {
