@@ -14,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,7 +29,7 @@ public class BowBoost implements Listener {
     public static int startTime100m = 5;
 
     public static void startBowBoostGame(Player p, String minigame) {
-        PracticeHubPlayer player = new PracticeHubPlayer();
+        PracticeHubPlayer player = new PracticeHubPlayer(p);
 
         //Setting up world
         World world;
@@ -83,17 +82,14 @@ public class BowBoost implements Listener {
         p.teleport(teleportLocation);
 
         //Setting up inventory
-        player.setSavedInventory(p.getInventory().getContents());
-        Inventory inv = p.getInventory();
-        inv.clear();
         ItemStack bow = new ItemStack(Material.BOW);
         bow.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
         ItemMeta meta = bow.getItemMeta();
         meta.setUnbreakable(true);
         bow.setItemMeta(meta);
-        inv.setItem(0, bow);
-        inv.setItem(1, new ItemStack(Material.ARROW));
+        player.saveInventory(bow,
+            new ItemStack(Material.ARROW));
 
         //Everything works
         player.setGamemode("BowBoost");

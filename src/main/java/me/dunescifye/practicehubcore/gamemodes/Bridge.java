@@ -43,12 +43,8 @@ public class Bridge implements Listener {
         p.setFoodLevel(20);
 
         //Setting up inventory
-        PracticeHubPlayer player = new PracticeHubPlayer();
-        player.setSavedInventory(p.getInventory().getContents());
-        Inventory inv = p.getInventory();
-        inv.clear();
-        inv.setItem(0, new ItemStack(Material.OAK_LOG, 64));
-        p.getInventory().setHeldItemSlot(0);
+        PracticeHubPlayer player = new PracticeHubPlayer(p);
+        player.saveInventory(new ItemStack(Material.OAK_LOG, 64));
 
         player.setGamemode("Bridge");
         PracticeHubPlayer.linkedPlayers.put(p, player);

@@ -26,7 +26,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.PortalCreateEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -44,7 +43,7 @@ import java.util.logging.Logger;
 public class PortalBuild implements Listener {
 
     public static void startPortalBridgeGame(Player p) {
-        PracticeHubPlayer player = new PracticeHubPlayer();
+        PracticeHubPlayer player = new PracticeHubPlayer(p);
         Plugin plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
 
@@ -88,13 +87,10 @@ public class PortalBuild implements Listener {
         }
 
         //Setting up inventory
-        player.setSavedInventory(p.getInventory().getContents());
-        Inventory inv = p.getInventory();
-        inv.clear();
-        inv.setItem(0, new ItemStack(Material.COBBLESTONE, 64));
-        inv.setItem(1, new ItemStack(Material.WATER_BUCKET));
-        inv.setItem(2, new ItemStack(Material.IRON_PICKAXE));
-        inv.setItem(3, new ItemStack(Material.FLINT_AND_STEEL));
+        player.saveInventory(new ItemStack(Material.COBBLESTONE, 64),
+            new ItemStack(Material.WATER_BUCKET),
+            new ItemStack(Material.IRON_PICKAXE),
+            new ItemStack(Material.FLINT_AND_STEEL));
 
         //Teleport Player
         List<Location> teleportLoc = PortalBuildConfig.lavaPools.get(fileName);

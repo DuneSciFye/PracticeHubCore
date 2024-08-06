@@ -4,6 +4,7 @@ import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.time.Instant;
@@ -14,6 +15,7 @@ public class PracticeHubPlayer {
 
     public static HashMap<Player, PracticeHubPlayer> linkedPlayers = new HashMap<>();
 
+    private Player player;
     private Instant startTime;
     private Instant finishTime;
     private String lavaSchem;
@@ -25,6 +27,10 @@ public class PracticeHubPlayer {
     private int hitArrows = 0;
     private World world;
     private String worldName;
+
+    public PracticeHubPlayer(Player player) {
+        this.player = player;
+    }
 
     public String getWorldName() {
         return worldName;
@@ -109,6 +115,16 @@ public class PracticeHubPlayer {
 
     public void setSavedInventory(ItemStack[] savedInventory) {
         this.savedInventory = savedInventory;
+    }
+
+    public void saveInventory(ItemStack... items) {
+        Inventory inventory = player.getInventory();
+        savedInventory = inventory.getContents();
+        inventory.clear();
+        for (ItemStack item : items) {
+            inventory.addItem(item);
+        }
+
     }
 
 
