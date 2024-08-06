@@ -25,6 +25,9 @@ public class BowBoostConfig {
             } else {
                 BowBoost.bowBoostCopyWorld = worldName;
             }
+
+            //Hit Message
+            BowBoost.hitMessage = config.getString("Messages.HitMessage");
         } catch (
             IOException e) {
             logger.severe("Failed to load file gamemodes/BowBoost.yml");

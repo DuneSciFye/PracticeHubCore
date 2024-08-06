@@ -39,13 +39,24 @@ public class Placeholders extends PlaceholderExpansion {
                 return String.valueOf(ClicksPerSecond.rightClicksPerSecond.get(p).size());
             }
             case "lavaSchem" -> {
-                return PracticeHubPlayer.linkedPlayers.get(p).getLavaSchem();
+                PracticeHubPlayer practiceHubPlayer = PracticeHubPlayer.linkedPlayers.get(p);
+                if (practiceHubPlayer == null) return "Not in game.";
+                return practiceHubPlayer.getLavaSchem();
             }
             case "hitArrows" -> {
-                return String.valueOf(PracticeHubPlayer.linkedPlayers.get(p).getHitArrows());
+                PracticeHubPlayer practiceHubPlayer = PracticeHubPlayer.linkedPlayers.get(p);
+                if (practiceHubPlayer == null) return "Not in game.";
+                return String.valueOf(practiceHubPlayer.getHitArrows());
             }
             case "launchedArrows" -> {
-                return String.valueOf(PracticeHubPlayer.linkedPlayers.get(p).getLaunchedArrows());
+                PracticeHubPlayer practiceHubPlayer = PracticeHubPlayer.linkedPlayers.get(p);
+                if (practiceHubPlayer == null) return "Not in game.";
+                return String.valueOf(practiceHubPlayer.getLaunchedArrows());
+            }
+            case "gamemode" -> {
+                PracticeHubPlayer practiceHubPlayer = PracticeHubPlayer.linkedPlayers.get(p);
+                if (practiceHubPlayer == null) return "Not in game.";
+                return practiceHubPlayer.getGamemode();
             }
 
         }
