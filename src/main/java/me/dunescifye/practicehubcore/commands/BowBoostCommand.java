@@ -19,8 +19,30 @@ public class BowBoostCommand {
                         return;
                     }
 
-                    BowBoost.startBowBoostGame(p);
+                    BowBoost.startBowBoostGame(p, "practice");
                 })
+                .then(new LiteralArgument("practice")
+                    .executesPlayer((p, args) -> {
+                        //Bow Boost is disabled
+                        if (BowBoost.bowBoostCopyWorld == null) {
+                            p.sendMessage(Component.text("Bow Boost is disabled!"));
+                            return;
+                        }
+
+                        BowBoost.startBowBoostGame(p, "practice");
+                    })
+                )
+                .then(new LiteralArgument("100m")
+                    .executesPlayer((p, args) -> {
+                        //Bow Boost is disabled
+                        if (BowBoost.bowBoost100mCopyWorld == null) {
+                            p.sendMessage(Component.text("100m Bow Boost is disabled!"));
+                            return;
+                        }
+
+                        BowBoost.startBowBoostGame(p, "100m");
+                    })
+                )
             )
             .then(new LiteralArgument("end")
                 .executesPlayer((p, args) -> {

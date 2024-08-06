@@ -3,7 +3,6 @@ package me.dunescifye.practicehubcore.gamemodes.bowboost;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
-import me.dunescifye.practicehubcore.gamemodes.bridge.Bridge;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
@@ -14,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -22,23 +20,35 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class BowBoost implements Listener {
 
     public static String bowBoostCopyWorld = null;
+    public static String bowBoost100mCopyWorld = null;
     public static String hitMessage = "&fHit!";
 
-    public static void startBowBoostGame(Player p) {
+    public static void startBowBoostGame(Player p, String minigame) {
         PracticeHubPlayer player = new PracticeHubPlayer();
 
         //Setting up world
-        PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
-
-        //Teleport player
-        World world = Bukkit.getWorld("bowBoost" + p.getName());
+        Location teleportLocation;
+        World world = null;
+        switch (minigame) {
+            case "practice" -> {
+                PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
+                world = Bukkit.getWorld("bowBoost" + p.getName());
+                teleportLocation = new Location(world, 0, -60, 0);
+            }
+            case "100m" -> {
+                PracticeHubCore.worldManager.cloneWorld(bowBoost100mCopyWorld, "bowBoost100m" + p.getName());
+                world = Bukkit.getWorld("bowBoost100m" + p.getName());
+                teleportLocation = new Location(world, 0, 100, 0);
+                start100mGame(p);
+            }
+        }
         if (world == null) {
             p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
             return;
         }
-        p.teleport(new Location(world, 0, -60, 0));
         p.setGameMode(GameMode.SURVIVAL);
         p.setFoodLevel(20);
+        p.teleport(teleportLocation);
 
         //Setting up inventory
         player.setSavedInventory(p.getInventory().getContents());
@@ -67,6 +77,10 @@ public class BowBoost implements Listener {
         p.sendMessage(Component.text("Ended game!"));
         p.teleport(Config.spawn);
         PracticeHubCore.worldManager.deleteWorld("bowBoost" + p.getName());
+    }
+
+    private static void start100mGame(Player p) {
+
     }
 
     public void registerEvents(PracticeHubCore plugin) {
