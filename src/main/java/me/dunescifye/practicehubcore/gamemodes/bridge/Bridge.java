@@ -132,7 +132,7 @@ public class Bridge implements Listener {
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
-        if (player.getGamemode().equals("Bridged")) {
+        if (player.getGamemode().equals("Bridge")) {
             PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
             p.teleport(Config.spawn);
         }

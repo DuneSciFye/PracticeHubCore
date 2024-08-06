@@ -6,6 +6,7 @@ import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -16,6 +17,9 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BowBoost implements Listener {
 
@@ -28,18 +32,40 @@ public class BowBoost implements Listener {
 
         //Setting up world
         Location teleportLocation;
-        World world = null;
+        World world;
         switch (minigame) {
-            case "practice" -> {
-                PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
-                world = Bukkit.getWorld("bowBoost" + p.getName());
-                teleportLocation = new Location(world, 0, -60, 0);
-            }
             case "100m" -> {
                 PracticeHubCore.worldManager.cloneWorld(bowBoost100mCopyWorld, "bowBoost100m" + p.getName());
                 world = Bukkit.getWorld("bowBoost100m" + p.getName());
                 teleportLocation = new Location(world, 0, 100, 0);
-                start100mGame(p);
+                new BukkitRunnable() {
+                    int seconds = 3;
+
+                    @Override
+                    public void run() {
+                        if (seconds < 1) {
+                            cancel();
+                            //Remove glass
+                            for (int x = -5; x < 7; x++) {
+                                for (int y = 100; y < 129; y++) {
+                                    Block block = world.getBlockAt(x, y, 3);
+                                    block.setType(Material.AIR);
+                                }
+                            }
+                            check100mWin(p);
+                            return;
+                        }
+
+                        p.sendMessage(Component.text("Starting in " + seconds + "..."));
+
+                        seconds--;
+                    }
+                }.runTaskTimer(PracticeHubCore.getPlugin(), 20L, 20L);
+            }
+            default -> {
+                PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
+                world = Bukkit.getWorld("bowBoost" + p.getName());
+                teleportLocation = new Location(world, 0, -60, 0);
             }
         }
         if (world == null) {
@@ -79,8 +105,17 @@ public class BowBoost implements Listener {
         PracticeHubCore.worldManager.deleteWorld("bowBoost" + p.getName());
     }
 
-    private static void start100mGame(Player p) {
-
+    private static void check100mWin(Player p) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (p.getZ() > 102) {
+                    cancel();
+                    p.sendMessage(Component.text("You win!"));
+                    endBowBridgeGame(p);
+                }
+            }
+        }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 1L);
     }
 
     public void registerEvents(PracticeHubCore plugin) {
@@ -94,6 +129,7 @@ public class BowBoost implements Listener {
         if (player == null || !player.getGamemode().equals("BowBoost")) return;
 
         player.hitArrow();
+        arrow.remove();
         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(hitMessage));
     }
 
