@@ -29,6 +29,7 @@ public class BowBoost implements Listener {
     public static String bowBoostCopyWorld = null;
     public static String bowBoost100mCopyWorld = null;
     public static String hitMessage = "&fHit!";
+    public static int startTime100m = 5;
 
     public static void startBowBoostGame(Player p, String minigame) {
         PracticeHubPlayer player = new PracticeHubPlayer();
@@ -48,7 +49,7 @@ public class BowBoost implements Listener {
                 }
                 teleportLocation = new Location(player.getWorld(), 0, 100, 0);
                 new BukkitRunnable() {
-                    int seconds = 5;
+                    int seconds = startTime100m;
 
                     @Override
                     public void run() {

@@ -36,6 +36,8 @@ public class BowBoostConfig {
 
             //Hit Message
             BowBoost.hitMessage = config.getString("Messages.HitMessage");
+            //Start time 100m
+            BowBoost.startTime100m = config.getInt("100mStartTime");
         } catch (
             IOException e) {
             logger.severe("Failed to load file gamemodes/BowBoost.yml");
