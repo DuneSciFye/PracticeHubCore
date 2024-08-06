@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,6 +23,24 @@ public class PracticeHubPlayer {
     private Location location;
     private int launchedArrows = 0;
     private int hitArrows = 0;
+    private World world;
+    private String worldName;
+
+    public String getWorldName() {
+        return worldName;
+    }
+
+    public void setWorldName(String worldName) {
+        this.worldName = worldName;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
 
     public int getLaunchedArrows() {
         return launchedArrows;
@@ -91,6 +110,7 @@ public class PracticeHubPlayer {
     public void setSavedInventory(ItemStack[] savedInventory) {
         this.savedInventory = savedInventory;
     }
+
 
 
 }

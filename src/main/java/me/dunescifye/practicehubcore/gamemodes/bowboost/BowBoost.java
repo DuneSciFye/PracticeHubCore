@@ -3,6 +3,7 @@ package me.dunescifye.practicehubcore.gamemodes.bowboost;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
+import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
@@ -19,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BowBoost implements Listener {
@@ -31,15 +34,21 @@ public class BowBoost implements Listener {
         PracticeHubPlayer player = new PracticeHubPlayer();
 
         //Setting up world
-        Location teleportLocation;
         World world;
+        Location teleportLocation;
         switch (minigame) {
             case "100m" -> {
                 PracticeHubCore.worldManager.cloneWorld(bowBoost100mCopyWorld, "bowBoost100m" + p.getName());
+                player.setWorldName("bowBoost100m" + p.getName());
                 world = Bukkit.getWorld("bowBoost100m" + p.getName());
-                teleportLocation = new Location(world, 0, 100, 0);
+                player.setWorld(world);
+                if (world == null) {
+                    p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
+                    return;
+                }
+                teleportLocation = new Location(player.getWorld(), 0, 100, 0);
                 new BukkitRunnable() {
-                    int seconds = 3;
+                    int seconds = 5;
 
                     @Override
                     public void run() {
@@ -52,7 +61,8 @@ public class BowBoost implements Listener {
                                     block.setType(Material.AIR);
                                 }
                             }
-                            check100mWin(p);
+                            p.sendMessage(Component.text("GO!"));
+                            check100mWin(p, Instant.now());
                             return;
                         }
 
@@ -64,13 +74,10 @@ public class BowBoost implements Listener {
             }
             default -> {
                 PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
+                player.setWorldName("bowBoost" + p.getName());
                 world = Bukkit.getWorld("bowBoost" + p.getName());
                 teleportLocation = new Location(world, 0, -60, 0);
             }
-        }
-        if (world == null) {
-            p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
-            return;
         }
         p.setGameMode(GameMode.SURVIVAL);
         p.setFoodLevel(20);
@@ -90,7 +97,6 @@ public class BowBoost implements Listener {
         inv.setItem(1, new ItemStack(Material.ARROW));
 
         //Everything works
-        p.sendMessage(Component.text("Starting!"));
         player.setGamemode("BowBoost");
         PracticeHubPlayer.linkedPlayers.put(p, player);
 
@@ -102,10 +108,10 @@ public class BowBoost implements Listener {
         p.getInventory().setContents(player.getSavedInventory());
         p.sendMessage(Component.text("Ended game!"));
         p.teleport(Config.spawn);
-        PracticeHubCore.worldManager.deleteWorld("bowBoost" + p.getName());
+        PracticeHubCore.worldManager.deleteWorld(player.getWorldName());
     }
 
-    private static void check100mWin(Player p) {
+    private static void check100mWin(Player p, Instant startTime) {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -113,6 +119,8 @@ public class BowBoost implements Listener {
                     cancel();
                     p.sendMessage(Component.text("You win!"));
                     endBowBridgeGame(p);
+                    p.sendMessage("Time: " + Utils.getFormattedTime(Duration.between(startTime, Instant.now())));
+                    PracticeHubPlayer.linkedPlayers.remove(p);
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 1L);
