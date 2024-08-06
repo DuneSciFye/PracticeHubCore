@@ -20,6 +20,24 @@ public class PracticeHubPlayer {
     private LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
     private ItemStack[] savedInventory;
     private Location location;
+    private int launchedArrows = 0;
+    private int hitArrows = 0;
+
+    public int getLaunchedArrows() {
+        return launchedArrows;
+    }
+
+    public int getHitArrows() {
+        return hitArrows;
+    }
+
+    public void launchArrow() {
+        launchedArrows++;
+    }
+
+    public void hitArrow() {
+        hitArrows++;
+    }
 
     public Location getLocation() {
         return location;

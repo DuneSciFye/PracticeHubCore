@@ -41,6 +41,12 @@ public class Placeholders extends PlaceholderExpansion {
             case "lavaSchem" -> {
                 return PracticeHubPlayer.linkedPlayers.get(p).getLavaSchem();
             }
+            case "hitArrows" -> {
+                return String.valueOf(PracticeHubPlayer.linkedPlayers.get(p).getHitArrows());
+            }
+            case "launchedArrows" -> {
+                return String.valueOf(PracticeHubPlayer.linkedPlayers.get(p).getLaunchedArrows());
+            }
 
         }
         return null;

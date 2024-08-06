@@ -6,11 +6,15 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class BowBoost {
+public class BowBoost implements Listener {
 
     public static String bowBoostCopyWorld = null;
 
@@ -45,6 +49,25 @@ public class BowBoost {
         p.sendMessage(Component.text("Starting!"));
         player.setGamemode("BowBoost");
 
+    }
+
+    @EventHandler
+    public void onArrowHit(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player p)) return;
+        if (p != e.getEntity()) return;
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (!player.getGamemode().equals("BowBoost")) return;
+
+        player.hitArrow();
+    }
+
+    @EventHandler
+    public void onArrowLaunch(ProjectileLaunchEvent e) {
+        if (!(e.getEntity().getShooter() instanceof Player p)) return;
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (!player.getGamemode().equals("BowBoost")) return;
+
+        player.launchArrow();
     }
 
 }
