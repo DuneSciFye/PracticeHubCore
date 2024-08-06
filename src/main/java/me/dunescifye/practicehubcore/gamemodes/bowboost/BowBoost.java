@@ -119,9 +119,9 @@ public class BowBoost implements Listener {
                 if (p.getZ() > 102) {
                     cancel();
                     p.sendMessage(Component.text("You win!"));
-                    endBowBridgeGame(p);
                     p.sendMessage("Time: " + Utils.getFormattedTime(Duration.between(startTime, Instant.now())));
                     PracticeHubPlayer.linkedPlayers.remove(p);
+                    Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> endBowBridgeGame(p), 40L);
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 1L);
