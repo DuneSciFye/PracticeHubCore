@@ -7,16 +7,14 @@ import me.dunescifye.practicehubcore.files.BowBoostConfig;
 import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
+import me.dunescifye.practicehubcore.gamemodes.bowboost.BowBoost;
 import me.dunescifye.practicehubcore.gamemodes.portalbuild.PortalBuild;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 public final class PracticeHubCore extends JavaPlugin {
@@ -69,6 +67,7 @@ public final class PracticeHubCore extends JavaPlugin {
     private void setupListeners() {
         new BlockPlaceListener().playerBlockPlaceHandler(this);
         new PortalBuild().portalCreateHandler(this);
+        new BowBoost().registerEvents(this);
     }
 
     private void setupFiles() {
