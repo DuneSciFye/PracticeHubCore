@@ -3,10 +3,7 @@ package me.dunescifye.practicehubcore;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import me.dunescifye.practicehubcore.commands.*;
-import me.dunescifye.practicehubcore.files.BowBoostConfig;
-import me.dunescifye.practicehubcore.files.BridgeConfig;
-import me.dunescifye.practicehubcore.files.Config;
-import me.dunescifye.practicehubcore.files.PortalBuildConfig;
+import me.dunescifye.practicehubcore.files.*;
 import me.dunescifye.practicehubcore.gamemodes.BowBoost;
 import me.dunescifye.practicehubcore.gamemodes.PortalBuild;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
@@ -62,6 +59,7 @@ public final class PracticeHubCore extends JavaPlugin {
         BridgeCommand.register();
         PortalBuildCommand.register();
         BowBoostCommand.register();
+        BowAimCommand.register();
     }
 
     private void setupListeners() {
@@ -75,6 +73,7 @@ public final class PracticeHubCore extends JavaPlugin {
         BridgeConfig.setup();
         PortalBuildConfig.setup();
         BowBoostConfig.setup();
+        BowAimConfig.setup();
     }
 
     @Override
