@@ -157,7 +157,7 @@ public class BowAim implements Listener {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null || !player.getGamemode().equals("BowAim")) return;
 
-        player.launchArrow();
+        player.increaseTotal();
     }
 
     @EventHandler
@@ -169,7 +169,7 @@ public class BowAim implements Listener {
         Material type = b.getType();
         for (Material material : player.getBowAim().blocks) {
             if (material.equals(type)) {
-                player.hitArrow();
+                player.increaseSuccesses();
                 p.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 b.setType(Material.AIR);
                 player.getBowAim().spawnRandomBlocks(1);

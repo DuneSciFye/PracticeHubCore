@@ -131,7 +131,7 @@ public class BowBoost implements Listener {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null || !player.getGamemode().equals("BowBoost")) return;
 
-        player.hitArrow();
+        player.increaseSuccesses();
         arrow.remove();
         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(hitMessage));
     }
@@ -142,7 +142,7 @@ public class BowBoost implements Listener {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null || !player.getGamemode().equals("BowBoost")) return;
 
-        player.launchArrow();
+        player.increaseTotal();
         p.sendMessage("Your pitch was " + p.getPitch());
         p.sendMessage("Your bow force was " + e.getForce());
 

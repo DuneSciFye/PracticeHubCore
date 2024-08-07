@@ -45,12 +45,12 @@ public class Placeholders extends PlaceholderExpansion {
             case "hitArrows" -> {
                 PracticeHubPlayer practiceHubPlayer = PracticeHubPlayer.linkedPlayers.get(p);
                 if (practiceHubPlayer == null) return "Not in game.";
-                return String.valueOf(practiceHubPlayer.getHitArrows());
+                return String.valueOf(practiceHubPlayer.getSuccesses());
             }
             case "launchedArrows" -> {
                 PracticeHubPlayer practiceHubPlayer = PracticeHubPlayer.linkedPlayers.get(p);
                 if (practiceHubPlayer == null) return "Not in game.";
-                return String.valueOf(practiceHubPlayer.getLaunchedArrows());
+                return String.valueOf(practiceHubPlayer.getTotal());
             }
             case "gamemode" -> {
                 PracticeHubPlayer practiceHubPlayer = PracticeHubPlayer.linkedPlayers.get(p);

@@ -23,11 +23,12 @@ public class PracticeHubPlayer {
     private LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
     private ItemStack[] savedInventory;
     private Location location;
-    private int launchedArrows = 0;
-    private int hitArrows = 0;
+    private int total = 0;
+    private int successes = 0;
     private World world;
     private String worldName;
     private BowAim bowAim;
+    private ItemStack item;
 
     public PracticeHubPlayer(Player player) {
         this.player = player;
@@ -49,20 +50,20 @@ public class PracticeHubPlayer {
         this.world = world;
     }
 
-    public int getLaunchedArrows() {
-        return launchedArrows;
+    public int getTotal() {
+        return total;
     }
 
-    public int getHitArrows() {
-        return hitArrows;
+    public int getSuccesses() {
+        return successes;
     }
 
-    public void launchArrow() {
-        launchedArrows++;
+    public void increaseTotal() {
+        total++;
     }
 
-    public void hitArrow() {
-        hitArrows++;
+    public void increaseSuccesses() {
+        successes++;
     }
 
     public Location getLocation() {
@@ -139,5 +140,13 @@ public class PracticeHubPlayer {
 
     public void setBowAim(BowAim bowAim) {
         this.bowAim = bowAim;
+    }
+
+    public ItemStack getItem() {
+        return item;
+    }
+
+    public void setItem(ItemStack item) {
+        this.item = item;
     }
 }

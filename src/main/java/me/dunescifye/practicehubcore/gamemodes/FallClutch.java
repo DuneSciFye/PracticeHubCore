@@ -1,6 +1,7 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.files.Config;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,10 +28,11 @@ public class FallClutch implements Listener {
         while (grid.contains(spawnLocation)) {
             spawnLocation.add(gridSpacing, 0, 0);
         }
+        player.setLocation(spawnLocation);
 
         //Give item
         player.saveInventory(item);
-
+        player.setItem(item);
         p.teleport(spawnLocation);
 
         //Check for win
@@ -44,13 +46,22 @@ public class FallClutch implements Listener {
                 if (confirm > 20) {
                     cancel();
                     p.sendMessage(Component.text("You win!"));
-                    player.retrieveInventory();
+                    spawnLocation.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
+                    p.teleport(spawnLocation);
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 2L);
 
         player.setGamemode("FallClutch");
         PracticeHubPlayer.linkedPlayers.put(p, player);
+    }
+
+    public static void endGame(Player p) {
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (player == null || !Objects.equals(player.getGamemode(), "FallClutch")) return;
+
+        player.retrieveInventory();
+        p.teleport(Config.spawn);
     }
 
     @EventHandler
@@ -62,6 +73,10 @@ public class FallClutch implements Listener {
 
         e.setCancelled(true);
         p.sendMessage("Failed!");
+        player.getLocation().setY(ThreadLocalRandom.current().nextDouble(-30, 250));
+        p.getInventory().clear();
+        p.getInventory().addItem(player.getItem());
+        p.teleport(player.getLocation());
     }
 
 }
