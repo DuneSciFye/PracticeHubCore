@@ -6,11 +6,13 @@ import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.gamemodes.BowAim;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -55,16 +57,30 @@ public class BowAimConfig {
                             playerSpawnLocations.add(loc);
                         }
                         List<int[]> blockSpawnLocations = new ArrayList<>();
-                        for (String location : keySection.getStringList("blockSpawnLocations")) {
-                            int[] coords = location.split(" ");
+                        blockLocation: for (String location : keySection.getStringList("blockSpawnLocations")) {
+                            String[] coords = location.split(" ");
                             if (coords.length != 6) {
-                                logger.warning("Block Spawn location " + file + " for Bow Aim gamemode is missing coordinates! Current: " + location);
+                                logger.warning("Block Spawn location " + file + " for Bow Aim gamemode has incorrect number of coordinates! Current: " + location);
                                 continue;
                             }
-
-                            blockSpawnLocations.add(coords);
+                            for (String coord : coords) {
+                                if (!coord.matches("-?\\d+(\\.\\d+)?")) {
+                                    logger.warning("Block Spawn location " + file + " for Bow Aim gamemode doesn't have integers! Current: " + location);
+                                    continue blockLocation;
+                                }
+                            }
+                            blockSpawnLocations.add(Arrays.stream(coords).mapToInt(Integer::parseInt).toArray());
                         }
-                        BowAim bowAim = new BowAim(playerSpawnLocations, blockSpawnLocations);
+                        //Get Number of Blocks
+                        int numberOfBlocks = keySection.getInt("NumberOfBlocks");
+                        //Get block materials
+                        List<Material> blocks = new ArrayList<>();
+                        for (String matName : keySection.getStringList("BlockMaterials")) {
+                            Material material = Material.valueOf(matName);
+                            if (material != null) blocks.add(material);
+                        }
+                        BowAim bowAim = new BowAim(playerSpawnLocations, blockSpawnLocations, numberOfBlocks, blocks);
+                        BowAim.bowAims.add(bowAim);
                     }
                 }
             }

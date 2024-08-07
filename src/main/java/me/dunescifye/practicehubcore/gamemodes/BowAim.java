@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
@@ -37,18 +36,15 @@ public class BowAim {
     private List<Location> playerSpawnLocations;
     private List<int[]> blockSpawnLocations;
     private int numberOfBlocks = 3;
+    private List<Material> blocks;
     public static ArrayList<Location> grid = new ArrayList<>();
     public static int gridSpacing;
     public static ArrayList<BowAim> bowAims = new ArrayList<>();
-
-    public BowAim(List<Location> playerSpawnLocations, List<int[]> blockSpawnLocations) {
-        this.playerSpawnLocations = playerSpawnLocations;
-        this.blockSpawnLocations = blockSpawnLocations;
-    }
-    public BowAim(List<Location> playerSpawnLocations, List<int[]> blockSpawnLocations, int numberOfBlocks) {
+    public BowAim(List<Location> playerSpawnLocations, List<int[]> blockSpawnLocations, int numberOfBlocks, List<Material> blocks) {
         this.playerSpawnLocations = playerSpawnLocations;
         this.blockSpawnLocations = blockSpawnLocations;
         this.numberOfBlocks = numberOfBlocks;
+        this.blocks = blocks;
     }
 
     public static void startBowAimGame(Player p) {
@@ -66,6 +62,8 @@ public class BowAim {
         grid.add(location);
 
         //Paste schematic
+        //Get random map
+        BowAim bowAim = bowAims.get(ThreadLocalRandom.current().nextInt(bowAims.size()));
         List<String> schematics = new ArrayList<>(playerSpawnLocations.keySet());
         String fileName = schematics.get(ThreadLocalRandom.current().nextInt(schematics.size()));
         Clipboard clipboard;
