@@ -4,9 +4,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import me.dunescifye.practicehubcore.commands.*;
 import me.dunescifye.practicehubcore.files.*;
-import me.dunescifye.practicehubcore.gamemodes.BowAim;
-import me.dunescifye.practicehubcore.gamemodes.BowBoost;
-import me.dunescifye.practicehubcore.gamemodes.PortalBuild;
+import me.dunescifye.practicehubcore.gamemodes.*;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
@@ -61,6 +59,7 @@ public final class PracticeHubCore extends JavaPlugin {
         PortalBuildCommand.register();
         BowBoostCommand.register();
         BowAimCommand.register();
+        FallClutchCommand.register();
     }
 
     private void setupListeners() {
@@ -76,6 +75,7 @@ public final class PracticeHubCore extends JavaPlugin {
         PortalBuildConfig.setup();
         BowBoostConfig.setup();
         BowAimConfig.setup();
+        FallClutchConfig.setup();
     }
 
     @Override

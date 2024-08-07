@@ -70,7 +70,7 @@ public class PortalBuildConfig {
 
         } catch (
             IOException e) {
-            logger.severe("Failed to load file gamemodes/PortalBuild.yml");
+            logger.severe("Failed to load file gamemodes/PortalBuild/PortalBuild.yml");
             throw new RuntimeException(e);
         }
 

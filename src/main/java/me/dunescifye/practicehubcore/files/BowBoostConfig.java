@@ -40,7 +40,7 @@ public class BowBoostConfig {
             BowBoost.startTime100m = config.getInt("100mStartTime");
         } catch (
             IOException e) {
-            logger.severe("Failed to load file gamemodes/BowBoost.yml");
+            logger.severe("Failed to load file gamemodes/BowBoost/BowBoost.yml");
             throw new RuntimeException(e);
         }
     }
