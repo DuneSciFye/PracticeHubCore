@@ -13,11 +13,15 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -30,17 +34,23 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
-public class BowAim {
+public class BowAim implements Listener {
 
     public static World world;
-    private List<Location> playerSpawnLocations;
-    private List<int[]> blockSpawnLocations;
+    private List<Location> playerSpawnLocations = new ArrayList<>();
+    private List<int[]> blockSpawnLocations = new ArrayList<>();
     private int numberOfBlocks = 3;
-    private List<Material> blocks;
+    private List<Material> blocks = new ArrayList<>();
+    private String fileName = null;
     public static ArrayList<Location> grid = new ArrayList<>();
     public static int gridSpacing;
     public static ArrayList<BowAim> bowAims = new ArrayList<>();
-    public BowAim(List<Location> playerSpawnLocations, List<int[]> blockSpawnLocations, int numberOfBlocks, List<Material> blocks) {
+
+    public BowAim() {
+    }
+
+    public BowAim(String fileName, List<Location> playerSpawnLocations, List<int[]> blockSpawnLocations, int numberOfBlocks, List<Material> blocks) {
+        this.fileName = fileName;
         this.playerSpawnLocations = playerSpawnLocations;
         this.blockSpawnLocations = blockSpawnLocations;
         this.numberOfBlocks = numberOfBlocks;
@@ -64,14 +74,12 @@ public class BowAim {
         //Paste schematic
         //Get random map
         BowAim bowAim = bowAims.get(ThreadLocalRandom.current().nextInt(bowAims.size()));
-        List<String> schematics = new ArrayList<>(playerSpawnLocations.keySet());
-        String fileName = schematics.get(ThreadLocalRandom.current().nextInt(schematics.size()));
         Clipboard clipboard;
-        File file = new File(plugin.getDataFolder(), "gamemodes/BowAim/Schematics/" + fileName);
+        File file = new File(plugin.getDataFolder(), "gamemodes/BowAim/Schematics/" + bowAim.fileName);
         ClipboardFormat format = ClipboardFormats.findByFile(file);
 
         if (format == null) {
-            logger.severe("Schematic " + fileName + " not found for Bow Aim gamemode.");
+            logger.severe("Schematic " + bowAim.fileName + " not found for Bow Aim gamemode.");
             return;
         }
 
@@ -102,11 +110,19 @@ public class BowAim {
         player.saveInventory(bow,
             new ItemStack(Material.ARROW));
         //Teleport Player
-        List<Location> teleportLoc = playerSpawnLocations.get(fileName);
-        p.teleport(teleportLoc.get(ThreadLocalRandom.current().nextInt(teleportLoc.size())));
+        p.teleport(bowAim.playerSpawnLocations.get(ThreadLocalRandom.current().nextInt(bowAim.playerSpawnLocations.size())));
 
 
         PracticeHubPlayer.linkedPlayers.put(p, player);
+    }
+
+    public void registerEvents(PracticeHubCore plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e) {
+
     }
 
 }

@@ -4,6 +4,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import me.dunescifye.practicehubcore.commands.*;
 import me.dunescifye.practicehubcore.files.*;
+import me.dunescifye.practicehubcore.gamemodes.BowAim;
 import me.dunescifye.practicehubcore.gamemodes.BowBoost;
 import me.dunescifye.practicehubcore.gamemodes.PortalBuild;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
@@ -66,6 +67,7 @@ public final class PracticeHubCore extends JavaPlugin {
         new BlockPlaceListener().playerBlockPlaceHandler(this);
         new PortalBuild().portalCreateHandler(this);
         new BowBoost().registerEvents(this);
+        new BowAim().registerEvents(this);
     }
 
     private void setupFiles() {

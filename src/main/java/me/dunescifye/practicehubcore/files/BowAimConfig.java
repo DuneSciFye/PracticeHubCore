@@ -69,7 +69,13 @@ public class BowAimConfig {
                                     continue blockLocation;
                                 }
                             }
-                            blockSpawnLocations.add(Arrays.stream(coords).mapToInt(Integer::parseInt).toArray());
+                            for (int x = Integer.parseInt(coords[0]); x <= Integer.parseInt(coords[3]); x++) {
+                                for (int y = Integer.parseInt(coords[1]); y <= Integer.parseInt(coords[4]); y++) {
+                                    for (int z = Integer.parseInt(coords[2]); z <= Integer.parseInt(coords[5]); z++) {
+                                        blockSpawnLocations.add(new int[]{x, y, z});
+                                    }
+                                }
+                            }
                         }
                         //Get Number of Blocks
                         int numberOfBlocks = keySection.getInt("NumberOfBlocks");
@@ -79,7 +85,7 @@ public class BowAimConfig {
                             Material material = Material.valueOf(matName);
                             if (material != null) blocks.add(material);
                         }
-                        BowAim bowAim = new BowAim(playerSpawnLocations, blockSpawnLocations, numberOfBlocks, blocks);
+                        BowAim bowAim = new BowAim(file, playerSpawnLocations, blockSpawnLocations, numberOfBlocks, blocks);
                         BowAim.bowAims.add(bowAim);
                     }
                 }
