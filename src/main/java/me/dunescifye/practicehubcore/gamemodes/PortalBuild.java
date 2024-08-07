@@ -101,7 +101,6 @@ public class PortalBuild implements Listener {
         player.setLavaSchem(fileName);
         player.setStartTime(Instant.now());
         PracticeHubPlayer.linkedPlayers.put(p, player);
-
     }
 
     public static void endPortalBuildGame(Player p) {

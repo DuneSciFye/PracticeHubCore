@@ -20,19 +20,43 @@ public class BridgeCommand {
                         p.sendMessage(Component.text("Bridge is disabled!"));
                         return;
                     }
-                    Bridge.startBridgeGame(p);
+                    Bridge.startBridgeGame(p, "practice");
                 })
-                .then(new PlayerArgument("Player")
-                    .executes((sender, args) -> {
-                        if (BridgeConfig.bridgeCopyWorld == null) {
-                            sender.sendMessage(Component.text("Bridge is disabled!"));
-                            return;
-                        }
-                        Player p = args.getUnchecked("Player");
-                        assert p != null;
-                        Bridge.startBridgeGame(p);
+                .then(new LiteralArgument("practice")
+                    .executesPlayer((p, args) -> {
+                        Bridge.startBridgeGame(p, "practice");
                     })
-                    .withPermission("practicehub.command.bridge.other")
+                    .withPermission("practicehub.command.bridge.practice")
+                    .then(new PlayerArgument("Player")
+                        .executes((sender, args) -> {
+                            if (BridgeConfig.bridgeCopyWorld == null) {
+                                sender.sendMessage(Component.text("Bridge is disabled!"));
+                                return;
+                            }
+                            Player p = args.getUnchecked("Player");
+                            assert p != null;
+                            Bridge.startBridgeGame(p, "practice");
+                        })
+                        .withPermission("practicehub.command.bridge.practice.other")
+                    )
+                )
+                .then(new LiteralArgument("100m")
+                    .executesPlayer((p, args) -> {
+                        Bridge.startBridgeGame(p, "100m");
+                    })
+                    .withPermission("practicehub.command.bridge.100m")
+                    .then(new PlayerArgument("Player")
+                        .executes((sender, args) -> {
+                            if (BridgeConfig.bridgeCopyWorld == null) {
+                                sender.sendMessage(Component.text("Bridge is disabled!"));
+                                return;
+                            }
+                            Player p = args.getUnchecked("Player");
+                            assert p != null;
+                            Bridge.startBridgeGame(p, "100m");
+                        })
+                        .withPermission("practicehub.command.bridge.100m.other")
+                    )
                 )
             )
             .then(new LiteralArgument("end")

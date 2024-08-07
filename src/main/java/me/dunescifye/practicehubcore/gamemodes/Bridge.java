@@ -12,7 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -25,7 +24,7 @@ public class Bridge implements Listener {
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static HashMap<Player, Integer> cps = new HashMap<>();
 
-    public static void startBridgeGame(Player p) {
+    public static void startBridgeGame(Player p, String gamemode) {
         p.sendMessage(Component.text("Starting!"));
 
         //Setting up world
@@ -84,7 +83,7 @@ public class Bridge implements Listener {
                             p.sendMessage(Component.text("You travelled at a speed of " + String.format("%.2f", distance / time) + "m/s (" + String.format("%.2f", x / time) + "m/s, " + String.format("%.2f", y / time) + "m/s, " + String.format("%.2f", z / time) + "m/s)"));
 
                             //Times
-                            p.sendMessage(Component.text(Utils.getFormattedTime(duration)));
+                            p.sendMessage(Component.text("You lasted " + Utils.getFormattedTime(duration)));
 
                             //CPS
                             if (time > 1) {
@@ -102,6 +101,26 @@ public class Bridge implements Listener {
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 5L);
+
+
+        switch (gamemode) {
+            case "100m" -> {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (Math.abs(p.getX()) >= 100 || Math.abs(p.getZ()) >= 100) {
+                            cancel();
+                            p.sendMessage("You win!");
+                            //Times
+                            LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p).getPlacedBlocks();
+                            Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
+                            p.sendMessage(Component.text("Time took: " + Utils.getFormattedTime(duration)));
+                            endBridgeGame(p);
+                        }
+                    }
+                }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 1L);
+            }
+        }
 
         tasks.put(p, task);
     }
