@@ -36,12 +36,14 @@ import java.util.logging.Logger;
 
 public class BowAim implements Listener {
 
-    public static World world;
     private List<Location> playerSpawnLocations = new ArrayList<>();
     private List<int[]> blockSpawnLocations = new ArrayList<>();
     private int numberOfBlocks = 3;
     private List<Material> blocks = new ArrayList<>();
     private String fileName = null;
+    private int xOffset = 0;
+
+    public static World world;
     public static ArrayList<Location> grid = new ArrayList<>();
     public static int gridSpacing;
     public static ArrayList<BowAim> bowAims = new ArrayList<>();
@@ -63,6 +65,9 @@ public class BowAim implements Listener {
         PracticeHubPlayer player = new PracticeHubPlayer(p);
 
         //Setting up schematic
+        //Get random map
+        BowAim bowAim = bowAims.get(ThreadLocalRandom.current().nextInt(bowAims.size()));
+
         //Get Location
         Location location = new Location(world, 0, 100, 0);
         while (grid.contains(location)) {
@@ -70,10 +75,9 @@ public class BowAim implements Listener {
         }
         player.setLocation(location);
         grid.add(location);
+        bowAim.xOffset = location.getBlockX();
 
         //Paste schematic
-        //Get random map
-        BowAim bowAim = bowAims.get(ThreadLocalRandom.current().nextInt(bowAims.size()));
         Clipboard clipboard;
         File file = new File(plugin.getDataFolder(), "gamemodes/BowAim/Schematics/" + bowAim.fileName);
         ClipboardFormat format = ClipboardFormats.findByFile(file);
@@ -109,11 +113,26 @@ public class BowAim implements Listener {
         bow.setItemMeta(meta);
         player.saveInventory(bow,
             new ItemStack(Material.ARROW));
-        //Teleport Player
+        //Teleport Player to random location
         p.teleport(bowAim.playerSpawnLocations.get(ThreadLocalRandom.current().nextInt(bowAim.playerSpawnLocations.size())));
 
 
+        //Spawn blocks randomly
+        for (int i = 0; i <= bowAim.numberOfBlocks; i++) {
+            world.setType(bowAim.getRandomBlockLocation(), bowAim.getRandomBlockMaterial());
+        }
+
+        player.setGamemode("BowAim");
         PracticeHubPlayer.linkedPlayers.put(p, player);
+    }
+
+    private Location getRandomBlockLocation() {
+        int[] coords = blockSpawnLocations.get(ThreadLocalRandom.current().nextInt(blockSpawnLocations.size()));
+        return new Location(world, coords[0] + xOffset, coords[1], coords[2]);
+    }
+
+    private Material getRandomBlockMaterial() {
+        return blocks.get(ThreadLocalRandom.current().nextInt(blocks.size()));
     }
 
     public void registerEvents(PracticeHubCore plugin) {
@@ -122,7 +141,10 @@ public class BowAim implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-
+        Player p = e.getPlayer();
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (player == null || !player.getGamemode().equals("BowAim")) return;
+        e.setCancelled(true);
     }
 
 }
