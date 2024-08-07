@@ -13,9 +13,10 @@ import java.util.List;
 
 public class BowAim {
 
-    public static World bowAimWorld;
-    public static HashMap<String, List<Location>> bowAimLocations;
-    public static int bowAimGridSpacing;
+    public static World world;
+    public static HashMap<String, List<Location>> playerSpawnLocations;
+    public static HashMap<String, List<Location>> blockSpawnLocations;
+    public static int gridSpacing;
 
     public static void startBowAimGame(Player p) {
         PracticeHubPlayer player = new PracticeHubPlayer(p);
@@ -27,6 +28,8 @@ public class BowAim {
         bow.setItemMeta(meta);
         player.saveInventory(bow,
             new ItemStack(Material.ARROW));
+
+        //Setting up schematic
 
 
         PracticeHubPlayer.linkedPlayers.put(p, player);
