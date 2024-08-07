@@ -128,6 +128,10 @@ public class PracticeHubPlayer {
 
     }
 
+    public void retrieveInventory() {
+        player.getInventory().clear();
+        player.getInventory().setContents(savedInventory);
+    }
 
     public BowAim getBowAim() {
         return bowAim;

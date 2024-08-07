@@ -13,10 +13,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -129,6 +126,12 @@ public class BowAim implements Listener {
         PracticeHubPlayer.linkedPlayers.put(p, player);
     }
 
+    public static void endBowAimGame(Player p) {
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (player == null || !player.getGamemode().equals("BowAim")) return;
+        player.retrieveInventory();
+    }
+
     public void registerEvents(PracticeHubCore plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -167,7 +170,9 @@ public class BowAim implements Listener {
         for (Material material : player.getBowAim().blocks) {
             if (material.equals(type)) {
                 player.hitArrow();
-
+                p.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                b.setType(Material.AIR);
+                player.getBowAim().spawnRandomBlocks(1);
                 return;
             }
         }

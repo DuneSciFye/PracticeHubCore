@@ -107,8 +107,7 @@ public class PortalBuild implements Listener {
     public static void endPortalBuildGame(Player p) {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         p.sendMessage("You win!");
-        p.getInventory().clear();
-        p.getInventory().setContents(player.getSavedInventory());
+        player.retrieveInventory();
         p.teleport(Config.spawn);
 
         //Cleanup schem area

@@ -13,6 +13,11 @@ public class BowAimCommand {
                     BowAim.startBowAimGame(p);
                 })
             )
+            .then(new LiteralArgument("end")
+                .executesPlayer((p, args) -> {
+                    BowAim.endBowAimGame(p);
+                })
+            )
             .withPermission("commandutils.command.bowaim")
             .register("practicehub");
     }
