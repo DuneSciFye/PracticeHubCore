@@ -38,7 +38,7 @@ public class BowAimConfig {
                     if (key instanceof String keyString) {
                         Section keySection = schematics.getSection(keyString);
                         String file = keySection.getString("file");
-                        List<Location> spawnLocations = new ArrayList<>();
+                        List<Location> playerSpawnLocations = new ArrayList<>();
                         for (String location : keySection.getStringList("playerSpawnLocations")) {
                             String[] coords = location.split(" ", 5);
                             if (coords.length < 3) {
@@ -47,29 +47,24 @@ public class BowAimConfig {
                             }
                             Location loc = new Location(world, Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
                             if (coords.length < 5) {
-                                spawnLocations.add(loc);
+                                playerSpawnLocations.add(loc);
                                 continue;
                             }
                             loc.setYaw(Float.parseFloat(coords[3]));
                             loc.setPitch(Float.parseFloat(coords[3]));
-                            spawnLocations.add(loc);
+                            playerSpawnLocations.add(loc);
                         }
-                        BowAim.playerSpawnLocations.put(file, spawnLocations);
+                        List<int[]> blockSpawnLocations = new ArrayList<>();
                         for (String location : keySection.getStringList("blockSpawnLocations")) {
-                            String[] coords = location.split(" ", 6);
-                            if (coords.length < 6) {
+                            int[] coords = location.split(" ");
+                            if (coords.length != 6) {
                                 logger.warning("Block Spawn location " + file + " for Bow Aim gamemode is missing coordinates! Current: " + location);
                                 continue;
                             }
-                            for (int x = Integer.parseInt(coords[0]); x < Integer.parseInt(coords[3]); x++) {
-                                for (int y = Integer.parseInt(coords[1]); y < Integer.parseInt(coords[4]); y++) {
-                                    for (int z = Integer.parseInt(coords[2]); z < Integer.parseInt(coords[5]); z++) {
-                                        spawnLocations.add(new Location(world, x, y, z));
-                                    }
-                                }
-                            }
+
+                            blockSpawnLocations.add(coords);
                         }
-                        BowAim.blockSpawnLocations.put(file, spawnLocations);
+                        BowAim bowAim = new BowAim(playerSpawnLocations, blockSpawnLocations);
                     }
                 }
             }

@@ -9,3 +9,6 @@ Schematics:
     blockSpawnLocations:
       - 20 110 20 30 120 30
       - 50 120 50 60 130 60
+    NumberOfBlocks: 5
+    BlockMaterials:
+      - TARGET
