@@ -17,10 +17,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
@@ -118,25 +122,22 @@ public class BowAim implements Listener {
 
 
         //Spawn blocks randomly
-        for (int i = 0; i <= bowAim.numberOfBlocks; i++) {
-            world.setType(bowAim.getRandomBlockLocation(), bowAim.getRandomBlockMaterial());
-        }
+        bowAim.spawnRandomBlocks(bowAim.numberOfBlocks);
 
         player.setGamemode("BowAim");
+        player.setBowAim(bowAim);
         PracticeHubPlayer.linkedPlayers.put(p, player);
-    }
-
-    private Location getRandomBlockLocation() {
-        int[] coords = blockSpawnLocations.get(ThreadLocalRandom.current().nextInt(blockSpawnLocations.size()));
-        return new Location(world, coords[0] + xOffset, coords[1], coords[2]);
-    }
-
-    private Material getRandomBlockMaterial() {
-        return blocks.get(ThreadLocalRandom.current().nextInt(blocks.size()));
     }
 
     public void registerEvents(PracticeHubCore plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    private void spawnRandomBlocks(int amount) {
+        for (int i = 0; i <= numberOfBlocks; i++) {
+            int[] coords = blockSpawnLocations.get(ThreadLocalRandom.current().nextInt(blockSpawnLocations.size()));
+            world.setType( new Location(world, coords[0] + xOffset, coords[1], coords[2]), blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
+        }
     }
 
     @EventHandler
@@ -145,6 +146,32 @@ public class BowAim implements Listener {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null || !player.getGamemode().equals("BowAim")) return;
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onArrowLaunch(EntityShootBowEvent e) {
+        if (!(e.getEntity() instanceof Player p)) return;
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (player == null || !player.getGamemode().equals("BowAim")) return;
+
+        player.launchArrow();
+    }
+
+    @EventHandler
+    public void onArrowHit(ProjectileHitEvent e) {
+        Block b = e.getHitBlock();
+        if (b == null || !(e.getEntity().getShooter() instanceof Player p)) return;
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (player == null || !Objects.equals(player.getGamemode(), "BowAim")) return;
+        Material type = b.getType();
+        for (Material material : player.getBowAim().blocks) {
+            if (material.equals(type)) {
+                player.hitArrow();
+
+                return;
+            }
+        }
+
     }
 
 }

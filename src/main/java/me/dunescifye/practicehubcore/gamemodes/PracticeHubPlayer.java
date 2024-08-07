@@ -27,6 +27,7 @@ public class PracticeHubPlayer {
     private int hitArrows = 0;
     private World world;
     private String worldName;
+    private BowAim bowAim;
 
     public PracticeHubPlayer(Player player) {
         this.player = player;
@@ -128,5 +129,11 @@ public class PracticeHubPlayer {
     }
 
 
+    public BowAim getBowAim() {
+        return bowAim;
+    }
 
+    public void setBowAim(BowAim bowAim) {
+        this.bowAim = bowAim;
+    }
 }
