@@ -101,7 +101,7 @@ public class BowAimConfig {
         }
 
         //Create schematic director
-        File schematics = new File(plugin.getDataFolder(), "gamemodes/BowWorld/Schematics");
+        File schematics = new File(plugin.getDataFolder(), "gamemodes/BowAim/Schematics");
         if (!schematics.exists()) {
             schematics.mkdir();
         }

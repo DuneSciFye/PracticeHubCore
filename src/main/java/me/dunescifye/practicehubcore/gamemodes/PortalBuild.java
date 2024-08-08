@@ -119,15 +119,7 @@ public class PortalBuild implements Listener {
                 throw new RuntimeException(ex);
             }
              */
-        Block origin = PortalBuildConfig.portalBuildWorld.getBlockAt(location);
-        for (int x = -100; x < 100; x++) {
-            for (int y = -64; y < 320; y++) {
-                for (int z = -100; z < 100; z++) {
-                    Block relative = origin.getRelative(x, y, z);
-                    relative.setType(Material.AIR);
-                }
-            }
-        }
+        Utils.cleanupArea(location);
 
         //Get times
         LinkedList<TimedBlock> blocks = player.getPlacedBlocks();

@@ -1,5 +1,9 @@
 package me.dunescifye.practicehubcore.utils;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+
 import java.time.Duration;
 
 public class Utils {
@@ -14,6 +18,16 @@ public class Utils {
                 + duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds.";
         } else {
             return duration.toSecondsPart() + "." + duration.toMillisPart() + " seconds.";
+        }
+    }
+    public static void cleanupArea(Location location) {
+        Block origin = location.getBlock();
+        for (int x = -100; x < 100; x++) {
+            for (int y = -64; y < 320; y++) {
+                for (int z = -100; z < 100; z++) {
+                    origin.getRelative(x, y, z).setType(Material.AIR);
+                }
+            }
         }
     }
 

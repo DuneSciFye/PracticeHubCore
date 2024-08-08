@@ -80,7 +80,7 @@ public class FallClutch implements Listener {
         World world = location.getWorld();
         for (int x = location.getBlockX() - 20; x <= location.getBlockX() + 20; x++) {
             for (int z = location.getBlockZ() - 20; z <= location.getBlockZ() + 20; z++) {
-                world.setType(x, -59, z, Material.AIR);
+                world.setType(x, -60, z, Material.AIR);
             }
         }
     }

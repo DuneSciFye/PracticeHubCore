@@ -13,6 +13,8 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.files.PortalBuildConfig;
+import me.dunescifye.practicehubcore.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -131,6 +133,7 @@ public class BowAim implements Listener {
         if (player == null || !player.getGamemode().equals("BowAim")) return;
         player.retrieveInventory();
         grid.remove(player.getLocation());
+        Utils.cleanupArea(player.getLocation());
     }
 
     public void registerEvents(PracticeHubCore plugin) {
@@ -138,11 +141,12 @@ public class BowAim implements Listener {
     }
 
     private void spawnRandomBlocks(int amount) {
-        for (int i = 0; i <= numberOfBlocks; i++) {
+        for (int i = 0; i <= amount; i++) {
             int[] coords = blockSpawnLocations.get(ThreadLocalRandom.current().nextInt(blockSpawnLocations.size()));
             world.setType( new Location(world, coords[0] + xOffset, coords[1], coords[2]), blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
         }
     }
+
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
