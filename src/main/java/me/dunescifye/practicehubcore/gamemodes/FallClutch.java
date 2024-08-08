@@ -46,8 +46,11 @@ public class FallClutch implements Listener {
                 if (confirm > 20) {
                     cancel();
                     p.sendMessage(Component.text("You win!"));
-                    spawnLocation.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
-                    p.teleport(spawnLocation);
+                    Location location = spawnLocation.clone();
+                    location.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
+                    p.teleport(location);
+                    player.increaseSuccesses();
+                    player.increaseSuccesses();
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 2L);
@@ -62,6 +65,7 @@ public class FallClutch implements Listener {
 
         player.retrieveInventory();
         p.teleport(Config.spawn);
+        grid.remove(player.getLocation());
     }
 
     @EventHandler
@@ -77,6 +81,7 @@ public class FallClutch implements Listener {
         p.getInventory().clear();
         p.getInventory().addItem(player.getItem());
         p.teleport(player.getLocation());
+        player.increaseTotal();
     }
 
 }

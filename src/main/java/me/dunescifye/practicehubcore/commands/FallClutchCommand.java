@@ -33,6 +33,11 @@ public class FallClutchCommand {
                     })
                 )
             )
+            .then(new LiteralArgument("end")
+                .executesPlayer((p, args) -> {
+                    FallClutch.endGame(p);
+                })
+            )
             .withPermission("practicehub.command.fallclutch")
             .register("practicehub");
     }

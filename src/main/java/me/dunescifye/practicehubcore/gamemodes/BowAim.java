@@ -130,6 +130,7 @@ public class BowAim implements Listener {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null || !player.getGamemode().equals("BowAim")) return;
         player.retrieveInventory();
+        grid.remove(player.getLocation());
     }
 
     public void registerEvents(PracticeHubCore plugin) {
