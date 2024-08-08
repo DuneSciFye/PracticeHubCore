@@ -57,19 +57,23 @@ public class BowAimConfig {
                             playerSpawnLocations.add(loc);
                         }
                         List<int[]> blockSpawnLocations = new ArrayList<>();
+                        System.out.println("eeeee");
                         blockLocation: for (String location : keySection.getStringList("blockSpawnLocations")) {
                             System.out.println("AAAAAAAAAAAAAAAAAA");
                             String[] coords = location.split(" ");
                             if (coords.length != 6) {
                                 logger.warning("Block Spawn location " + file + " for Bow Aim gamemode has incorrect number of coordinates! Current: " + location);
+                                System.out.println("a");
                                 continue;
                             }
+                            System.out.println("b");
                             for (String coord : coords) {
                                 if (!coord.matches("-?\\d+(\\.\\d+)?")) {
                                     logger.warning("Block Spawn location " + file + " for Bow Aim gamemode doesn't have integers! Current: " + location);
                                     continue blockLocation;
                                 }
                             }
+                            System.out.println("c");
                             for (int x = Integer.parseInt(coords[0]); x <= Integer.parseInt(coords[3]); x++) {
                                 for (int y = Integer.parseInt(coords[1]); y <= Integer.parseInt(coords[4]); y++) {
                                     for (int z = Integer.parseInt(coords[2]); z <= Integer.parseInt(coords[5]); z++) {
@@ -77,7 +81,9 @@ public class BowAimConfig {
                                     }
                                 }
                             }
+                            System.out.println("d");
                         }
+                        System.out.println(blockSpawnLocations);
                         //Get Number of Blocks
                         int numberOfBlocks = keySection.getInt("NumberOfBlocks");
                         //Get block materials

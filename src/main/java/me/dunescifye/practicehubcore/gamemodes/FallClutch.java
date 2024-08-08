@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -83,6 +84,7 @@ public class FallClutch implements Listener {
                 world.setType(x, -60, z, Material.AIR);
             }
         }
+        world.getNearbyEntities(location, 20, 5, 20).forEach(Entity::remove);
     }
 
     public void registerEvents(PracticeHubCore plugin) {
