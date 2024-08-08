@@ -3,7 +3,9 @@ package me.dunescifye.practicehubcore.gamemodes;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,12 +47,17 @@ public class FallClutch implements Listener {
                 }
                 if (confirm > 20) {
                     cancel();
-                    p.sendMessage(Component.text("You win!"));
-                    Location location = spawnLocation.clone();
-                    location.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
-                    p.teleport(location);
+                    p.sendMessage(Component.text("You win! Starting again in 3 seconds..."));
                     player.increaseSuccesses();
-                    player.increaseSuccesses();
+                    player.increaseTotal();
+                    Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> {
+                        p.getInventory().clear();
+                        p.getInventory().addItem(player.getItem());
+                        Location location = spawnLocation.clone();
+                        cleanupArea(location);
+                        location.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
+                        p.teleport(location);
+                    }, 60L);
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 2L);
@@ -66,6 +73,20 @@ public class FallClutch implements Listener {
         player.retrieveInventory();
         p.teleport(Config.spawn);
         grid.remove(player.getLocation());
+        cleanupArea(player.getLocation());
+    }
+
+    private static void cleanupArea(Location location) {
+        World world = location.getWorld();
+        for (int x = location.getBlockX() - 20; x <= location.getBlockX() + 20; x++) {
+            for (int z = location.getBlockZ() - 20; z <= location.getBlockZ() + 20; z++) {
+                world.setType(x, -59, z, Material.AIR);
+            }
+        }
+    }
+
+    public void registerEvents(PracticeHubCore plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
@@ -76,12 +97,19 @@ public class FallClutch implements Listener {
         if (player == null || !Objects.equals(player.getGamemode(), "FallClutch")) return;
 
         e.setCancelled(true);
-        p.sendMessage("Failed!");
-        player.getLocation().setY(ThreadLocalRandom.current().nextDouble(-30, 250));
-        p.getInventory().clear();
-        p.getInventory().addItem(player.getItem());
-        p.teleport(player.getLocation());
+        p.sendMessage(Component.text("You failed! Starting again in 1 second..."));
         player.increaseTotal();
+        Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> {
+            Location location = player.getLocation().clone();
+            cleanupArea(location);
+            location.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
+            p.getInventory().clear();
+            p.getInventory().addItem(player.getItem());
+            p.teleport(location);
+            player.increaseSuccesses();
+            player.increaseTotal();
+        }, 20L);
     }
+
 
 }
