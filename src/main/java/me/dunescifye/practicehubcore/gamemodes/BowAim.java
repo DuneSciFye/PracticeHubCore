@@ -19,6 +19,7 @@ import me.dunescifye.practicehubcore.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -146,13 +147,21 @@ public class BowAim implements Listener {
     }
 
     private void spawnRandomBlocks(int amount) {
-        for (int i = 0; i <= amount; i++) {
-            System.out.println("a");
-            System.out.println(world);
-            System.out.println(blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
+        for (int i = 0; i < amount; i++) {
             int[] coords = blockSpawnLocations.get(ThreadLocalRandom.current().nextInt(blockSpawnLocations.size()));
-            System.out.println(Arrays.toString(coords));
-            world.setType(new Location(world, coords[0] + xOffset, coords[1], coords[2]), blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
+            int blockNumber = ThreadLocalRandom.current().nextInt((coords[3] - coords[0]) * (coords[4] - coords[1]) * (coords[5] - coords[2]));
+            int count = 0;
+            block: for (int x = coords[0]; x < coords[3]; x++) {
+                for (int y = coords[1]; y < coords[4]; y++) {
+                    for (int z = coords[2]; z < coords[5]; z++) {
+                        if (count == blockNumber) {
+                            world.setType(new Location(world, xOffset + x, y, z), blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
+                            break block;
+                        }
+                        count++;
+                    }
+                }
+            }
         }
     }
 
@@ -180,7 +189,7 @@ public class BowAim implements Listener {
     @EventHandler
     public void onArrowHit(ProjectileHitEvent e) {
         Block b = e.getHitBlock();
-        if (b == null || !(e.getEntity().getShooter() instanceof Player p)) return;
+        if (b == null || !(e.getEntity() instanceof Arrow arrow) || !(arrow.getShooter() instanceof Player p)) return;
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null || !Objects.equals(player.getGamemode(), "BowAim")) return;
         Material type = b.getType();
@@ -189,6 +198,7 @@ public class BowAim implements Listener {
                 player.increaseSuccesses();
                 p.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 b.setType(Material.AIR);
+                arrow.remove();
                 player.getBowAim().spawnRandomBlocks(1);
                 return;
             }
