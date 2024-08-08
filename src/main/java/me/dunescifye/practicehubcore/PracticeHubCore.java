@@ -72,7 +72,7 @@ public final class PracticeHubCore extends JavaPlugin {
         new BlockBreakListener().registerEvents(this);
     }
 
-    private void setupFiles() {
+    public static void setupFiles() {
         Config.setup();
         BridgeConfig.setup();
         PortalBuildConfig.setup();

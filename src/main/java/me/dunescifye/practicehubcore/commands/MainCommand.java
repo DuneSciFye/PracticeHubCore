@@ -2,10 +2,7 @@ package me.dunescifye.practicehubcore.commands;
 
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
-import me.dunescifye.practicehubcore.files.BowBoostConfig;
-import me.dunescifye.practicehubcore.files.BridgeConfig;
-import me.dunescifye.practicehubcore.files.Config;
-import me.dunescifye.practicehubcore.files.PortalBuildConfig;
+import me.dunescifye.practicehubcore.PracticeHubCore;
 
 public class MainCommand {
 
@@ -13,10 +10,7 @@ public class MainCommand {
         new CommandTree("practicehub")
             .then(new LiteralArgument("reload")
                 .executes((sender, args) -> {
-                    Config.setup();
-                    BridgeConfig.setup();
-                    PortalBuildConfig.setup();
-                    BowBoostConfig.setup();
+                    PracticeHubCore.setupFiles();
                     sender.sendMessage("Reloaded Config!");
                 })
             )
