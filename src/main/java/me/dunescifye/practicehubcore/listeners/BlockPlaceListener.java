@@ -22,6 +22,7 @@ public class BlockPlaceListener implements Listener {
     public void onPlayerBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        if (player == null) return;
         String currentGamemode = player.getGamemode();
         if (currentGamemode == null) return;
         Block b = e.getBlockPlaced();

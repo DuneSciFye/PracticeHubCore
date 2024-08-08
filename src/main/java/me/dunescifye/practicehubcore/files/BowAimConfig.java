@@ -58,6 +58,7 @@ public class BowAimConfig {
                         }
                         List<int[]> blockSpawnLocations = new ArrayList<>();
                         blockLocation: for (String location : keySection.getStringList("blockSpawnLocations")) {
+                            System.out.println("AAAAAAAAAAAAAAAAAA");
                             String[] coords = location.split(" ");
                             if (coords.length != 6) {
                                 logger.warning("Block Spawn location " + file + " for Bow Aim gamemode has incorrect number of coordinates! Current: " + location);

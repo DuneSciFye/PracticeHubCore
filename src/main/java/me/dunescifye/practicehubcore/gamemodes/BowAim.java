@@ -13,6 +13,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
 import me.dunescifye.practicehubcore.utils.Utils;
 import org.bukkit.*;
@@ -27,11 +28,13 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -134,6 +137,8 @@ public class BowAim implements Listener {
         player.retrieveInventory();
         grid.remove(player.getLocation());
         Utils.cleanupArea(player.getLocation());
+        p.teleport(Config.spawn);
+        player.setGamemode("");
     }
 
     public void registerEvents(PracticeHubCore plugin) {
@@ -142,8 +147,12 @@ public class BowAim implements Listener {
 
     private void spawnRandomBlocks(int amount) {
         for (int i = 0; i <= amount; i++) {
+            System.out.println("a");
+            System.out.println(world);
+            System.out.println(blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
             int[] coords = blockSpawnLocations.get(ThreadLocalRandom.current().nextInt(blockSpawnLocations.size()));
-            world.setType( new Location(world, coords[0] + xOffset, coords[1], coords[2]), blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
+            System.out.println(Arrays.toString(coords));
+            world.setType(new Location(world, coords[0] + xOffset, coords[1], coords[2]), blocks.get(ThreadLocalRandom.current().nextInt(blocks.size())));
         }
     }
 
@@ -153,7 +162,10 @@ public class BowAim implements Listener {
         Player p = e.getPlayer();
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null || !player.getGamemode().equals("BowAim")) return;
-        e.setCancelled(true);
+        Location to = e.getFrom();
+        to.setPitch(e.getTo().getPitch());
+        to.setYaw(e.getTo().getYaw());
+        e.setTo(to);
     }
 
     @EventHandler
