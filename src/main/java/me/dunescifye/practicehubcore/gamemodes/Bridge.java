@@ -127,7 +127,7 @@ public class Bridge implements Listener {
 
     public static void endBridgeGame(Player p) {
         p.getInventory().clear();
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
         p.getInventory().setContents(player.getSavedInventory());
         Bridge.tasks.remove(p).cancel();
         p.sendMessage(Component.text("Ended game!"));

@@ -68,7 +68,7 @@ public class FallClutch implements Listener {
     }
 
     public static void endGame(Player p) {
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
         if (player == null || !Objects.equals(player.getGamemode(), "FallClutch")) return;
 
         player.retrieveInventory();

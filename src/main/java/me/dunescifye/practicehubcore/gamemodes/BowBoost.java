@@ -99,7 +99,7 @@ public class BowBoost implements Listener {
 
     public static void endBowBridgeGame(Player p) {
         p.getInventory().clear();
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
         p.getInventory().setContents(player.getSavedInventory());
         p.sendMessage(Component.text("Ended game!"));
         p.teleport(Config.spawn);

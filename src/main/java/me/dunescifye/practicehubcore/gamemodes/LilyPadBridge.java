@@ -1,16 +1,39 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
+import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.files.Config;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class LilyPadBridge {
 
+    public static String copyWorld = null;
+
     public static void startGame(Player p) {
+        if (copyWorld == null) return;
         PracticeHubPlayer player = new PracticeHubPlayer(p);
         player.setGamemode("LilyPadBridge");
+
+        PracticeHubCore.worldManager.cloneWorld(copyWorld, "lilyPadBridge" + p.getName());
+        player.setWorldName("lilyPadBridge" + p.getName());
+        World world = Bukkit.getWorld("lilyPadBridge" + p.getName());
+        Location teleportLocation = new Location(world, 0, -60, 0);
+        p.teleport(teleportLocation);
+        player.setLocation(teleportLocation);
+
+        player.saveInventory(new ItemStack(Material.LILY_PAD, 64));
+        PracticeHubPlayer.linkedPlayers.put(p, player);
     }
 
-    public void endGame() {
-
+    public static void endGame(Player p) {
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        player.retrieveInventory();
+        p.teleport(Config.spawn);
+        PracticeHubCore.worldManager.deleteWorld(player.getWorldName());
     }
 
 }

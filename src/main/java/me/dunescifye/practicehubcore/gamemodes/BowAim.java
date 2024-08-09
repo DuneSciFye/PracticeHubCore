@@ -130,7 +130,7 @@ public class BowAim implements Listener {
     }
 
     public static void endBowAimGame(Player p) {
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
         if (player == null || !player.getGamemode().equals("BowAim")) return;
         player.retrieveInventory();
         grid.remove(player.getLocation());
