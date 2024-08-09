@@ -14,8 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -25,6 +27,7 @@ public class FallClutch implements Listener {
     public static World world;
     public static List<Location> grid = new ArrayList<>();
     public static int gridSpacing = 500;
+    private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
     public static void startGame(Player p, ItemStack... items) {
         PracticeHubPlayer player = new PracticeHubPlayer(p);
@@ -41,7 +44,14 @@ public class FallClutch implements Listener {
         p.teleport(spawnLocation);
 
         //Check for win
-        new BukkitRunnable() {
+        checkForWin(p, player);
+
+        player.setGamemode("FallClutch");
+        PracticeHubPlayer.linkedPlayers.put(p, player);
+    }
+
+    private static void checkForWin(Player p, PracticeHubPlayer player) {
+        BukkitTask task = new BukkitRunnable() {
             int confirm = 0;
             @Override
             public void run() {
@@ -53,13 +63,15 @@ public class FallClutch implements Listener {
                     confirm++;
                 }
                 if (confirm > 20) {
+                    cancel();
                     p.sendMessage(Component.text("You win! Starting again in 3 seconds..."));
                     player.increaseSuccesses();
                     player.increaseTotal();
                     Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> {
                         p.getInventory().clear();
+                        ItemStack[] items = player.getItems();
                         p.getInventory().addItem(items[ThreadLocalRandom.current().nextInt(items.length)]);
-                        Location location = spawnLocation.clone();
+                        Location location = player.getLocation().clone();
                         cleanupArea(location);
                         location.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
                         p.teleport(location);
@@ -68,9 +80,7 @@ public class FallClutch implements Listener {
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 2L);
-
-        player.setGamemode("FallClutch");
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        tasks.put(p, task);
     }
 
     public static void endGame(Player p) {
@@ -81,6 +91,7 @@ public class FallClutch implements Listener {
         p.teleport(Config.spawn);
         grid.remove(player.getLocation());
         cleanupArea(player.getLocation());
+        tasks.remove(p).cancel();
     }
 
     private static void cleanupArea(Location location) {
@@ -105,6 +116,7 @@ public class FallClutch implements Listener {
         if (player == null || !Objects.equals(player.getGamemode(), "FallClutch")) return;
 
         e.setCancelled(true);
+        tasks.remove(p).cancel();
         p.sendMessage(Component.text("You failed! Starting again in 1 second..."));
         player.increaseTotal();
         Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> {
@@ -117,6 +129,7 @@ public class FallClutch implements Listener {
             p.teleport(location);
             player.increaseSuccesses();
             player.increaseTotal();
+            checkForWin(p, player);
         }, 20L);
     }
 

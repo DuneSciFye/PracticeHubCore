@@ -23,7 +23,7 @@ public class FallClutchCommand {
                             new ItemStack(Material.OAK_BOAT),
                             new ItemStack(Material.SCAFFOLDING),
                             new ItemStack(Material.SWEET_BERRIES),
-                            new ItemStack(Material.HAY_BLOCK));
+                            new ItemStack(Material.POWDER_SNOW_BUCKET));
                     })
                 )
                 .then(new LiteralArgument("waterbucket")
@@ -62,13 +62,13 @@ public class FallClutchCommand {
                         FallClutch.startGame(p, new ItemStack(Material.SWEET_BERRIES));
                     })
                 )
-                .then(new LiteralArgument("haybale")
+                .then(new LiteralArgument("powdersnow")
                     .executesPlayer((p, args) -> {
                         if (FallClutch.world == null) {
                             p.sendMessage(Component.text("Fall Clutch Gamemode is Disabled!"));
                             return;
                         }
-                        FallClutch.startGame(p, new ItemStack(Material.HAY_BLOCK));
+                        FallClutch.startGame(p, new ItemStack(Material.POWDER_SNOW_BUCKET));
                     })
                 )
             )
