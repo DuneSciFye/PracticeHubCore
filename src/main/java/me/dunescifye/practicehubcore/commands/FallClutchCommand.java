@@ -13,7 +13,19 @@ public class FallClutchCommand {
     public static void register() {
         new CommandTree("fallclutch")
             .then(new LiteralArgument("start")
-                .then(new LiteralArgument("random"))
+                .then(new LiteralArgument("random")
+                    .executesPlayer((p, args) -> {
+                        if (FallClutch.world == null) {
+                            p.sendMessage(Component.text("Fall Clutch Gamemode is Disabled!"));
+                            return;
+                        }
+                        FallClutch.startGame(p, new ItemStack(Material.WATER_BUCKET),
+                            new ItemStack(Material.OAK_BOAT),
+                            new ItemStack(Material.SCAFFOLDING),
+                            new ItemStack(Material.SWEET_BERRIES),
+                            new ItemStack(Material.HAY_BLOCK));
+                    })
+                )
                 .then(new LiteralArgument("waterbucket")
                     .executesPlayer((p, args) -> {
                         if (FallClutch.world == null) {
@@ -48,6 +60,15 @@ public class FallClutchCommand {
                             return;
                         }
                         FallClutch.startGame(p, new ItemStack(Material.SWEET_BERRIES));
+                    })
+                )
+                .then(new LiteralArgument("haybale")
+                    .executesPlayer((p, args) -> {
+                        if (FallClutch.world == null) {
+                            p.sendMessage(Component.text("Fall Clutch Gamemode is Disabled!"));
+                            return;
+                        }
+                        FallClutch.startGame(p, new ItemStack(Material.HAY_BLOCK));
                     })
                 )
             )

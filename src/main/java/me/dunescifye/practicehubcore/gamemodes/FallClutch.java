@@ -26,7 +26,7 @@ public class FallClutch implements Listener {
     public static List<Location> grid = new ArrayList<>();
     public static int gridSpacing = 500;
 
-    public static void startGame(Player p, ItemStack item) {
+    public static void startGame(Player p, ItemStack... items) {
         PracticeHubPlayer player = new PracticeHubPlayer(p);
         Location spawnLocation = new Location(world, 0, ThreadLocalRandom.current().nextInt(-30, 250), 0);
         while (grid.contains(spawnLocation)) {
@@ -35,8 +35,9 @@ public class FallClutch implements Listener {
         player.setLocation(spawnLocation);
 
         //Give item
+        ItemStack item = items[ThreadLocalRandom.current().nextInt(items.length)];
         player.saveInventory(item);
-        player.setItem(item);
+        player.setItems(items);
         p.teleport(spawnLocation);
 
         //Check for win
@@ -44,21 +45,25 @@ public class FallClutch implements Listener {
             int confirm = 0;
             @Override
             public void run() {
+                if (!Objects.equals(player.getGamemode(), "FallClutch")) {
+                    cancel();
+                    return;
+                }
                 if (p.getY() < -55) {
                     confirm++;
                 }
                 if (confirm > 20) {
-                    cancel();
                     p.sendMessage(Component.text("You win! Starting again in 3 seconds..."));
                     player.increaseSuccesses();
                     player.increaseTotal();
                     Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> {
                         p.getInventory().clear();
-                        p.getInventory().addItem(player.getItem());
+                        p.getInventory().addItem(items[ThreadLocalRandom.current().nextInt(items.length)]);
                         Location location = spawnLocation.clone();
                         cleanupArea(location);
                         location.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
                         p.teleport(location);
+                        confirm = 0;
                     }, 60L);
                 }
             }
@@ -107,7 +112,8 @@ public class FallClutch implements Listener {
             cleanupArea(location);
             location.setY(ThreadLocalRandom.current().nextDouble(-30, 250));
             p.getInventory().clear();
-            p.getInventory().addItem(player.getItem());
+            ItemStack[] items = player.getItems();
+            p.getInventory().addItem(items[ThreadLocalRandom.current().nextInt(items.length)]);
             p.teleport(location);
             player.increaseSuccesses();
             player.increaseTotal();
