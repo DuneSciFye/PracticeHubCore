@@ -28,7 +28,7 @@ public class PracticeHubPlayer {
     private World world;
     private String worldName;
     private BowAim bowAim;
-    private ItemStack item;
+    private ItemStack[] items;
     private Object gamemodeObject;
 
     public PracticeHubPlayer(Player player) {
@@ -143,12 +143,12 @@ public class PracticeHubPlayer {
         this.bowAim = bowAim;
     }
 
-    public ItemStack getItem() {
-        return item;
+    public ItemStack[] getItems() {
+        return items;
     }
 
-    public void setItem(ItemStack item) {
-        this.item = item;
+    public void setItems(ItemStack[] items) {
+        this.items = items;
     }
 
     public Object getGamemodeObject() {
