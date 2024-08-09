@@ -79,6 +79,7 @@ public final class PracticeHubCore extends JavaPlugin {
         BowBoostConfig.setup();
         BowAimConfig.setup();
         FallClutchConfig.setup();
+        LilyPadBridgeConfig.setup();
     }
 
     @Override

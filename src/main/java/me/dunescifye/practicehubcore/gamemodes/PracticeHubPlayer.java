@@ -15,12 +15,12 @@ public class PracticeHubPlayer {
 
     public static HashMap<Player, PracticeHubPlayer> linkedPlayers = new HashMap<>();
 
-    private Player player;
+    private final Player player;
     private Instant startTime;
     private Instant finishTime;
     private String lavaSchem;
     private String gamemode;
-    private LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
+    private final LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
     private ItemStack[] savedInventory;
     private Location location;
     private int total = 0;
@@ -29,6 +29,7 @@ public class PracticeHubPlayer {
     private String worldName;
     private BowAim bowAim;
     private ItemStack item;
+    private Object gamemodeObject;
 
     public PracticeHubPlayer(Player player) {
         this.player = player;
@@ -150,4 +151,11 @@ public class PracticeHubPlayer {
         this.item = item;
     }
 
+    public Object getGamemodeObject() {
+        return gamemodeObject;
+    }
+
+    public void setGamemodeObject(Object gamemodeObject) {
+        this.gamemodeObject = gamemodeObject;
+    }
 }

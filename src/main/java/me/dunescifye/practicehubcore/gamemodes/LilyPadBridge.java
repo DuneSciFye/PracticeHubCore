@@ -4,14 +4,9 @@ import org.bukkit.entity.Player;
 
 public class LilyPadBridge {
 
-    private final Player player;
-
-    public LilyPadBridge(Player player) {
-        this.player = player;
-    }
-
-    public void startGame() {
-
+    public static void startGame(Player p) {
+        PracticeHubPlayer player = new PracticeHubPlayer(p);
+        player.setGamemode("LilyPadBridge");
     }
 
     public void endGame() {
