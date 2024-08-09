@@ -62,6 +62,7 @@ public final class PracticeHubCore extends JavaPlugin {
         BowAimCommand.register();
         FallClutchCommand.register();
         LilyPadBridgeCommand.register();
+        ParkourCommand.register();
     }
 
     private void setupListeners() {
@@ -81,6 +82,7 @@ public final class PracticeHubCore extends JavaPlugin {
         BowAimConfig.setup();
         FallClutchConfig.setup();
         LilyPadBridgeConfig.setup();
+        ParkourConfig.setup();
     }
 
     @Override
