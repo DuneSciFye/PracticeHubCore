@@ -17,7 +17,6 @@ public class PracticeHubPlayer {
 
     private final Player player;
     private Instant startTime;
-    private Instant finishTime;
     private String lavaSchem;
     private String gamemode;
     private final LinkedList<TimedBlock> placedBlocks = new LinkedList<>();
@@ -28,8 +27,7 @@ public class PracticeHubPlayer {
     private World world;
     private String worldName;
     private BowAim bowAim;
-    private ItemStack item;
-    private Object gamemodeObject;
+    private ItemStack[] items;
 
     public PracticeHubPlayer(Player player) {
         this.player = player;
@@ -82,13 +80,6 @@ public class PracticeHubPlayer {
     public Instant getStartTime() {
         return startTime;
     }
-    public void setFinishTime(Instant finishTime) {
-        this.finishTime = finishTime;
-    }
-
-    public Instant getFinishTime() {
-        return finishTime;
-    }
     public void setLavaSchem(String lavaSchem) {
         this.lavaSchem = lavaSchem;
     }
@@ -116,10 +107,6 @@ public class PracticeHubPlayer {
         return savedInventory;
     }
 
-    public void setSavedInventory(ItemStack[] savedInventory) {
-        this.savedInventory = savedInventory;
-    }
-
     public void saveInventory(ItemStack... items) {
         Inventory inventory = player.getInventory();
         savedInventory = inventory.getContents();
@@ -143,19 +130,12 @@ public class PracticeHubPlayer {
         this.bowAim = bowAim;
     }
 
-    public ItemStack getItem() {
-        return item;
+    public ItemStack[] getItems() {
+        return items;
     }
 
-    public void setItem(ItemStack item) {
-        this.item = item;
+    public void setItems(ItemStack[] items) {
+        this.items = items;
     }
 
-    public Object getGamemodeObject() {
-        return gamemodeObject;
-    }
-
-    public void setGamemodeObject(Object gamemodeObject) {
-        this.gamemodeObject = gamemodeObject;
-    }
 }
