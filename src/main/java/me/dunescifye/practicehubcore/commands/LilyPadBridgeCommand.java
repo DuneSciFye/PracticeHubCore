@@ -7,7 +7,7 @@ import net.kyori.adventure.text.Component;
 
 public class LilyPadBridgeCommand {
 
-    public static void setup() {
+    public static void register() {
         new CommandTree("lilypadbridge")
             .then(new LiteralArgument("start")
                 .executesPlayer((p, args) -> {

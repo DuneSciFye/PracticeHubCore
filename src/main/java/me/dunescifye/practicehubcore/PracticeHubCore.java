@@ -61,6 +61,7 @@ public final class PracticeHubCore extends JavaPlugin {
         BowBoostCommand.register();
         BowAimCommand.register();
         FallClutchCommand.register();
+        LilyPadBridgeCommand.register();
     }
 
     private void setupListeners() {

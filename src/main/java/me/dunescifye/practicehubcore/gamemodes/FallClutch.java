@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class FallClutch implements Listener {
 
     public static World world;
-    public static List<Location> grid;
+    public static List<Location> grid = new ArrayList<>();
     public static int gridSpacing = 500;
 
     public static void startGame(Player p, ItemStack item) {
