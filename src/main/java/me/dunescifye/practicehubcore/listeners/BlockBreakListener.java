@@ -20,7 +20,10 @@ public class BlockBreakListener implements Listener {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
         if (player == null) return;
         String gamemode = player.getGamemode();
-        if (gamemode.equals("Bridge") || gamemode.equals("FallClutch")) e.setCancelled(true);
+        switch (gamemode) {
+            case "Bridge", "FallClutch" -> e.setCancelled(true);
+            case "LilyPadBridge" -> e.setDropItems(false);
+        }
     }
 
 }

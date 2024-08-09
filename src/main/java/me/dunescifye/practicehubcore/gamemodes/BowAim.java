@@ -136,7 +136,6 @@ public class BowAim implements Listener {
         grid.remove(player.getLocation());
         Utils.cleanupArea(player.getLocation());
         p.teleport(Config.spawn);
-        player.setGamemode("");
     }
 
     public void registerEvents(PracticeHubCore plugin) {

@@ -4,6 +4,7 @@ import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,8 +32,8 @@ public class BlockPlaceListener implements Listener {
                 e.getItemInHand().setAmount(64);
                 player.addPlacedBlock(new TimedBlock(b, Instant.now()));
             }
-            case "PortalBuild" ->
-                player.addPlacedBlock(new TimedBlock(b, Instant.now()));
+            case "PortalBuild" -> player.addPlacedBlock(new TimedBlock(b, Instant.now()));
+            case "LilyPadBridge" -> Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> b.setType(Material.AIR), 60L);
         }
     }
 }

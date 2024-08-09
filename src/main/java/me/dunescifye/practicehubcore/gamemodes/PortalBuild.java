@@ -129,8 +129,6 @@ public class PortalBuild implements Listener {
         p.sendMessage(Component.text("Time for portal frame build: " + Utils.getFormattedTime(Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime()))));
 
         //
-
-        PracticeHubPlayer.linkedPlayers.remove(p);
         PortalBuildConfig.grid.remove(location);
 
     }
