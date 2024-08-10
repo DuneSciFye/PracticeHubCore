@@ -7,6 +7,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
@@ -15,6 +16,7 @@ public class Parkour {
     public static String worldName = null;
     public static int[] spawnLocation;
     private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
+    private static HashMap<Player, BukkitTask> successTasks = new HashMap<>();
 
     public static void startGame(Player p, String gamemode) {
         //Gamemode disabled
@@ -52,6 +54,7 @@ public class Parkour {
 
                 if (p.getVelocity().getY() < -1) {
                     p.sendMessage(Component.text("You fell!"));
+                    p.setVelocity(new Vector().zero());
                     p.teleport(loc);
                 }
             }
@@ -64,18 +67,17 @@ public class Parkour {
                     int x = -1;
                     @Override
                     public void run() {
-                        p.sendMessage("a");
-                        if (p.getX() > x && p.getY() > 100) {
-                            p.sendMessage("b");
+                        if (p.getX() > x && p.getY() > 99) {
+                            world.setType(x + 2, 99, 0, Material.STONE);
                             world.setType(x + 2, 100, 0, Material.STONE);
                             world.setType(x + 2, 101, 0, Material.STONE);
-                            world.setType(x + 2, 102, 0, Material.STONE);
-                            world.setType(x + 3, 100, 0, Material.STONE);
-                            world.setType(x + 4, 100, 0, Material.STONE);
+                            world.setType(x + 3, 99, 0, Material.STONE);
+                            world.setType(x + 4, 99, 0, Material.STONE);
                             x += 3;
                         }
                     }
                 }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 5L);
+                successTasks.put(p, checkForJump);
             }
             case "2 Block Neo" -> {
 
@@ -103,8 +105,11 @@ public class Parkour {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
         BukkitTask task = tasks.remove(p);
         if (task != null) task.cancel();
+        BukkitTask successTask = successTasks.remove(p);
+        if (successTask != null) successTask.cancel();
         player.retrieveInventory();
         p.teleport(Config.spawn);
+        PracticeHubCore.worldManager.deleteWorld(player.getWorldName());
     }
 
 }

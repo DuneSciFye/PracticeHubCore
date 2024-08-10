@@ -166,7 +166,7 @@ public class BowAim implements Listener {
     public void onPlayerMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
-        if (player == null || Objects.equals(player.getGamemode(), "BowAim")) return;
+        if (player == null || !Objects.equals(player.getGamemode(), "BowAim")) return;
         Location to = e.getFrom();
         to.setPitch(e.getTo().getPitch());
         to.setYaw(e.getTo().getYaw());
