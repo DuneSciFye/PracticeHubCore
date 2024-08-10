@@ -9,15 +9,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Messages {
-    public static String gamemodeDisabledMessage;
-    public static String bowAimName;
-    public static String bowBoostName;
-    public static String bridgeName;
-    public static String endGame;
-    public static String notInGame;
-    public static String notInGameOther;
-    public static String onlyPlayerCommand;
-    public static String onlyConsoleCommand;
+    public static String gamemodeDisabledMessage, bowAimName, bowBoostName, bridgeName, endGame, notInGame, notInGameOther, onlyPlayerCommand,
+        onlyConsoleCommand, reloadedConfigMessage, selfPingMessage, otherPingMessage, teleportMessage;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -26,10 +19,13 @@ public class Messages {
         try {
             YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "messages.yml"), plugin.getResource("messages.yml"));
 
-            MiscCommands.setSelfPingMessage(config.getString("Commands.Ping.OnSelf"));
-            MiscCommands.setOtherPingMessage(config.getString("Commands.Ping.OnOther"));
+            selfPingMessage = config.getString("Commands.Ping.OnSelf");
+            otherPingMessage = config.getString("Commands.Ping.OnOther");
+            teleportMessage = config.getString("Commands.SpawnTeleport");
+            reloadedConfigMessage = config.getString("Commands.ReloadedConfig");
 
             gamemodeDisabledMessage = config.getString("Gamemodes.Global.Disabled");
+
             bowAimName = config.getString("Gamemodes.BowAim.Name");
             bowBoostName = config.getString("Gamemodes.BowBoost.Name");
             bridgeName = config.getString("Gamemodes.Bridge.Name");

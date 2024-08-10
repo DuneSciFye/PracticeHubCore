@@ -3,14 +3,12 @@ package me.dunescifye.practicehubcore.commands;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import me.dunescifye.practicehubcore.files.Config;
+import me.dunescifye.practicehubcore.files.Messages;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
 public class MiscCommands {
 
-    private static String selfPingMessage;
-    private static String otherPingMessage;
-    private static String teleportMessage;
     private static Boolean pingCommandEnabled;
     private static Boolean spawnCommandEnabled;
 
@@ -18,13 +16,13 @@ public class MiscCommands {
         if (pingCommandEnabled) {
             new CommandTree("ping")
                 .executesPlayer((p, args) -> {
-                    p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(selfPingMessage.replace("%ping%", String.valueOf(p.getPing()))));
+                    p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.selfPingMessage.replace("%ping%", String.valueOf(p.getPing()))));
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
                         Player p = args.getUnchecked("Player");
                         assert p != null;
-                        sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(otherPingMessage.replace("%player%", p.getName()).replace("%ping%", String.valueOf(p.getPing()))));
+                        sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.otherPingMessage.replace("%player%", p.getName()).replace("%ping%", String.valueOf(p.getPing()))));
                     })
                     .withPermission("practicehub.command.ping.other")
                 )
@@ -36,31 +34,19 @@ public class MiscCommands {
             new CommandTree("spawn")
                 .executesPlayer((p, args) -> {
                     p.teleport(Config.spawn);
-                    p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(teleportMessage));
+                    p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.teleportMessage));
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
                         Player p = args.getUnchecked("Player");
                         assert p != null;
                         p.teleport(Config.spawn);
-                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(teleportMessage));
+                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.teleportMessage));
                     })
                 )
                 .withPermission("practicehub.command.spawn")
                 .register("practicehub");
         }
-    }
-
-    public static void setOtherPingMessage(String otherPingMessage) {
-        MiscCommands.otherPingMessage = otherPingMessage;
-    }
-
-    public static void setSelfPingMessage(String selfPingMessage) {
-        MiscCommands.selfPingMessage = selfPingMessage;
-    }
-
-    public static void setTeleportMessage(String teleportMessage) {
-        MiscCommands.teleportMessage = teleportMessage;
     }
 
     public static void setPingCommandEnabled(Boolean pingCommandEnabled) {

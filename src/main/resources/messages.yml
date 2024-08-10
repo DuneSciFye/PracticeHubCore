@@ -9,6 +9,7 @@ Commands:
     NotInGameOther: "&c%player% is not in this game!"
   OnlyPlayerCommand: "&cThis command can only be run by players!"
   OnlyConsoleCommand: "&cThis command can only be run in console!"
+  ReloadedConfig: "&aReloaded config!"
 Gamemodes:
   Global:
     Disabled: "&c%gamemode% is disabled!"

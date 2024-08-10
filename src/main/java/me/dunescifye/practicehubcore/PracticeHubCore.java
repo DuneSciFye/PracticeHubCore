@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import dev.jorel.commandapi.CommandAPI;
 import me.dunescifye.practicehubcore.commands.*;
 import me.dunescifye.practicehubcore.files.*;
 import me.dunescifye.practicehubcore.gamemodes.*;
@@ -29,14 +30,16 @@ public final class PracticeHubCore extends JavaPlugin {
         logger.info("PracticeHubCore Starting.");
 
         //Setup
+        setupFiles();
+        //files before commands
         setupCommands();
         setupListeners();
-        setupFiles();
 
         //Multiverse
         MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
         if (core == null) {
             logger.warning("PracticeHubCore could not hook into Multiverse-Core. This is required.");
+            Bukkit.getPluginManager().disablePlugin(this);
         } else {
             worldManager = core.getMVWorldManager();
         }
@@ -49,6 +52,7 @@ public final class PracticeHubCore extends JavaPlugin {
 
         //CPS
         new ClicksPerSecond().setup(this);
+        logger.info("PracticeHubCore Started.");
     }
 
     public static PracticeHubCore getPlugin() {
@@ -66,6 +70,7 @@ public final class PracticeHubCore extends JavaPlugin {
         FallClutchCommand.register();
         LilyPadBridgeCommand.register();
         ParkourCommand.register();
+        ShieldPVPCommand.register();
     }
 
     private void setupListeners() {
@@ -92,6 +97,17 @@ public final class PracticeHubCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.getLogger().info("PracticeHubCore Stopping.");
+        Logger logger = this.getLogger();
+        logger.info("PracticeHubCore Stopping.");
+        CommandAPI.unregister("bowaim");
+        CommandAPI.unregister("bowboost");
+        CommandAPI.unregister("bridge");
+        CommandAPI.unregister("fallclutch");
+        CommandAPI.unregister("lilypadbridge");
+        CommandAPI.unregister("parkour");
+        CommandAPI.unregister("portalbuild");
+        CommandAPI.unregister("shieldpvp");
+        CommandAPI.unregister("ping");
+        CommandAPI.unregister("spawn");
     }
 }
