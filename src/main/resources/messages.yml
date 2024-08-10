@@ -6,6 +6,7 @@ Commands:
   EndGame:
     Ending: "&aEnding %gamemode% game.."
     NotInGame: "&cYou are not in this game!"
+    NotInGameOther: "&c%player% is not in this game!"
 Gamemodes:
   Global:
     Disabled: "&c%gamemode% is disabled!"
@@ -13,3 +14,5 @@ Gamemodes:
     Name: "Bow Aim"
   BowBoost:
     Name: "Bow Boost"
+  Bridge:
+    Name: "Bridge"

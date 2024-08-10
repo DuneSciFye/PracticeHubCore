@@ -12,8 +12,10 @@ public class Messages {
     public static String gamemodeDisabledMessage;
     public static String bowAimName;
     public static String bowBoostName;
+    public static String bridgeName;
     public static String endGame;
     public static String notInGame;
+    public static String notInGameOther;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -28,8 +30,11 @@ public class Messages {
             gamemodeDisabledMessage = config.getString("Gamemodes.Global.Disabled");
             bowAimName = config.getString("Gamemodes.BowAim.Name");
             bowBoostName = config.getString("Gamemodes.BowBoost.Name");
+            bridgeName = config.getString("Gamemodes.Bridge.Name");
+
             endGame = config.getString("Commands.EndGame.Ending");
             notInGame = config.getString("Commands.EndGame.NotInGame");
+            notInGameOther = config.getString("Commands.EndGame.NotInGameOther");
 
         } catch (
             IOException e) {

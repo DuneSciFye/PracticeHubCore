@@ -3,10 +3,11 @@ package me.dunescifye.practicehubcore.commands;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
-import me.dunescifye.practicehubcore.files.BridgeConfig;
+import me.dunescifye.practicehubcore.files.Messages;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.gamemodes.Bridge;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
 public class BridgeCommand {
@@ -16,8 +17,8 @@ public class BridgeCommand {
             .then(new LiteralArgument("start")
                 .executesPlayer((p, args) -> {
                     //Gamemode disabled
-                    if (BridgeConfig.bridgeCopyWorld == null) {
-                        p.sendMessage(Component.text("Bridge is disabled!"));
+                    if (Bridge.getCopyWorldName() == null) {
+                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bridgeName)));
                         return;
                     }
                     Bridge.startBridgeGame(p, "practice");
@@ -29,8 +30,8 @@ public class BridgeCommand {
                     .withPermission("practicehub.command.bridge.practice")
                     .then(new PlayerArgument("Player")
                         .executes((sender, args) -> {
-                            if (BridgeConfig.bridgeCopyWorld == null) {
-                                sender.sendMessage(Component.text("Bridge is disabled!"));
+                            if (Bridge.getCopyWorldName() == null) {
+                                sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bridgeName)));
                                 return;
                             }
                             Player p = args.getUnchecked("Player");
@@ -47,8 +48,8 @@ public class BridgeCommand {
                     .withPermission("practicehub.command.bridge.100m")
                     .then(new PlayerArgument("Player")
                         .executes((sender, args) -> {
-                            if (BridgeConfig.bridgeCopyWorld == null) {
-                                sender.sendMessage(Component.text("Bridge is disabled!"));
+                            if (Bridge.getCopyWorldName() == null) {
+                                sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bridgeName)));
                                 return;
                             }
                             Player p = args.getUnchecked("Player");
@@ -62,8 +63,8 @@ public class BridgeCommand {
             .then(new LiteralArgument("end")
                 .executesPlayer((p, args) -> {
                     //Bridge is disabled
-                    if (BridgeConfig.bridgeCopyWorld == null) {
-                        p.sendMessage(Component.text("Bridge is disabled!"));
+                    if (Bridge.getCopyWorldName() == null) {
+                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bridgeName)));
                         return;
                     }
                     //Not in a game
@@ -77,8 +78,8 @@ public class BridgeCommand {
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
                         //Bridge is disabled
-                        if (BridgeConfig.bridgeCopyWorld == null) {
-                            sender.sendMessage(Component.text("Bridge is disabled!"));
+                        if (Bridge.getCopyWorldName() == null) {
+                            sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bridgeName)));
                             return;
                         }
                         Player p = args.getUnchecked("Player");

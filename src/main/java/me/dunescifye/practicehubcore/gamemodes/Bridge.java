@@ -143,6 +143,9 @@ public class Bridge implements Listener {
     public static void setCopyWorldName(String copyWorldName) {
         Bridge.copyWorldName = copyWorldName;
     }
+    public static String getCopyWorldName() {
+        return copyWorldName;
+    }
 
     public static void setFallingMessage(String fallingMessage) {
         Bridge.fallingMessage = fallingMessage;

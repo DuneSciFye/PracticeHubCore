@@ -3,11 +3,9 @@ package me.dunescifye.practicehubcore.commands;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
-import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.Messages;
 import me.dunescifye.practicehubcore.gamemodes.BowAim;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
@@ -59,6 +57,14 @@ public class BowAimCommand {
                         }
                         Player p = args.getUnchecked("Player");
                         assert p != null;
+
+                        //Not in a game
+                        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+                        if (player == null) {
+                            sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.notInGameOther.replace("%player%", p.getName()).replace("%gamemode%", Messages.bowAimName)));
+                            return;
+                        }
+
                         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.endGame.replace("%gamemode%", Messages.bowAimName)));
                         BowAim.endBowAimGame(p);
                     })
