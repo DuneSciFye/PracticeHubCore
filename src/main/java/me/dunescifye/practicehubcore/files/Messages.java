@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Messages {
+    public static String gamemodeDisabledMessage;
+    public static String bowAimName;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -19,6 +21,9 @@ public class Messages {
 
             MiscCommands.setSelfPingMessage(config.getString("Commands.Ping.OnSelf"));
             MiscCommands.setOtherPingMessage(config.getString("Commands.Ping.OnOther"));
+
+            gamemodeDisabledMessage = config.getString("Gamemodes.Global.Disabled");
+            bowAimName = config.getString("Gamemodes.BowAim.Name");
 
         } catch (
             IOException e) {

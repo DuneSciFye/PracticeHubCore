@@ -13,6 +13,7 @@ import java.util.Objects;
 
 public class Config {
     public static Location spawn;
+
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
         try {
@@ -35,6 +36,7 @@ public class Config {
             //Commands
             MiscCommands.setPingCommandEnabled(config.getBoolean("Commands.Ping"));
             MiscCommands.setSpawnCommandEnabled(config.getBoolean("Commands.Spawn"));
+
 
         } catch (
             IOException e) {

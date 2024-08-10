@@ -3,3 +3,8 @@ Commands:
     OnSelf: "&aYour ping is &f%ping%&ams"
     OnOther: "&b%player%'s &aping is &f%ping%&ams"
   SpawnTeleport: "&aTeleporting to spawn.."
+Gamemodes:
+  Global:
+    Disabled: "&c%gamemode% is disabled!"
+  BowAim:
+    Name: "Bow Aim"
