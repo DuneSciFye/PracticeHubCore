@@ -24,7 +24,7 @@ public class Bridge implements Listener {
     public static HashMap<Player, Integer> cps = new HashMap<>();
     private static String startingMessage = "&fStarting!";
     private static String copyWorldName;
-    private static String fallingMessage = "&cYou fell!"
+    private static String fallingMessage = "&cYou fell!";
 
     public static void startBridgeGame(Player p, String gamemode) {
         PracticeHubPlayer player = new PracticeHubPlayer(p);

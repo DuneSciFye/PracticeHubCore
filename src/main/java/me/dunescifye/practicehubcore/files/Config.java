@@ -2,6 +2,7 @@ package me.dunescifye.practicehubcore.files;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.commands.MiscCommands;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,6 +32,9 @@ public class Config {
             //Hooks
             PracticeHubCore.placeholderAPIEnabled = config.getBoolean("Hooks.PlaceholderAPI");
 
+            //Commands
+            MiscCommands.setPingCommandEnabled(config.getBoolean("Commands.Ping"));
+            MiscCommands.setSpawnCommandEnabled(config.getBoolean("Commands.Spawn"));
 
         } catch (
             IOException e) {

@@ -5,3 +5,6 @@ Spawn:
   Z: 0
 Hooks:
   PlaceholderAPI: true
+Commands:
+  Ping: true
+  Spawn: true
