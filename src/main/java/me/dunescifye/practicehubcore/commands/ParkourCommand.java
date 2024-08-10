@@ -19,6 +19,16 @@ public class ParkourCommand {
                         Parkour.startGame(p, "1 Block Neo");
                     })
                 )
+                .then(new LiteralArgument("2blockneo")
+                    .executesPlayer((p, args) -> {
+                        Parkour.startGame(p, "2 Block Neo");
+                    })
+                )
+                .then(new LiteralArgument("3blockneo")
+                    .executesPlayer((p, args) -> {
+                        Parkour.startGame(p, "3 Block Neo");
+                    })
+                )
                 .then(new LiteralArgument("easy")
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "random");
