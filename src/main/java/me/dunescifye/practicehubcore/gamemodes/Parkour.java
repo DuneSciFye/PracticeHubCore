@@ -3,10 +3,7 @@ package me.dunescifye.practicehubcore.gamemodes;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Config;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -50,6 +47,9 @@ public class Parkour {
                     tasks.remove(p).cancel();
                     return;
                 }
+
+
+
                 if (p.getVelocity().getY() < -1) {
                     p.sendMessage(Component.text("You fell!"));
                     p.teleport(loc);
@@ -60,7 +60,22 @@ public class Parkour {
 
         switch (gamemode) {
             case "1 Block Neo" -> {
-
+                BukkitTask checkForJump = new BukkitRunnable() {
+                    int x = -1;
+                    @Override
+                    public void run() {
+                        p.sendMessage("a");
+                        if (p.getX() > x && p.getY() > 100) {
+                            p.sendMessage("b");
+                            world.setType(x + 2, 100, 0, Material.STONE);
+                            world.setType(x + 2, 101, 0, Material.STONE);
+                            world.setType(x + 2, 102, 0, Material.STONE);
+                            world.setType(x + 3, 100, 0, Material.STONE);
+                            world.setType(x + 4, 100, 0, Material.STONE);
+                            x += 3;
+                        }
+                    }
+                }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 5L);
             }
             case "2 Block Neo" -> {
 
@@ -78,7 +93,7 @@ public class Parkour {
 
             }
         }
-
+        player.setGamemode("Parkour");
         PracticeHubPlayer.linkedPlayers.put(p, player);
     }
 
