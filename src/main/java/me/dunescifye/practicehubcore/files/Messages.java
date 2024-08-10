@@ -16,6 +16,8 @@ public class Messages {
     public static String endGame;
     public static String notInGame;
     public static String notInGameOther;
+    public static String onlyPlayerCommand;
+    public static String onlyConsoleCommand;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -35,6 +37,10 @@ public class Messages {
             endGame = config.getString("Commands.EndGame.Ending");
             notInGame = config.getString("Commands.EndGame.NotInGame");
             notInGameOther = config.getString("Commands.EndGame.NotInGameOther");
+
+            onlyPlayerCommand = config.getString("Commands.OnlyPlayerCommand");
+            onlyConsoleCommand = config.getString("Commands.OnlyConsoleCommand");
+
 
         } catch (
             IOException e) {

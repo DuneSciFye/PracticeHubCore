@@ -7,6 +7,8 @@ Commands:
     Ending: "&aEnding %gamemode% game.."
     NotInGame: "&cYou are not in this game!"
     NotInGameOther: "&c%player% is not in this game!"
+  OnlyPlayerCommand: "&cThis command can only be run by players!"
+  OnlyConsoleCommand: "&cThis command can only be run in console!"
 Gamemodes:
   Global:
     Disabled: "&c%gamemode% is disabled!"
@@ -16,3 +18,7 @@ Gamemodes:
     Name: "Bow Boost"
   Bridge:
     Name: "Bridge"
+  ShieldPVP:
+    Name: "Shield PVP"
+    Challenging: "&aYou sent a Shield PVP Challenge to %player%!"
+    Challenged: "&f%player% &asent you a Shield PVP Challenge! Do &e/shieldpvp accept &ato accept and &e/shieldpvp decline &ato decline."

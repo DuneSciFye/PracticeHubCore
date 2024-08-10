@@ -87,6 +87,7 @@ public final class PracticeHubCore extends JavaPlugin {
         FallClutchConfig.setup();
         LilyPadBridgeConfig.setup();
         ParkourConfig.setup();
+        ShieldPVPConfig.setup();
     }
 
     @Override
