@@ -7,6 +7,7 @@ import me.dunescifye.practicehubcore.files.*;
 import me.dunescifye.practicehubcore.gamemodes.*;
 import me.dunescifye.practicehubcore.listeners.BlockBreakListener;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
+import me.dunescifye.practicehubcore.listeners.PlayerQuitListener;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ public final class PracticeHubCore extends JavaPlugin {
 
     public static MVWorldManager worldManager;
     private static PracticeHubCore plugin;
+    public static boolean placeholderAPIEnabled;
 
     @Override
     public void onEnable() {
@@ -40,8 +42,9 @@ public final class PracticeHubCore extends JavaPlugin {
         }
 
         //PlaceholderAPI
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (placeholderAPIEnabled && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new Placeholders().register();
+            logger.info("Found PlaceholderAPI. Enabling Placeholders.");
         }
 
         //CPS
@@ -72,6 +75,7 @@ public final class PracticeHubCore extends JavaPlugin {
         new BowAim().registerEvents(this);
         new FallClutch().registerEvents(this);
         new BlockBreakListener().registerEvents(this);
+        new PlayerQuitListener().registerEvents(this);
     }
 
     public static void setupFiles() {

@@ -28,6 +28,10 @@ public class Config {
                 spawn = new Location(Bukkit.getWorld(config.getString("Spawn.World")), config.getDouble("Spawn.X"), config.getDouble("Spawn.Y"), config.getDouble("Spawn.Z"));
             }
 
+            //Hooks
+            PracticeHubCore.placeholderAPIEnabled = config.getBoolean("Hooks.PlaceholderAPI");
+
+
         } catch (
             IOException e) {
             plugin.getLogger().severe("Failed to load file config.yml");
