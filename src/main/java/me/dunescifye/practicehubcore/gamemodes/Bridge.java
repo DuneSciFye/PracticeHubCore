@@ -1,17 +1,16 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.files.BridgeConfig;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.utils.TimedBlock;
 import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -23,28 +22,30 @@ import java.util.LinkedList;
 public class Bridge implements Listener {
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static HashMap<Player, Integer> cps = new HashMap<>();
+    private static String startingMessage = "&fStarting!";
+    private static String copyWorldName;
+    private static String fallingMessage = "&cYou fell!"
 
     public static void startBridgeGame(Player p, String gamemode) {
-        p.sendMessage(Component.text("Starting!"));
+        PracticeHubPlayer player = new PracticeHubPlayer(p);
+        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(startingMessage));
 
         //Setting up world
-        PracticeHubCore.worldManager.cloneWorld(BridgeConfig.bridgeCopyWorld, "bridge" + p.getName());
-
-        //Teleport player
+        String newWorldName = copyWorldName + p.getName();
+        PracticeHubCore.worldManager.cloneWorld(copyWorldName, newWorldName);
         World world = Bukkit.getWorld("bridge" + p.getName());
         if (world == null) {
             p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
             return;
         }
+        player.setWorldName(newWorldName);
+
+        //Setting up player
         Location loc = new Location(world, 0, 100, 0);
         p.teleport(loc);
         p.setGameMode(GameMode.SURVIVAL);
         p.setFoodLevel(20);
-
-        //Setting up inventory
-        PracticeHubPlayer player = new PracticeHubPlayer(p);
         player.saveInventory(new ItemStack(Material.OAK_LOG, 64));
-
         player.setGamemode("Bridge");
         PracticeHubPlayer.linkedPlayers.put(p, player);
 
@@ -54,7 +55,7 @@ public class Bridge implements Listener {
             public void run() {
                 //Player fell
                 if (p.getVelocity().getY() < -1) {
-                    p.sendMessage(Component.text("You fell!"));
+                    p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(fallingMessage));
                     //Blocks
                     int blockCounter = 0;
                     LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p).getPlacedBlocks();
@@ -133,6 +134,18 @@ public class Bridge implements Listener {
         p.sendMessage(Component.text("Ended game!"));
         p.teleport(Config.spawn);
         PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
+    }
+
+    public static void setStartingMessage(String startingMessage) {
+        Bridge.startingMessage = startingMessage;
+    }
+
+    public static void setCopyWorldName(String copyWorldName) {
+        Bridge.copyWorldName = copyWorldName;
+    }
+
+    public static void setFallingMessage(String fallingMessage) {
+        Bridge.fallingMessage = fallingMessage;
     }
 
     @EventHandler

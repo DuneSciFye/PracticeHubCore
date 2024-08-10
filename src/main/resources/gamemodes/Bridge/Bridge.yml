@@ -1,1 +1,4 @@
 CopyWorld: "baseBridge"
+Messages:
+  Starting: "&fStarting!"
+  Falling: "&cYou fell!"

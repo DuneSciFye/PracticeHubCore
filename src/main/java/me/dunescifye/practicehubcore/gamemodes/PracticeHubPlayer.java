@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class PracticeHubPlayer {
+public class PracticeHubPlayer{
 
     public static HashMap<Player, PracticeHubPlayer> linkedPlayers = new HashMap<>();
 
