@@ -2,9 +2,11 @@ package me.dunescifye.practicehubcore.commands;
 
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
+import me.dunescifye.practicehubcore.files.Messages;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.gamemodes.BowBoost;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class BowBoostCommand {
     public static void register() {
@@ -13,7 +15,7 @@ public class BowBoostCommand {
                 .executesPlayer((p, args) -> {
                     //Bow Boost is disabled
                     if (BowBoost.bowBoostCopyWorld == null) {
-                        p.sendMessage(Component.text("Bow Boost is disabled!"));
+                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
                         return;
                     }
 
@@ -23,7 +25,7 @@ public class BowBoostCommand {
                     .executesPlayer((p, args) -> {
                         //Bow Boost is disabled
                         if (BowBoost.bowBoostCopyWorld == null) {
-                            p.sendMessage(Component.text("Bow Boost is disabled!"));
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
                             return;
                         }
 
@@ -34,7 +36,7 @@ public class BowBoostCommand {
                     .executesPlayer((p, args) -> {
                         //Bow Boost is disabled
                         if (BowBoost.bowBoost100mCopyWorld == null) {
-                            p.sendMessage(Component.text("100m Bow Boost is disabled!"));
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
                             return;
                         }
 
@@ -46,7 +48,7 @@ public class BowBoostCommand {
                 .executesPlayer((p, args) -> {
                     //Bow Boost is disabled
                     if (BowBoost.bowBoostCopyWorld == null) {
-                        p.sendMessage(Component.text("Bow Boost is disabled!"));
+                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
                         return;
                     }
                     //Not in a game

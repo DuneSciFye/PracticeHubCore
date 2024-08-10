@@ -6,6 +6,8 @@ import dev.jorel.commandapi.arguments.PlayerArgument;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.files.Messages;
 import me.dunescifye.practicehubcore.gamemodes.BowAim;
+import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
@@ -39,6 +41,14 @@ public class BowAimCommand {
                         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowAimName)));
                         return;
                     }
+
+                    PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+                    if (player == null) {
+                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.notInGame.replace("%gamemode%", Messages.bowAimName)));
+                        return;
+                    }
+
+                    p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.endGame.replace("%gamemode%", Messages.bowAimName)));
                     BowAim.endBowAimGame(p);
                 })
                 .then(new PlayerArgument("Player")
@@ -48,6 +58,8 @@ public class BowAimCommand {
                             return;
                         }
                         Player p = args.getUnchecked("Player");
+                        assert p != null;
+                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.endGame.replace("%gamemode%", Messages.bowAimName)));
                         BowAim.endBowAimGame(p);
                     })
                 )

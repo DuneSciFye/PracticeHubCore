@@ -11,6 +11,9 @@ import java.util.logging.Logger;
 public class Messages {
     public static String gamemodeDisabledMessage;
     public static String bowAimName;
+    public static String bowBoostName;
+    public static String endGame;
+    public static String notInGame;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -24,6 +27,9 @@ public class Messages {
 
             gamemodeDisabledMessage = config.getString("Gamemodes.Global.Disabled");
             bowAimName = config.getString("Gamemodes.BowAim.Name");
+            bowBoostName = config.getString("Gamemodes.BowBoost.Name");
+            endGame = config.getString("Commands.EndGame.Ending");
+            notInGame = config.getString("Commands.EndGame.NotInGame");
 
         } catch (
             IOException e) {
