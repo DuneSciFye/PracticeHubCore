@@ -150,5 +150,6 @@ public class Bridge implements Listener {
             PracticeHubCore.worldManager.deleteWorld("bridge" + p.getName());
             p.teleport(Config.spawn);
         }
+        player.setGamemode(null);
     }
 }
