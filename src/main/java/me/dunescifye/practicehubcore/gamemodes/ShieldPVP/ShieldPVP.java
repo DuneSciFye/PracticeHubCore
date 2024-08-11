@@ -22,7 +22,7 @@ public class ShieldPVP {
         player.setGamemode("ShieldPVP");
         player2.setGamemode("ShieldPVP");
 
-
+        p.teleport()
 
         PracticeHubPlayer.linkedPlayers.put(p, player);
     }

@@ -51,7 +51,7 @@ public class ShieldPVPCommand {
                         }
 
                         Player challenger = ShieldPVP.incomingChallenges.get(p);
-
+                        ShieldPVP.startGame(p, challenger);
 
                     })
                     .executesConsole((console, args) -> {

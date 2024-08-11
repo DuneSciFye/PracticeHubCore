@@ -25,15 +25,24 @@ public class ParkourCommand {
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "2 Block Neo");
                     })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 .then(new LiteralArgument("3blockneo")
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "3 Block Neo");
                     })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 .then(new LiteralArgument("easy")
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "random");
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
                 )
                 .then(new LiteralArgument("medium")

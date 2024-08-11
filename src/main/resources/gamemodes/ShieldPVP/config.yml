@@ -2,4 +2,9 @@ Enabled: true
 CommandAliases: []
 CopyWorld: ShieldPVP
 Schematics:
-  - map.schem
+  schem1:
+    File: map.schem
+    #X,Y,Z,Yaw,Pitch
+    SpawnLocations:
+      - 0 100 0 0 0
+      - -10 100 0 0 0

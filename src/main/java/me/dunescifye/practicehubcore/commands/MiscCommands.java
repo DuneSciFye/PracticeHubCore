@@ -18,6 +18,9 @@ public class MiscCommands {
                 .executesPlayer((p, args) -> {
                     p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.selfPingMessage.replace("%ping%", String.valueOf(p.getPing()))));
                 })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
                         Player p = args.getUnchecked("Player");
@@ -35,6 +38,9 @@ public class MiscCommands {
                 .executesPlayer((p, args) -> {
                     p.teleport(Config.spawn);
                     p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.teleportMessage));
+                })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
