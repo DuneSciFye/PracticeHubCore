@@ -24,3 +24,13 @@ Gamemodes:
     Challenging: "&aYou sent a Shield PVP Challenge to %player%!"
     Challenged: "&f%player% &asent you a Shield PVP Challenge! Do &e/shieldpvp accept &ato accept and &e/shieldpvp decline &ato decline."
     NoChallenge: "&cYou don't have any pending challenges!"
+  FallClutch:
+    Name: "Fall Clutch"
+  FastCraft:
+    Name: "Fast Craft"
+  LilyPadBridge:
+    Name: "Lily Pad Bridge"
+  Parkour:
+    Name: "Parkour"
+  PortalBuild:
+    Name: "Portal Build"

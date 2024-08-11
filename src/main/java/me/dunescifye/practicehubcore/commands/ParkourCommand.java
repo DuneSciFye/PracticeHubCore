@@ -2,7 +2,9 @@ package me.dunescifye.practicehubcore.commands;
 
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
+import me.dunescifye.practicehubcore.files.Messages;
 import me.dunescifye.practicehubcore.gamemodes.Parkour;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ParkourCommand {
 
@@ -48,6 +50,9 @@ public class ParkourCommand {
             .then(new LiteralArgument("end")
                 .executesPlayer((p, args) -> {
                     Parkour.endGame(p);
+                })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                 })
             )
             .withPermission("practicehub.command.parkour")
