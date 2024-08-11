@@ -10,10 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class PracticeHubPlayer{
 
-    public static HashMap<Player, PracticeHubPlayer> linkedPlayers = new HashMap<>();
+    public static HashMap<UUID, PracticeHubPlayer> linkedPlayers = new HashMap<>();
 
     private final Player player;
     private Instant startTime;
@@ -136,6 +137,10 @@ public class PracticeHubPlayer{
 
     public void setItems(ItemStack[] items) {
         this.items = items;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
 }

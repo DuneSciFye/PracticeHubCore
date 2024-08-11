@@ -21,7 +21,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
@@ -44,9 +43,9 @@ public class ShieldPVP {
     public static HashMap<Player, Player> incomingChallenges = new HashMap<>();
     private static String worldName;
     private static World world;
-    private static HashMap<String, List<Location>> schematics = new HashMap<>();
+    private static final HashMap<String, List<Location>> schematics = new HashMap<>();
     private static int spacing;
-    private static ArrayList<Location> grid = new ArrayList<>();
+    private static final ArrayList<Location> grid = new ArrayList<>();
 
     public static void startGame(Player p, Player p2) {
         Plugin plugin = PracticeHubCore.getPlugin();
@@ -169,6 +168,6 @@ public class ShieldPVP {
     }
 
     public static void setSpacing(int spacing) {
-        this.spacing = spacing;
+        ShieldPVP.spacing = spacing;
     }
 }

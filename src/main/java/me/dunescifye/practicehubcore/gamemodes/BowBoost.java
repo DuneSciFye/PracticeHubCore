@@ -34,48 +34,45 @@ public class BowBoost implements Listener {
         //Setting up world
         World world;
         Location teleportLocation;
-        switch (minigame) {
-            case "100m" -> {
-                PracticeHubCore.worldManager.cloneWorld(bowBoost100mCopyWorld, "bowBoost100m" + p.getName());
-                player.setWorldName("bowBoost100m" + p.getName());
-                world = Bukkit.getWorld("bowBoost100m" + p.getName());
-                player.setWorld(world);
-                if (world == null) {
-                    p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
-                    return;
-                }
-                teleportLocation = new Location(player.getWorld(), 0, 100, 0);
-                new BukkitRunnable() {
-                    int seconds = startTime100m;
+        if (minigame.equals("100m")) {
+            PracticeHubCore.worldManager.cloneWorld(bowBoost100mCopyWorld, "bowBoost100m" + p.getName());
+            player.setWorldName("bowBoost100m" + p.getName());
+            world = Bukkit.getWorld("bowBoost100m" + p.getName());
+            player.setWorld(world);
+            if (world == null) {
+                p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
+                return;
+            }
+            teleportLocation = new Location(player.getWorld(), 0, 100, 0);
+            new BukkitRunnable() {
+                int seconds = startTime100m;
 
-                    @Override
-                    public void run() {
-                        if (seconds < 1) {
-                            cancel();
-                            //Remove glass
-                            for (int x = -5; x < 7; x++) {
-                                for (int y = 100; y < 129; y++) {
-                                    Block block = world.getBlockAt(x, y, 3);
-                                    block.setType(Material.AIR);
-                                }
+                @Override
+                public void run() {
+                    if (seconds < 1) {
+                        cancel();
+                        //Remove glass
+                        for (int x = -5; x < 7; x++) {
+                            for (int y = 100; y < 129; y++) {
+                                Block block = world.getBlockAt(x, y, 3);
+                                block.setType(Material.AIR);
                             }
-                            p.sendMessage(Component.text("GO!"));
-                            check100mWin(p, Instant.now());
-                            return;
                         }
-
-                        p.sendMessage(Component.text("Starting in " + seconds + "..."));
-
-                        seconds--;
+                        p.sendMessage(Component.text("GO!"));
+                        check100mWin(p, Instant.now());
+                        return;
                     }
-                }.runTaskTimer(PracticeHubCore.getPlugin(), 20L, 20L);
-            }
-            default -> {
-                PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
-                player.setWorldName("bowBoost" + p.getName());
-                world = Bukkit.getWorld("bowBoost" + p.getName());
-                teleportLocation = new Location(world, 0, -60, 0);
-            }
+
+                    p.sendMessage(Component.text("Starting in " + seconds + "..."));
+
+                    seconds--;
+                }
+            }.runTaskTimer(PracticeHubCore.getPlugin(), 20L, 20L);
+        } else {
+            PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
+            player.setWorldName("bowBoost" + p.getName());
+            world = Bukkit.getWorld("bowBoost" + p.getName());
+            teleportLocation = new Location(world, 0, -60, 0);
         }
         p.setGameMode(GameMode.SURVIVAL);
         p.setFoodLevel(20);
@@ -93,13 +90,13 @@ public class BowBoost implements Listener {
 
         //Everything works
         player.setGamemode("BowBoost");
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
 
     }
 
     public static void endBowBridgeGame(Player p) {
         p.getInventory().clear();
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         p.getInventory().setContents(player.getSavedInventory());
         p.sendMessage(Component.text("Ended game!"));
         p.teleport(Config.spawn);
@@ -114,7 +111,7 @@ public class BowBoost implements Listener {
                     cancel();
                     p.sendMessage(Component.text("You win!"));
                     p.sendMessage("Time: " + Utils.getFormattedTime(Duration.between(startTime, Instant.now())));
-                    PracticeHubPlayer.linkedPlayers.remove(p);
+                    PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
                     Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> endBowBridgeGame(p), 40L);
                 }
             }
@@ -128,7 +125,7 @@ public class BowBoost implements Listener {
     @EventHandler
     public void onArrowHit(EntityDamageByEntityEvent e) {
         if (!(e.getDamager() instanceof Arrow arrow) || !(arrow.getShooter() instanceof Player p) || p != e.getEntity()) return;
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
         if (player == null || !player.getGamemode().equals("BowBoost")) return;
 
         player.increaseSuccesses();
@@ -139,7 +136,7 @@ public class BowBoost implements Listener {
     @EventHandler
     public void onArrowLaunch(EntityShootBowEvent e) {
         if (!(e.getEntity() instanceof Player p)) return;
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
         if (player == null || !player.getGamemode().equals("BowBoost")) return;
 
         player.increaseTotal();

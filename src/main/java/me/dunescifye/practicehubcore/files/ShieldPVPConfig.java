@@ -61,7 +61,11 @@ public class ShieldPVPConfig {
                             loc.setPitch(Float.parseFloat(coords[3]));
                             locations.add(loc);
                         }
-                        ShieldPVP.addSchematic(file, locations);
+                        if (locations.size() < 2) {
+                            logger.warning("Schematic " + file + " has less than 2 locations!");
+                        } else {
+                            ShieldPVP.addSchematic(file, locations);
+                        }
                     }
                 }
             }

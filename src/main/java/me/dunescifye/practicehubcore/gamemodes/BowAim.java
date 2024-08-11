@@ -126,11 +126,11 @@ public class BowAim implements Listener {
 
         player.setGamemode("BowAim");
         player.setBowAim(bowAim);
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
     }
 
     public static void endBowAimGame(Player p) {
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         if (player == null || !player.getGamemode().equals("BowAim")) return;
         player.retrieveInventory();
         grid.remove(player.getLocation());
@@ -165,7 +165,7 @@ public class BowAim implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
         if (player == null || !Objects.equals(player.getGamemode(), "BowAim")) return;
         Location to = e.getFrom();
         to.setPitch(e.getTo().getPitch());
@@ -176,7 +176,7 @@ public class BowAim implements Listener {
     @EventHandler
     public void onArrowLaunch(EntityShootBowEvent e) {
         if (!(e.getEntity() instanceof Player p)) return;
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
         if (player == null || !player.getGamemode().equals("BowAim")) return;
 
         player.increaseTotal();
@@ -186,7 +186,7 @@ public class BowAim implements Listener {
     public void onArrowHit(ProjectileHitEvent e) {
         Block b = e.getHitBlock();
         if (b == null || !(e.getEntity() instanceof Arrow arrow) || !(arrow.getShooter() instanceof Player p)) return;
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
         if (player == null || !Objects.equals(player.getGamemode(), "BowAim")) return;
         Material type = b.getType();
         for (Material material : player.getBowAim().blocks) {
