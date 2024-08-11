@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class Messages {
     public static String gamemodeDisabledMessage, bowAimName, bowBoostName, bridgeName, endGame, notInGame, notInGameOther, onlyPlayerCommand,
         onlyConsoleCommand, reloadedConfigMessage, selfPingMessage, otherPingMessage, teleportMessage, shieldPVPName, challengingMessage,
-        challengedMessage;
+        challengedMessage, noChallengeMessage;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -40,6 +40,7 @@ public class Messages {
 
             challengingMessage = config.getString("Gamemodes.ShieldPVP.Challenging");
             challengedMessage = config.getString("Gamemodes.ShieldPVP.Challenged");
+            noChallengeMessage = config.getString("Gamemodes.ShieldPVP.NoChallenge");
 
         } catch (
             IOException e) {

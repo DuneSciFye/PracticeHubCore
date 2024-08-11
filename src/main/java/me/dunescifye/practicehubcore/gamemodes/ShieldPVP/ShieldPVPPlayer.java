@@ -11,7 +11,6 @@ public class ShieldPVPPlayer extends PracticeHubPlayer {
     }
 
     private void challengePlayer(Player p) {
-        p.sendMessage();
 
     }
 

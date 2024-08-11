@@ -23,3 +23,4 @@ Gamemodes:
     Name: "Shield PVP"
     Challenging: "&aYou sent a Shield PVP Challenge to %player%!"
     Challenged: "&f%player% &asent you a Shield PVP Challenge! Do &e/shieldpvp accept &ato accept and &e/shieldpvp decline &ato decline."
+    NoChallenge: "&cYou don't have any pending challenges!"

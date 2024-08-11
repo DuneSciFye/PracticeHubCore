@@ -5,10 +5,14 @@ import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class ShieldPVP {
 
     private static boolean enabled = true;
     private static String[] commandAliases;
+    //Challenger Challenged
+    public static HashMap<Player, Player> challenges = new HashMap<>();
 
     public static void startGame(Player p) {
         PracticeHubPlayer player = new PracticeHubPlayer(p);
@@ -20,11 +24,14 @@ public class ShieldPVP {
     public static void challengePlayer(Player challenger, Player challenged) {
         challenger.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.challengingMessage.replace("%player%", challenged.getName())));
         challenged.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.challengedMessage.replace("%player%", challenger.getName())));
+
+        challenges.put(challenger, challenged);
     }
 
     public static void endGame(Player p) {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
     }
+
 
     public static boolean isEnabled() {
         return enabled;

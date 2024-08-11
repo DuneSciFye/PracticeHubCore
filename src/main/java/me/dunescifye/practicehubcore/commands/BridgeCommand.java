@@ -23,9 +23,15 @@ public class BridgeCommand {
                     }
                     Bridge.startBridgeGame(p, "practice");
                 })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                })
                 .then(new LiteralArgument("practice")
                     .executesPlayer((p, args) -> {
                         Bridge.startBridgeGame(p, "practice");
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
                     .withPermission("practicehub.command.bridge.practice")
                     .then(new PlayerArgument("Player")
@@ -44,6 +50,9 @@ public class BridgeCommand {
                 .then(new LiteralArgument("100m")
                     .executesPlayer((p, args) -> {
                         Bridge.startBridgeGame(p, "100m");
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
                     .withPermission("practicehub.command.bridge.100m")
                     .then(new PlayerArgument("Player")
@@ -74,6 +83,9 @@ public class BridgeCommand {
                         return;
                     }
                     Bridge.endBridgeGame(p);
+                })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {

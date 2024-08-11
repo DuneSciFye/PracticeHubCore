@@ -21,6 +21,9 @@ public class BowAimCommand {
                     }
                     BowAim.startBowAimGame(p);
                 })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
                         if (BowAim.world == null) {
@@ -48,6 +51,9 @@ public class BowAimCommand {
 
                     p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.endGame.replace("%gamemode%", Messages.bowAimName)));
                     BowAim.endBowAimGame(p);
+                })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {

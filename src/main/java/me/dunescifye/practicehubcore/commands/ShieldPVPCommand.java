@@ -23,6 +23,7 @@ public class ShieldPVPCommand {
                                 return;
                             }
                             Player challenged = args.getUnchecked("Player");
+                            assert challenged != null;
 
                             ShieldPVP.challengePlayer(p, challenged);
                         })
@@ -33,13 +34,46 @@ public class ShieldPVPCommand {
                 )
                 //Random
                 .then(new LiteralArgument("start")
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 .then(new LiteralArgument("accept")
+                    .executesPlayer((p, args) -> {
+                        if (!ShieldPVP.isEnabled()) {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.shieldPVPName)));
+                            return;
+                        }
+
+                        if (!ShieldPVP.challenges.containsValue(p)) {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.noChallengeMessage));
+                            return;
+                        }
+
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 .then(new LiteralArgument("decline")
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 //Same as decline
                 .then(new LiteralArgument("deny")
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
+                )
+                //Cancelling a sent challenge
+                .then(new LiteralArgument("cancel")
+                    .executesPlayer((p, args) -> {
+
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 .withAliases(ShieldPVP.getCommandAliases())
                 .withPermission("practicehub.command.shieldpvp")

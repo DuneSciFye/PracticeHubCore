@@ -22,6 +22,9 @@ public class BowBoostCommand {
 
                     BowBoost.startBowBoostGame(p, "practice");
                 })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                })
                 .then(new LiteralArgument("practice")
                     .executesPlayer((p, args) -> {
                         //Bow Boost is disabled
@@ -31,6 +34,9 @@ public class BowBoostCommand {
                         }
 
                         BowBoost.startBowBoostGame(p, "practice");
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
                 )
                 .then(new LiteralArgument("100m")
@@ -42,6 +48,9 @@ public class BowBoostCommand {
                         }
 
                         BowBoost.startBowBoostGame(p, "100m");
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
                 )
             )
@@ -59,6 +68,9 @@ public class BowBoostCommand {
                         return;
                     }
                     BowBoost.endBowBridgeGame(p);
+                })
+                .executesConsole((console, args) -> {
+                    console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
