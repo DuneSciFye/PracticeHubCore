@@ -1,6 +1,8 @@
 Enabled: true
 CommandAliases: []
-CopyWorld: ShieldPVP
+World:
+  WorldName: ShieldPVP
+  Spacing: 500
 Schematics:
   schem1:
     File: map.schem

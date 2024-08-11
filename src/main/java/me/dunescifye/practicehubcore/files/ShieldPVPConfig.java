@@ -27,7 +27,7 @@ public class ShieldPVPConfig {
             ShieldPVP.setEnabled(enabled);
 
             if (!enabled) return;
-            String worldName = config.getString("CopyWorld");
+            String worldName = config.getString("World.WorldName");
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
                 logger.severe("Shield PVP World is invalid! Gamemode will be disabled until fixed.");
@@ -44,15 +44,15 @@ public class ShieldPVPConfig {
                 for (Object key : schematics.getKeys()) {
                     if (key instanceof String keyString) {
                         Section keySection = schematics.getSection(keyString);
-                        String file = keySection.getString("file");
+                        String file = keySection.getString("File");
                         List<Location> locations = new ArrayList<>();
-                        for (String location : keySection.getStringList("locations")) {
+                        for (String location : keySection.getStringList("SpawnLocations")) {
                             String[] coords = location.split(",", 5);
                             if (coords.length < 3) {
-                                logger.warning("Schematic location " + file + " for Portal Build gamemode is malformed! Current: " + location);
+                                logger.warning("Schematic location " + file + " for Shield PVP gamemode is malformed! Current: " + location);
                                 continue;
                             }
-                            Location loc = new Location(portalBuildWorld, Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
+                            Location loc = new Location(world, Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
                             if (coords.length < 5) {
                                 locations.add(loc);
                                 continue;
@@ -61,17 +61,23 @@ public class ShieldPVPConfig {
                             loc.setPitch(Float.parseFloat(coords[3]));
                             locations.add(loc);
                         }
-                        lavaPools.put(file, locations);
+                        ShieldPVP.addSchematic(file, locations);
                     }
                 }
             }
 
             //Grid Spacing
-            gridSpacing = config.getInt("BuildWorld.Spacing");
+            ShieldPVP.setSpacing(config.getInt("World.Spacing"));
         } catch (
             IOException e) {
             logger.severe("An error occurred while loading gamemodes/ShieldPVP/config.yml");
             throw new RuntimeException(e);
+        }
+
+        //Create schematic director
+        File schematics = new File(plugin.getDataFolder(), "gamemodes/PortalBuild/Schematics");
+        if (!schematics.exists()) {
+            schematics.mkdir();
         }
     }
 
