@@ -2,7 +2,7 @@ package me.dunescifye.practicehubcore.files;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.gamemodes.ShieldPVP;
+import me.dunescifye.practicehubcore.gamemodes.ShieldPVP.ShieldPVP;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +18,8 @@ public class ShieldPVPConfig {
             YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/ShieldPVP/config.yml"), plugin.getResource("gamemodes/ShieldPVP/config.yml"));
             ShieldPVP.setEnabled(config.getBoolean("Enabled"));
             config.addComment("Set to false to disable this gamemode.");
+
+            ShieldPVP.setCommandAliases(config.getStringList("CommandAliases").toArray(new String[0]));
         } catch (
             IOException e) {
             logger.severe("An error occurred while loading gamemodes/ShieldPVP/config.yml");

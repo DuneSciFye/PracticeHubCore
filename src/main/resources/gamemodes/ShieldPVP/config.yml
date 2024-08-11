@@ -1,2 +1,4 @@
 Enabled: true
 CommandAliases: []
+Schematics:
+  - map.schem

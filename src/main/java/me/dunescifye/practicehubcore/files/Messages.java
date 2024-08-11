@@ -2,7 +2,6 @@ package me.dunescifye.practicehubcore.files;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.commands.MiscCommands;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +9,8 @@ import java.util.logging.Logger;
 
 public class Messages {
     public static String gamemodeDisabledMessage, bowAimName, bowBoostName, bridgeName, endGame, notInGame, notInGameOther, onlyPlayerCommand,
-        onlyConsoleCommand, reloadedConfigMessage, selfPingMessage, otherPingMessage, teleportMessage;
+        onlyConsoleCommand, reloadedConfigMessage, selfPingMessage, otherPingMessage, teleportMessage, shieldPVPName, challengingMessage,
+        challengedMessage;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -29,6 +29,7 @@ public class Messages {
             bowAimName = config.getString("Gamemodes.BowAim.Name");
             bowBoostName = config.getString("Gamemodes.BowBoost.Name");
             bridgeName = config.getString("Gamemodes.Bridge.Name");
+            shieldPVPName = config.getString("Gamemodes.ShieldPVP.Name");
 
             endGame = config.getString("Commands.EndGame.Ending");
             notInGame = config.getString("Commands.EndGame.NotInGame");
@@ -37,6 +38,8 @@ public class Messages {
             onlyPlayerCommand = config.getString("Commands.OnlyPlayerCommand");
             onlyConsoleCommand = config.getString("Commands.OnlyConsoleCommand");
 
+            challengingMessage = config.getString("Gamemodes.ShieldPVP.Challenging");
+            challengedMessage = config.getString("Gamemodes.ShieldPVP.Challenged");
 
         } catch (
             IOException e) {
