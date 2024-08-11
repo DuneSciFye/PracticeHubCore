@@ -15,10 +15,16 @@ public class ParkourCommand {
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "random");
                     })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 .then(new LiteralArgument("1blockneo")
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "1 Block Neo");
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
                 )
                 .then(new LiteralArgument("2blockneo")
@@ -49,10 +55,16 @@ public class ParkourCommand {
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "random");
                     })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
                 )
                 .then(new LiteralArgument("hard")
                     .executesPlayer((p, args) -> {
                         Parkour.startGame(p, "random");
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
                 )
             )

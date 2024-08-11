@@ -78,7 +78,7 @@ public class BowAimConfig {
                         List<Material> blocks = new ArrayList<>();
                         for (String matName : keySection.getStringList("BlockMaterials")) {
                             Material material = Material.valueOf(matName);
-                            if (material != null) blocks.add(material);
+                            blocks.add(material);
                         }
                         BowAim bowAim = new BowAim(file, playerSpawnLocations, blockSpawnLocations, numberOfBlocks, blocks);
                         BowAim.bowAims.add(bowAim);

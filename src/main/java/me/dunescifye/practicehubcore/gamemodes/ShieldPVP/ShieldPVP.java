@@ -117,6 +117,10 @@ public class ShieldPVP {
 
     }
 
+    public static void restartGame(Player p) {
+
+    }
+
     public static void challengePlayer(Player challenger, Player challenged) {
         challenger.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.challengingMessage.replace("%player%", challenged.getName())));
         challenged.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.challengedMessage.replace("%player%", challenger.getName())));

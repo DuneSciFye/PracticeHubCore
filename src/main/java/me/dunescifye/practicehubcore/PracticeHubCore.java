@@ -8,6 +8,7 @@ import me.dunescifye.practicehubcore.files.*;
 import me.dunescifye.practicehubcore.gamemodes.*;
 import me.dunescifye.practicehubcore.listeners.BlockBreakListener;
 import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
+import me.dunescifye.practicehubcore.listeners.PlayerDeathListener;
 import me.dunescifye.practicehubcore.listeners.PlayerQuitListener;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
@@ -81,6 +82,7 @@ public final class PracticeHubCore extends JavaPlugin {
         new FallClutch().registerEvents(this);
         new BlockBreakListener().registerEvents(this);
         new PlayerQuitListener().registerEvents(this);
+        new PlayerDeathListener().registerEvents(this);
     }
 
     public static void setupFiles() {
