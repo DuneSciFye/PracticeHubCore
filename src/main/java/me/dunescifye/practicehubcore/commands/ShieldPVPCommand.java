@@ -45,10 +45,13 @@ public class ShieldPVPCommand {
                             return;
                         }
 
-                        if (!ShieldPVP.challenges.containsValue(p)) {
+                        if (!ShieldPVP.incomingChallenges.containsKey(p)) {
                             p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.noChallengeMessage));
                             return;
                         }
+
+                        Player challenger = ShieldPVP.incomingChallenges.get(p);
+
 
                     })
                     .executesConsole((console, args) -> {

@@ -1,4 +1,5 @@
 Enabled: true
 CommandAliases: []
+CopyWorld: ShieldPVP
 Schematics:
   - map.schem
