@@ -26,11 +26,11 @@ public class LilyPadBridge {
         player.setLocation(teleportLocation);
 
         player.saveInventory(new ItemStack(Material.LILY_PAD, 64));
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
     }
 
     public static void endGame(Player p) {
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         player.retrieveInventory();
         p.teleport(Config.spawn);
         PracticeHubCore.worldManager.deleteWorld(player.getWorldName());

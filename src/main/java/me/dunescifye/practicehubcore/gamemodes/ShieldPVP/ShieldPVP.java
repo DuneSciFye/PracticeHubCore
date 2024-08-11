@@ -51,9 +51,9 @@ public class ShieldPVP {
         Plugin plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
 
-        PracticeHubPlayer player = new PracticeHubPlayer(p), player2 = new PracticeHubPlayer(p2);
-        player.setGamemode("ShieldPVP");
-        player2.setGamemode("ShieldPVP");
+        ShieldPVPPlayer player = new ShieldPVPPlayer(p), player2 = new ShieldPVPPlayer(p2);
+        player.setGamemode("Shield PVP");
+        player2.setGamemode("Shield PVP");
 
         //Get Location
         Location location = new Location(world, 0, 100, 0);
@@ -112,9 +112,8 @@ public class ShieldPVP {
         p2.teleport(teleportLoc.get(ThreadLocalRandom.current().nextInt(teleportLoc.size())));
 
         //Other
-        player.setGamemode("Shield PVP");
         player.setStartTime(Instant.now());
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
 
     }
 

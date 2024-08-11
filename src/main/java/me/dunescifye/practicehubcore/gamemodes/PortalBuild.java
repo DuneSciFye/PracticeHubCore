@@ -21,7 +21,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -100,11 +99,11 @@ public class PortalBuild implements Listener {
         player.setGamemode("PortalBuild");
         player.setLavaSchem(fileName);
         player.setStartTime(Instant.now());
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
     }
 
     public static void endPortalBuildGame(Player p) {
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         p.sendMessage("You win!");
         player.retrieveInventory();
         p.teleport(Config.spawn);
@@ -141,7 +140,7 @@ public class PortalBuild implements Listener {
     public void onPortalCreateEvent(PortalCreateEvent e) {
         if (e.getReason() != PortalCreateEvent.CreateReason.FIRE) return;
         if (e.getEntity() instanceof Player p) {
-            PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+            PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
             if (!player.getGamemode().equals("PortalBuild")) return;
             e.setCancelled(true);
             endPortalBuildGame(p);

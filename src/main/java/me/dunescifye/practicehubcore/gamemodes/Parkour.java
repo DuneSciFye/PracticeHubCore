@@ -18,8 +18,8 @@ public class Parkour {
 
     public static String worldName = null;
     public static int[] spawnLocation;
-    private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    private static HashMap<Player, BukkitTask> successTasks = new HashMap<>();
+    private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
+    private static final HashMap<Player, BukkitTask> successTasks = new HashMap<>();
 
     public static void startGame(Player p, String gamemode) {
         //Gamemode disabled
@@ -50,7 +50,7 @@ public class Parkour {
             public void run() {
 
                 if (p.getVelocity().getY() < -1) {
-                    LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p).getPlacedBlocks();
+                    LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId()).getPlacedBlocks();
                     if (blocks != null && !blocks.isEmpty()) {
                         for (TimedBlock b : blocks) {
                             b.getBlock().setType(Material.AIR);
@@ -67,7 +67,7 @@ public class Parkour {
         checkFall(p, player, world, gamemode);
         tasks.put(p, task);
         player.setGamemode("Parkour");
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
     }
 
     private static void checkFall(Player p, PracticeHubPlayer player, World world, String gamemode) {
@@ -172,7 +172,7 @@ public class Parkour {
     public static void endGame(Player p) {
         if (worldName == null) return;
 
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         BukkitTask task = tasks.remove(p);
         if (task != null) task.cancel();
         BukkitTask successTask = successTasks.remove(p);

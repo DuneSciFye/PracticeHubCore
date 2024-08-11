@@ -47,7 +47,7 @@ public class Bridge implements Listener {
         p.setFoodLevel(20);
         player.saveInventory(new ItemStack(Material.OAK_LOG, 64));
         player.setGamemode("Bridge");
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
 
         //Loop to check p falling
         BukkitTask task = new BukkitRunnable() {
@@ -58,7 +58,7 @@ public class Bridge implements Listener {
                     p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(fallingMessage));
                     //Blocks
                     int blockCounter = 0;
-                    LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p).getPlacedBlocks();
+                    LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId()).getPlacedBlocks();
 
                     //Distance
                     if (blocks != null && !blocks.isEmpty()) {
@@ -104,23 +104,21 @@ public class Bridge implements Listener {
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 5L);
 
 
-        switch (gamemode) {
-            case "100m" -> {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (Math.abs(p.getX()) >= 100 || Math.abs(p.getZ()) >= 100) {
-                            cancel();
-                            p.sendMessage("You win!");
-                            //Times
-                            LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p).getPlacedBlocks();
-                            Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
-                            p.sendMessage(Component.text("Time took: " + Utils.getFormattedTime(duration)));
-                            endBridgeGame(p);
-                        }
+        if (gamemode.equals("100m")) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (Math.abs(p.getX()) >= 100 || Math.abs(p.getZ()) >= 100) {
+                        cancel();
+                        p.sendMessage("You win!");
+                        //Times
+                        LinkedList<TimedBlock> blocks = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId()).getPlacedBlocks();
+                        Duration duration = Duration.between(blocks.getFirst().getTime(), blocks.getLast().getTime());
+                        p.sendMessage(Component.text("Time took: " + Utils.getFormattedTime(duration)));
+                        endBridgeGame(p);
                     }
-                }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 1L);
-            }
+                }
+            }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 1L);
         }
 
         tasks.put(p, task);
@@ -128,7 +126,7 @@ public class Bridge implements Listener {
 
     public static void endBridgeGame(Player p) {
         p.getInventory().clear();
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         p.getInventory().setContents(player.getSavedInventory());
         Bridge.tasks.remove(p).cancel();
         p.sendMessage(Component.text("Ended game!"));

@@ -47,7 +47,7 @@ public class FallClutch implements Listener {
         checkForWin(p, player);
 
         player.setGamemode("FallClutch");
-        PracticeHubPlayer.linkedPlayers.put(p, player);
+        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
     }
 
     private static void checkForWin(Player p, PracticeHubPlayer player) {
@@ -84,7 +84,7 @@ public class FallClutch implements Listener {
     }
 
     public static void endGame(Player p) {
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         if (player == null || !Objects.equals(player.getGamemode(), "FallClutch")) return;
 
         player.retrieveInventory();
@@ -112,7 +112,7 @@ public class FallClutch implements Listener {
     public void onPlayerTakeFallDamage(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player p)) return;
         if (e.getCause() != EntityDamageEvent.DamageCause.FALL) return;
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
         if (player == null || !Objects.equals(player.getGamemode(), "FallClutch")) return;
 
         e.setCancelled(true);
