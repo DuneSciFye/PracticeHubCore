@@ -6,10 +6,7 @@ import dev.jorel.commandapi.CommandAPI;
 import me.dunescifye.practicehubcore.commands.*;
 import me.dunescifye.practicehubcore.files.*;
 import me.dunescifye.practicehubcore.gamemodes.*;
-import me.dunescifye.practicehubcore.listeners.BlockBreakListener;
-import me.dunescifye.practicehubcore.listeners.BlockPlaceListener;
-import me.dunescifye.practicehubcore.listeners.PlayerDeathListener;
-import me.dunescifye.practicehubcore.listeners.PlayerQuitListener;
+import me.dunescifye.practicehubcore.listeners.*;
 import me.dunescifye.practicehubcore.placeholders.Placeholders;
 import me.dunescifye.practicehubcore.utils.ClicksPerSecond;
 import org.bukkit.Bukkit;
@@ -83,6 +80,7 @@ public final class PracticeHubCore extends JavaPlugin {
         new BlockBreakListener().registerEvents(this);
         new PlayerQuitListener().registerEvents(this);
         new PlayerDeathListener().registerEvents(this);
+        new PlayerJoinListener().registerEvents(this);
     }
 
     public static void setupFiles() {

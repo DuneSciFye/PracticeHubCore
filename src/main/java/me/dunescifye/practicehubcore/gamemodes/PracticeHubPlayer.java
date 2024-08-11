@@ -143,4 +143,8 @@ public class PracticeHubPlayer{
         return player;
     }
 
+    public static void addPlayer(Player p) {
+        linkedPlayers.put(p.getUniqueId(), new PracticeHubPlayer(p));
+    }
+
 }

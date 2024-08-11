@@ -4,7 +4,9 @@ import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import me.dunescifye.practicehubcore.files.Messages;
+import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import me.dunescifye.practicehubcore.gamemodes.ShieldPVP.ShieldPVP;
+import me.dunescifye.practicehubcore.gamemodes.ShieldPVP.ShieldPVPPlayer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
@@ -22,10 +24,12 @@ public class ShieldPVPCommand {
                                 p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.shieldPVPName)));
                                 return;
                             }
+                            ShieldPVPPlayer player = new ShieldPVPPlayer(p);
                             Player challenged = args.getUnchecked("Player");
                             assert challenged != null;
 
-                            ShieldPVP.challengePlayer(p, challenged);
+                            player.challengePlayer(challenged);
+                            PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
                         })
                         .executesConsole((console, args) -> {
                             console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
