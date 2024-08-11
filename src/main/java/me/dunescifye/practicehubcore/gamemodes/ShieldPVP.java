@@ -1,4 +1,4 @@
-package me.dunescifye.practicehubcore.gamemodes.ShieldPVP;
+package me.dunescifye.practicehubcore.gamemodes;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -15,7 +15,6 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Messages;
 import me.dunescifye.practicehubcore.files.PortalBuildConfig;
-import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,8 +49,7 @@ public class ShieldPVP {
     public static void startGame(Player p, Player p2) {
         Plugin plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
-
-        ShieldPVPPlayer player = new ShieldPVPPlayer(p), player2 = new ShieldPVPPlayer(p2);
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId()), player2 = PracticeHubPlayer.linkedPlayers.get(p2.getUniqueId());
         player.setGamemode("Shield PVP");
         player2.setGamemode("Shield PVP");
 

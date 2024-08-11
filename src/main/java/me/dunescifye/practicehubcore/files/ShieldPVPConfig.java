@@ -3,7 +3,7 @@ package me.dunescifye.practicehubcore.files;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.gamemodes.ShieldPVP.ShieldPVP;
+import me.dunescifye.practicehubcore.gamemodes.ShieldPVP;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

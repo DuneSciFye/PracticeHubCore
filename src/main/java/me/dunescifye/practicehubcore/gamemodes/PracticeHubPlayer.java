@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -29,11 +30,20 @@ public class PracticeHubPlayer{
     private String worldName;
     private BowAim bowAim;
     private ItemStack[] items;
+    private ArrayList<UUID> sentChallenges;
+    private ArrayList<UUID> receivedChallenges;
 
     public PracticeHubPlayer(Player player) {
         this.player = player;
     }
 
+    public void challengePlayer(Player p) {
+        sentChallenges.add(p.getUniqueId());
+    }
+
+    public boolean hasChallenge(Player p) {
+        return receivedChallenges.contains(p.getUniqueId());
+    }
     public String getWorldName() {
         return worldName;
     }
