@@ -18,7 +18,6 @@ import me.dunescifye.practicehubcore.files.PortalBuildConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -34,12 +33,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
-public class ShieldPVP {
-
-    private static boolean enabled = true;
-    private static String[] commandAliases;
-    private static String worldName;
-    private static World world;
+public class ShieldPVP extends Gamemode {
     private static final HashMap<String, List<Location>> schematics = new HashMap<>();
     private static int spacing;
     private static final ArrayList<Location> grid = new ArrayList<>();
@@ -52,7 +46,7 @@ public class ShieldPVP {
         player2.setGamemode("Shield PVP");
 
         //Get Location
-        Location location = new Location(world, 0, 100, 0);
+        Location location = new Location(ShieldPVP.getWorld(), 0, 100, 0);
         while (grid.contains(location)) {
             location.add(spacing, 0, 0);
         }
@@ -124,39 +118,6 @@ public class ShieldPVP {
 
     public static void endGame(Player p) {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
-    }
-
-
-    public static boolean isEnabled() {
-        return enabled;
-    }
-
-    public static void setEnabled(boolean enabled) {
-        ShieldPVP.enabled = enabled;
-    }
-
-    public static String[] getCommandAliases() {
-        return commandAliases;
-    }
-
-    public static void setCommandAliases(String[] commandAliases) {
-        ShieldPVP.commandAliases = commandAliases;
-    }
-
-    public static World getWorld() {
-        return world;
-    }
-
-    public static String getWorldName() {
-        return worldName;
-    }
-
-    public static void setWorldName(String worldName) {
-        ShieldPVP.worldName = worldName;
-    }
-
-    public static void setWorld(World world) {
-        ShieldPVP.world = world;
     }
 
     public static void addSchematic(String fileName, List<Location> spawnLocations) {

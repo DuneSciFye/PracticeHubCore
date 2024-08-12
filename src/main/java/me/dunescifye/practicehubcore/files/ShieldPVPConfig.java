@@ -23,7 +23,6 @@ public class ShieldPVPConfig {
         try {
             YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/ShieldPVP/config.yml"), plugin.getResource("gamemodes/ShieldPVP/config.yml"));
             boolean enabled = config.getBoolean("Enabled");
-            config.addComment("Set to false to disable this gamemode.");
             ShieldPVP.setEnabled(enabled);
 
             if (!enabled) return;

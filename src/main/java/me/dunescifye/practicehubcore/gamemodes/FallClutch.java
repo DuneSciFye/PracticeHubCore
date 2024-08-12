@@ -23,6 +23,8 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FallClutch implements Listener {
+    private static boolean enabled = true;
+    private static String[] commandAliases;
 
     public static World world;
     public static List<Location> grid = new ArrayList<>();
@@ -131,6 +133,21 @@ public class FallClutch implements Listener {
             player.increaseTotal();
             checkForWin(p, player);
         }, 20L);
+    }
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        FallClutch.enabled = enabled;
+    }
+
+    public static String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    public static void setCommandAliases(String[] commandAliases) {
+        FallClutch.commandAliases = commandAliases;
     }
 
 

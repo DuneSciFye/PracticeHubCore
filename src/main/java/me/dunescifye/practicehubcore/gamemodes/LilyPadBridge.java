@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class LilyPadBridge {
+    private static boolean enabled = true;
+    private static String[] commandAliases;
 
     public static String copyWorld = null;
 
@@ -36,4 +38,19 @@ public class LilyPadBridge {
         PracticeHubCore.worldManager.deleteWorld(player.getWorldName());
     }
 
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        LilyPadBridge.enabled = enabled;
+    }
+
+    public static String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    public static void setCommandAliases(String[] commandAliases) {
+        LilyPadBridge.commandAliases = commandAliases;
+    }
 }

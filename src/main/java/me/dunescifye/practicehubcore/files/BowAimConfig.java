@@ -4,6 +4,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.gamemodes.BowAim;
+import me.dunescifye.practicehubcore.gamemodes.ShieldPVP;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,15 +24,20 @@ public class BowAimConfig {
 
         try {
             YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(), "gamemodes/BowAim/BowAim.yml"), plugin.getResource("gamemodes/BowAim/BowAim.yml"));
-            //Copy World
-            String worldName = config.getString("BowWorld.World");
+            boolean enabled = config.getBoolean("Enabled");
+            BowAim.setEnabled(enabled);
+
+            if (!enabled) return;
+            String worldName = config.getString("World.WorldName");
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
-                logger.severe("World \"" + worldName + "\" not found! Bow Aim gamemode disabled until fixed.");
+                logger.severe("Bow Aim world is invalid! Gamemode will be disabled until fixed.");
+                BowAim.setEnabled(false);
                 return;
-            } else {
-                BowAim.world = world;
             }
+            BowAim.setWorldName(worldName);
+            BowAim.setWorld(world);
+            BowAim.setCommandAliases(config.getStringList("CommandAliases").toArray(new String[0]));
 
             Section schematics = config.getSection("Schematics");
             //Reset when reloading

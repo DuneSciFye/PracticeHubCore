@@ -40,6 +40,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 public class PortalBuild implements Listener {
+    private static boolean enabled = true;
+    private static String[] commandAliases;
 
     public static void startPortalBridgeGame(Player p) {
         PracticeHubPlayer player = new PracticeHubPlayer(p);
@@ -146,6 +148,21 @@ public class PortalBuild implements Listener {
             endPortalBuildGame(p);
 
         }
+    }
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        PortalBuild.enabled = enabled;
+    }
+
+    public static String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    public static void setCommandAliases(String[] commandAliases) {
+        PortalBuild.commandAliases = commandAliases;
     }
 
 }

@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Parkour {
+    private static boolean enabled = true;
+    private static String[] commandAliases;
 
     public static String worldName = null;
     public static int[] spawnLocation;
@@ -182,4 +184,19 @@ public class Parkour {
         PracticeHubCore.worldManager.deleteWorld(player.getWorldName());
     }
 
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        Parkour.enabled = enabled;
+    }
+
+    public static String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    public static void setCommandAliases(String[] commandAliases) {
+        Parkour.commandAliases = commandAliases;
+    }
 }
