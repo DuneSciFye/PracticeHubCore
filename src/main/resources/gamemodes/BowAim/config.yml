@@ -5,10 +5,10 @@ BowWorld:
   Spacing: 500
 Schematics:
   schem1:
-    file: bowAim1.schem
-    playerSpawnLocations:
+    File: bowAim1.schem
+    PlayerSpawnLocations:
       - 0 100 0 0 0
-    blockSpawnLocations:
+    BlockSpawnLocations:
       - 20 110 20 30 120 30
       - 50 120 50 60 130 60
     NumberOfBlocks: 5

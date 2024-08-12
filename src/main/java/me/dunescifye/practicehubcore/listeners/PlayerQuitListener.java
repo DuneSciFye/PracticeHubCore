@@ -1,7 +1,6 @@
 package me.dunescifye.practicehubcore.listeners;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

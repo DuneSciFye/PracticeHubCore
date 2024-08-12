@@ -16,7 +16,7 @@ public class Gamemode {
     }
 
     public static void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        Gamemode.enabled = enabled;
     }
 
     public static String[] getCommandAliases() {
@@ -24,7 +24,7 @@ public class Gamemode {
     }
 
     public static void setCommandAliases(String[] commandAliases) {
-        this.commandAliases = commandAliases;
+        Gamemode.commandAliases = commandAliases;
     }
 
     public static World getWorld() {
@@ -36,11 +36,11 @@ public class Gamemode {
     }
 
     public static void setWorldName(String worldName) {
-        this.worldName = worldName;
+        Gamemode.worldName = worldName;
     }
 
     public static void setWorld(World world) {
-        this.world = world;
+        Gamemode.world = world;
     }
 
 }

@@ -34,3 +34,8 @@ Gamemodes:
     Name: "Parkour"
   PortalBuild:
     Name: "Portal Build"
+#These error messages are in console, so color codes won't work
+ErrorMessages:
+  InvalidWorld: "%gamemode% world is invalid! Gamemode will be disabled until fixed!"
+  InvalidConfigType: "Config option '%option%' is invalid! '%type%' required! Found: '%current%'"
+

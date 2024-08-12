@@ -38,10 +38,8 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
-public class BowAim implements Listener {
+public class BowAim extends Gamemode implements Listener {
 
-    private static boolean enabled = true;
-    private static String[] commandAliases;
     private List<Location> playerSpawnLocations = new ArrayList<>();
     private List<int[]> blockSpawnLocations = new ArrayList<>();
     private int numberOfBlocks = 3;
@@ -49,10 +47,9 @@ public class BowAim implements Listener {
     private String fileName = null;
     private int xOffset = 0;
 
-    public static World world;
     public static ArrayList<Location> grid = new ArrayList<>();
     public static int gridSpacing;
-    public static ArrayList<BowAim> bowAims = new ArrayList<>();
+    public static ArrayList<BowAim> schematics = new ArrayList<>();
 
     public BowAim() {
     }
@@ -75,6 +72,7 @@ public class BowAim implements Listener {
         BowAim bowAim = bowAims.get(ThreadLocalRandom.current().nextInt(bowAims.size()));
 
         //Get Location
+        World world = BowAim.getWorld();
         Location location = new Location(world, 0, 100, 0);
         while (grid.contains(location)) {
             location.add(gridSpacing, 0, 0);
@@ -145,6 +143,7 @@ public class BowAim implements Listener {
     }
 
     private void spawnRandomBlocks(int amount) {
+        World world = BowAim.getWorld();
         for (int i = 0; i < amount; i++) {
             int[] coords = blockSpawnLocations.get(ThreadLocalRandom.current().nextInt(blockSpawnLocations.size()));
             int blockNumber = ThreadLocalRandom.current().nextInt((coords[3] - coords[0]) * (coords[4] - coords[1]) * (coords[5] - coords[2]));
@@ -202,23 +201,6 @@ public class BowAim implements Listener {
             }
         }
 
-    }
-
-
-    public static boolean isEnabled() {
-        return enabled;
-    }
-
-    public static void setEnabled(boolean enabled) {
-        BowAim.enabled = enabled;
-    }
-
-    public static String[] getCommandAliases() {
-        return commandAliases;
-    }
-
-    public static void setCommandAliases(String[] commandAliases) {
-        BowAim.commandAliases = commandAliases;
     }
 
 }

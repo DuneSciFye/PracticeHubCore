@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 public class Messages {
     public static String gamemodeDisabledMessage, bowAimName, bowBoostName, bridgeName, endGame, notInGame, notInGameOther, onlyPlayerCommand,
         onlyConsoleCommand, reloadedConfigMessage, selfPingMessage, otherPingMessage, teleportMessage, shieldPVPName, challengingMessage,
-        challengedMessage, noChallengeMessage, lilyPadBridgeName, fallClutchName, parkourName, portalBuildName;
+        challengedMessage, noChallengeMessage, lilyPadBridgeName, fallClutchName, parkourName, portalBuildName, invalidWorldMessage, invalidConfigType
+        ;
 
     public static void setup() {
         PracticeHubCore plugin = PracticeHubCore.getPlugin();
@@ -25,6 +26,10 @@ public class Messages {
             reloadedConfigMessage = config.getString("Commands.ReloadedConfig");
 
             gamemodeDisabledMessage = config.getString("Gamemodes.Global.Disabled");
+
+            //Error messages
+            invalidWorldMessage = config.getString("ErrorMessages.InvalidWorld");
+            invalidConfigType = config.getString("ErrorMessages.InvalidConfigType");
 
             bowAimName = config.getString("Gamemodes.BowAim.Name");
             bowBoostName = config.getString("Gamemodes.BowBoost.Name");
