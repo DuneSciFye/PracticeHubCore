@@ -1,3 +1,5 @@
+Enabled: true
+CommandAliases: []
 BuildWorld:
   World: PortalBuild
   Spacing: 200

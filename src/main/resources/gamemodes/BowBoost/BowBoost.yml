@@ -1,3 +1,5 @@
+Enabled: true
+CommandAliases: []
 CopyWorld: "baseBowBoost"
 100mCopyWorld: "baseBowBoost100m"
 100mStartTime: 5

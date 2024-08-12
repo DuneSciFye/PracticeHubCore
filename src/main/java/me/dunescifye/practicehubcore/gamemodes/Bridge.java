@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Bridge implements Listener {
+    private static boolean enabled = true;
+    private static String[] commandAliases;
     public static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static HashMap<Player, Integer> cps = new HashMap<>();
     private static String startingMessage = "&fStarting!";
@@ -154,6 +156,21 @@ public class Bridge implements Listener {
         if (e.getAction().isLeftClick()) return;
         Player p = e.getPlayer();
         cps.put(p, cps.getOrDefault(p, 0) + 1);
+    }
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        Bridge.enabled = enabled;
+    }
+
+    public static String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    public static void setCommandAliases(String[] commandAliases) {
+        Bridge.commandAliases = commandAliases;
     }
 
 }

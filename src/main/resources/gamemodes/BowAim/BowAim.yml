@@ -1,3 +1,5 @@
+Enabled: true
+CommandAliases: []
 BowWorld:
   World: BowAimWorld
   Spacing: 500

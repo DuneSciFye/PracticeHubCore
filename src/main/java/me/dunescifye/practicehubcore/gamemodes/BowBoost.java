@@ -23,6 +23,8 @@ import java.time.Instant;
 
 public class BowBoost implements Listener {
 
+    private static boolean enabled = true;
+    private static String[] commandAliases;
     public static String bowBoostCopyWorld = null;
     public static String bowBoost100mCopyWorld = null;
     public static String hitMessage = "&fHit!";
@@ -143,6 +145,21 @@ public class BowBoost implements Listener {
         p.sendMessage("Your pitch was " + p.getPitch());
         p.sendMessage("Your bow force was " + e.getForce());
 
+    }
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        BowBoost.enabled = enabled;
+    }
+
+    public static String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    public static void setCommandAliases(String[] commandAliases) {
+        BowBoost.commandAliases = commandAliases;
     }
 
 }

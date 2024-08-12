@@ -40,6 +40,8 @@ import java.util.logging.Logger;
 
 public class BowAim implements Listener {
 
+    private static boolean enabled = true;
+    private static String[] commandAliases;
     private List<Location> playerSpawnLocations = new ArrayList<>();
     private List<int[]> blockSpawnLocations = new ArrayList<>();
     private int numberOfBlocks = 3;
@@ -200,6 +202,23 @@ public class BowAim implements Listener {
             }
         }
 
+    }
+
+
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        BowAim.enabled = enabled;
+    }
+
+    public static String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    public static void setCommandAliases(String[] commandAliases) {
+        BowAim.commandAliases = commandAliases;
     }
 
 }

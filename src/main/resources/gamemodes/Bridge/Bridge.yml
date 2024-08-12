@@ -1,3 +1,5 @@
+Enabled: true
+CommandAliases: []
 CopyWorld: "baseBridge"
 Messages:
   Starting: "&fStarting!"
