@@ -38,8 +38,6 @@ public class ShieldPVP {
 
     private static boolean enabled = true;
     private static String[] commandAliases;
-    public static HashMap<Player, Player> outgoingChallenges = new HashMap<>();
-    public static HashMap<Player, Player> incomingChallenges = new HashMap<>();
     private static String worldName;
     private static World world;
     private static final HashMap<String, List<Location>> schematics = new HashMap<>();
@@ -122,9 +120,6 @@ public class ShieldPVP {
     public static void challengePlayer(Player challenger, Player challenged) {
         challenger.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.challengingMessage.replace("%player%", challenged.getName())));
         challenged.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.challengedMessage.replace("%player%", challenger.getName())));
-
-        outgoingChallenges.put(challenger, challenged);
-        incomingChallenges.put(challenged, challenger);
     }
 
     public static void endGame(Player p) {

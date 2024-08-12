@@ -26,8 +26,7 @@ public class ShieldPVPCommand {
                             Player challenged = args.getUnchecked("Player");
                             assert challenged != null;
 
-                            player.challengePlayer(challenged);
-                            PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
+                            ShieldPVP.challengePlayer(p, challenged);
                         })
                         .executesConsole((console, args) -> {
                             console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
@@ -47,23 +46,76 @@ public class ShieldPVPCommand {
                             return;
                         }
 
-                        if (!ShieldPVP.incomingChallenges.containsKey(p)) {
+                        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
+
+                        if (!player.hasChallenge()) {
                             p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.noChallengeMessage));
                             return;
                         }
 
-                        Player challenger = ShieldPVP.incomingChallenges.get(p);
+                        Player challenger = player.getFirstChallenger();
                         ShieldPVP.startGame(p, challenger);
+                    })
+                    .executesConsole((console, args) -> {
+                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                    })
+                    .then(new PlayerArgument("Player")
+                        .executesPlayer((p, args) -> {
+                            if (!ShieldPVP.isEnabled()) {
+                                p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.shieldPVPName)));
+                                return;
+                            }
+
+                            Player challenger = args.getUnchecked("Player");
+                            assert challenger != null;
+
+                            PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
+                            PracticeHubPlayer challengerPlayer = PracticeHubPlayer.linkedPlayers.get(challenger.getUniqueId());
+
+                            if (!player.hasChallengeFrom(challenger)) {
+                                p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.noChallengeMessage));
+                                return;
+                            }
+
+                            ShieldPVP.startGame(p, challenger);
+                            player.clearChallenges();
+                            challengerPlayer.clearChallenges();
+
+                        })
+                        .executesConsole((console, args) -> {
+                            console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
+                        })
+                    )
+                )
+                .then(new LiteralArgument("decline")
+                    .executesPlayer((p, args) -> {
+                        if (!ShieldPVP.isEnabled()) {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.shieldPVPName)));
+                            return;
+                        }
+
+                        Player challenger = args.getUnchecked("Player");
+                        assert challenger != null;
+
+                        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
+                        PracticeHubPlayer challengerPlayer = PracticeHubPlayer.linkedPlayers.get(challenger.getUniqueId());
+
+                        if (!player.hasChallenge()) {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.noChallengeMessage));
+                            return;
+                        }
+
+                        ShieldPVP.startGame(p, challenger);
+                        player.clearChallenges();
+                        challengerPlayer.clearChallenges();
 
                     })
                     .executesConsole((console, args) -> {
                         console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                     })
-                )
-                .then(new LiteralArgument("decline")
-                    .executesConsole((console, args) -> {
-                        console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
-                    })
+                    .then(new PlayerArgument("Player")
+
+                    )
                 )
                 //Same as decline
                 .then(new LiteralArgument("deny")

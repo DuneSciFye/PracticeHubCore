@@ -30,20 +30,37 @@ public class PracticeHubPlayer{
     private String worldName;
     private BowAim bowAim;
     private ItemStack[] items;
-    private ArrayList<UUID> sentChallenges;
-    private ArrayList<UUID> receivedChallenges;
+    private final ArrayList<Player> sentChallenges = new ArrayList<>();
+    private final ArrayList<Player> receivedChallenges = new ArrayList<>();
 
     public PracticeHubPlayer(Player player) {
         this.player = player;
     }
 
     public void challengePlayer(Player p) {
-        sentChallenges.add(p.getUniqueId());
+        sentChallenges.add(p);
     }
 
-    public boolean hasChallenge(Player p) {
-        return receivedChallenges.contains(p.getUniqueId());
+    public void receivedChallengeFrom(Player p) {
+        receivedChallenges.add(p);
     }
+
+    public boolean hasChallengeFrom(Player p) {
+        return receivedChallenges.contains(p);
+    }
+    public boolean hasChallenge() {
+        return !receivedChallenges.isEmpty();
+    }
+
+    public Player getFirstChallenger() {
+        return receivedChallenges.get(0);
+    }
+
+    public void clearChallenges() {
+        sentChallenges.clear();
+        receivedChallenges.clear();
+    }
+
     public String getWorldName() {
         return worldName;
     }
