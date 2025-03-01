@@ -9,8 +9,6 @@ public class Gamemode {
     private static String worldName;
     private static World world;
 
-
-
     public static boolean isEnabled() {
         return enabled;
     }

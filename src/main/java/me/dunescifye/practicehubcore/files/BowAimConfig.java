@@ -49,7 +49,7 @@ public class BowAimConfig {
             BowAim.schematics.clear();
 
             if (schematics == null) {
-                logger.severe();
+                logger.severe("Schematic not found!");
                 return;
             }
             for (Object key : schematics.getKeys()) {

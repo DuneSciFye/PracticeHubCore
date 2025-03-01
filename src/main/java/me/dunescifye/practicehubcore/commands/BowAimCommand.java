@@ -15,7 +15,7 @@ public class BowAimCommand {
         new CommandTree("bowaim")
             .then(new LiteralArgument("start")
                 .executesPlayer((p, args) -> {
-                    if (BowAim.world == null) {
+                    if (BowAim.getWorld() == null) {
                         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowAimName)));
                         return;
                     }
@@ -26,7 +26,7 @@ public class BowAimCommand {
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
-                        if (BowAim.world == null) {
+                        if (BowAim.getWorld() == null) {
                             sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowAimName)));
                             return;
                         }
@@ -38,7 +38,7 @@ public class BowAimCommand {
             )
             .then(new LiteralArgument("end")
                 .executesPlayer((p, args) -> {
-                    if (BowAim.world == null) {
+                    if (BowAim.getWorld() == null) {
                         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowAimName)));
                         return;
                     }
@@ -57,7 +57,7 @@ public class BowAimCommand {
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
-                        if (BowAim.world == null) {
+                        if (BowAim.getWorld() == null) {
                             sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowAimName)));
                             return;
                         }

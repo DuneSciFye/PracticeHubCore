@@ -67,9 +67,9 @@ public class BowAim extends Gamemode implements Listener {
         Logger logger = plugin.getLogger();
         PracticeHubPlayer player = new PracticeHubPlayer(p);
 
-        //Setting up schematic
-        //Get random map
-        BowAim bowAim = bowAims.get(ThreadLocalRandom.current().nextInt(bowAims.size()));
+        // Setting up schematic
+        // Get random map
+        BowAim bowAim = schematics.get(ThreadLocalRandom.current().nextInt(schematics.size()));
 
         //Get Location
         World world = BowAim.getWorld();
@@ -111,7 +111,7 @@ public class BowAim extends Gamemode implements Listener {
         }
         //Setting up inventory
         ItemStack bow = new ItemStack(Material.BOW);
-        bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
+        bow.addEnchantment(Enchantment.INFINITY, 1);
         ItemMeta meta = bow.getItemMeta();
         meta.setUnbreakable(true);
         bow.setItemMeta(meta);

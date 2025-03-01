@@ -82,8 +82,8 @@ public class BowBoost implements Listener {
 
         //Setting up inventory
         ItemStack bow = new ItemStack(Material.BOW);
-        bow.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
-        bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
+        bow.addEnchantment(Enchantment.KNOCKBACK, 2);
+        bow.addEnchantment(Enchantment.INFINITY, 1);
         ItemMeta meta = bow.getItemMeta();
         meta.setUnbreakable(true);
         bow.setItemMeta(meta);
