@@ -1,0 +1,17 @@
+# If the gamemode is enabled
+Enabled: true
+
+# Aliases for the /bowboost command
+CommandAliases: []
+
+# Base world to be copied for each player's instance
+CopyWorld: "baseBowBoost"
+100mCopyWorld: "baseBowBoost100m"
+100mStartTime: 5
+
+Inventory:
+
+
+# Message to send to player when successfully hit. Leave empty for no message.
+Messages:
+  HitMessage: "&fHit!"

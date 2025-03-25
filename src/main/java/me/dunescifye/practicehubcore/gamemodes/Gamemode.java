@@ -1,13 +1,16 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-public class Gamemode {
+public abstract class Gamemode {
 
-    private static boolean enabled = true;
-    private static String[] commandAliases;
-    private static String worldName;
-    private static World world;
+    public static boolean enabled = true;
+    public static String[] commandAliases;
+    public static String worldName;
+    public static World world;
+    public ItemStack[] savedInventory;
 
     public static boolean isEnabled() {
         return enabled;
@@ -41,4 +44,6 @@ public class Gamemode {
         Gamemode.world = world;
     }
 
+    public abstract void start();
+    public abstract void end();
 }

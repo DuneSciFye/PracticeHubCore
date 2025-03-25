@@ -40,29 +40,31 @@ import java.util.logging.Logger;
 
 public class BowAim extends Gamemode implements Listener {
 
-    private List<Location> playerSpawnLocations = new ArrayList<>();
-    private List<int[]> blockSpawnLocations = new ArrayList<>();
-    private int numberOfBlocks = 3;
-    private List<Material> blocks = new ArrayList<>();
-    private String fileName = null;
+    private static List<Location> playerSpawnLocations = new ArrayList<>();
+    private static List<int[]> blockSpawnLocations = new ArrayList<>();
+    private static int numberOfBlocks = 3;
+    private static List<Material> blocks = new ArrayList<>();
+    private static String fileName = null;
     private int xOffset = 0;
+    private final Player p;
 
     public static ArrayList<Location> grid = new ArrayList<>();
     public static int gridSpacing;
     public static ArrayList<BowAim> schematics = new ArrayList<>();
 
-    public BowAim() {
+    public BowAim(Player p) {
+        this.p = p;
     }
 
-    public BowAim(String fileName, List<Location> playerSpawnLocations, List<int[]> blockSpawnLocations, int numberOfBlocks, List<Material> blocks) {
-        this.fileName = fileName;
-        this.playerSpawnLocations = playerSpawnLocations;
-        this.blockSpawnLocations = blockSpawnLocations;
-        this.numberOfBlocks = numberOfBlocks;
-        this.blocks = blocks;
+    public static void setup(String fileName, List<Location> playerSpawnLocations, List<int[]> blockSpawnLocations, int numberOfBlocks, List<Material> blocks) {
+        BowAim.fileName = fileName;
+        BowAim.playerSpawnLocations = playerSpawnLocations;
+        BowAim.blockSpawnLocations = blockSpawnLocations;
+        BowAim.numberOfBlocks = numberOfBlocks;
+        BowAim.blocks = blocks;
     }
 
-    public static void startBowAimGame(Player p) {
+    public void start() {
         Plugin plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
         PracticeHubPlayer player = new PracticeHubPlayer(p);
@@ -129,7 +131,7 @@ public class BowAim extends Gamemode implements Listener {
         PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
     }
 
-    public static void endBowAimGame(Player p) {
+    public void end() {
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
         if (player == null || !player.getGamemode().equals("BowAim")) return;
         player.retrieveInventory();

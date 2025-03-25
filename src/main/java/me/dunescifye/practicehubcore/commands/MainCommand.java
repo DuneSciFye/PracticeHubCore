@@ -3,6 +3,7 @@ package me.dunescifye.practicehubcore.commands;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.gamemodes.BowBoost;
 
 public class MainCommand {
 
@@ -10,8 +11,8 @@ public class MainCommand {
         new CommandTree("practicehub")
             .then(new LiteralArgument("reload")
                 .executes((sender, args) -> {
-                    PracticeHubCore.setupFiles();
-                    sender.sendMessage("Reloaded Config!");
+                    BowBoost.setup(PracticeHubCore.getPlugin());
+                    sender.sendMessage("Reloaded Practice!");
                 })
             )
             .withAliases("phub")

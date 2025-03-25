@@ -19,7 +19,7 @@ public class BowAimCommand {
                         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowAimName)));
                         return;
                     }
-                    BowAim.startBowAimGame(p);
+                    //BowAim.startBowAimGame(p);
                 })
                 .executesConsole((console, args) -> {
                     console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
@@ -31,7 +31,7 @@ public class BowAimCommand {
                             return;
                         }
                         Player p = args.getUnchecked("Player");
-                        BowAim.startBowAimGame(p);
+                        //BowAim.startBowAimGame(p);
                     })
                 )
                 .withPermission("practicehub.command.bowaim.start.other")
@@ -50,7 +50,7 @@ public class BowAimCommand {
                     }
 
                     p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.endGame.replace("%gamemode%", Messages.bowAimName)));
-                    BowAim.endBowAimGame(p);
+                    //BowAim.endBowAimGame(p);
                 })
                 .executesConsole((console, args) -> {
                     console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
@@ -72,7 +72,7 @@ public class BowAimCommand {
                         }
 
                         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.endGame.replace("%gamemode%", Messages.bowAimName)));
-                        BowAim.endBowAimGame(p);
+                        //BowAim.endBowAimGame(p);
                     })
                 )
                 .withPermission("practicehub.command.bowaim.end.other")

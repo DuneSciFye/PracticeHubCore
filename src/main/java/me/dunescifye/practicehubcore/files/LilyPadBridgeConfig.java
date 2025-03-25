@@ -2,7 +2,6 @@ package me.dunescifye.practicehubcore.files;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.dunescifye.practicehubcore.PracticeHubCore;
-import me.dunescifye.practicehubcore.gamemodes.FallClutch;
 import me.dunescifye.practicehubcore.gamemodes.LilyPadBridge;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

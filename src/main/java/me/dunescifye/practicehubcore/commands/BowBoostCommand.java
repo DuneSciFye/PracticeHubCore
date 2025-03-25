@@ -3,37 +3,27 @@ package me.dunescifye.practicehubcore.commands;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
+import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.files.Messages;
-import me.dunescifye.practicehubcore.gamemodes.PracticeHubPlayer;
+import me.dunescifye.practicehubcore.gamemodes.Gamemode;
 import me.dunescifye.practicehubcore.gamemodes.BowBoost;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("DataFlowIssue")
 public class BowBoostCommand {
     public static void register() {
         new CommandTree("bowboost")
             .then(new LiteralArgument("start")
                 .executesPlayer((p, args) -> {
-                    //Bow Boost is disabled
-                    if (BowBoost.bowBoostCopyWorld == null) {
-                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
-                        return;
-                    }
-
-                    BowBoost.startBowBoostGame(p, "practice");
+                    new BowBoost(p).start();
                 })
                 .executesConsole((console, args) -> {
                     console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                 })
                 .then(new LiteralArgument("practice")
                     .executesPlayer((p, args) -> {
-                        //Bow Boost is disabled
-                        if (BowBoost.bowBoostCopyWorld == null) {
-                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
-                            return;
-                        }
-
-                        BowBoost.startBowBoostGame(p, "practice");
+                        new BowBoost(p).start();
                     })
                     .executesConsole((console, args) -> {
                         console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
@@ -41,13 +31,7 @@ public class BowBoostCommand {
                 )
                 .then(new LiteralArgument("100m")
                     .executesPlayer((p, args) -> {
-                        //Bow Boost is disabled
-                        if (BowBoost.bowBoost100mCopyWorld == null) {
-                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
-                            return;
-                        }
-
-                        BowBoost.startBowBoostGame(p, "100m");
+                        //bowBoost.startBowBoostGame(p, "100m");
                     })
                     .executesConsole((console, args) -> {
                         console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
@@ -56,42 +40,27 @@ public class BowBoostCommand {
             )
             .then(new LiteralArgument("end")
                 .executesPlayer((p, args) -> {
-                    //Bow Boost is disabled
-                    if (BowBoost.bowBoostCopyWorld == null) {
-                        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
-                        return;
-                    }
-                    //Not in a game
-                    PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
-                    if (player == null) {
+                    Gamemode gamemode = PracticeHubCore.gamemodes.get(p.getUniqueId());
+                    if (gamemode == null) {
                         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.notInGame.replace("%gamemode%", Messages.bowBoostName)));
-                        return;
-                    }
-                    BowBoost.endBowBridgeGame(p);
+                    } else gamemode.end();
                 })
                 .executesConsole((console, args) -> {
                     console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
                 })
                 .then(new PlayerArgument("Player")
                     .executes((sender, args) -> {
-                        //Bow Boost is disabled
-                        if (BowBoost.bowBoostCopyWorld == null) {
-                            sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.bowBoostName)));
-                            return;
-                        }
                         Player p = args.getUnchecked("Player");
-                        assert p != null;
                         //Not in a game
-                        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p);
-                        if (player == null) {
-                            sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.notInGameOther.replace("%player%", p.getName()).replace("%gamemode%", Messages.bowBoostName)));
-                            return;
-                        }
-                        BowBoost.endBowBridgeGame(p);
+                        Gamemode gamemode = PracticeHubCore.gamemodes.get(p.getUniqueId());
+                        if (gamemode == null) {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.notInGame.replace("%gamemode%", Messages.bowBoostName)));
+                        } else gamemode.end();
                     })
                 )
             )
             .withPermission("practicehub.command.bowboost")
+            .withAliases(BowBoost.commandAliases)
             .register("practicehub");
     }
 }

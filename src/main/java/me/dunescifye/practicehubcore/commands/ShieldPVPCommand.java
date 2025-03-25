@@ -9,6 +9,7 @@ import me.dunescifye.practicehubcore.gamemodes.ShieldPVP;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("DataFlowIssue")
 public class ShieldPVPCommand {
 
     public static void register() {
@@ -19,12 +20,7 @@ public class ShieldPVPCommand {
                 .then(new LiteralArgument("challenge")
                     .then(new PlayerArgument("Player")
                         .executesPlayer((p, args) -> {
-                            if (!ShieldPVP.isEnabled()) {
-                                p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.gamemodeDisabledMessage.replace("%gamemode%", Messages.shieldPVPName)));
-                                return;
-                            }
                             Player challenged = args.getUnchecked("Player");
-                            assert challenged != null;
 
                             ShieldPVP.challengePlayer(p, challenged);
                         })
@@ -54,7 +50,8 @@ public class ShieldPVPCommand {
                         }
 
                         Player challenger = player.getFirstChallenger();
-                        ShieldPVP.startGame(p, challenger);
+                        ShieldPVP game = new ShieldPVP(p, challenger);
+                        game.start();
                     })
                     .executesConsole((console, args) -> {
                         console.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.onlyPlayerCommand));
@@ -76,8 +73,8 @@ public class ShieldPVPCommand {
                                 p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.noChallengeMessage));
                                 return;
                             }
-
-                            ShieldPVP.startGame(p, challenger);
+                            ShieldPVP game = new ShieldPVP(p, challenger);
+                            game.start();
                             player.clearChallenges();
                             challengerPlayer.clearChallenges();
 
@@ -105,7 +102,8 @@ public class ShieldPVPCommand {
                             return;
                         }
 
-                        ShieldPVP.startGame(p, challenger);
+                        ShieldPVP game = new ShieldPVP(p, challenger);
+                        game.start();
                         player.clearChallenges();
                         challengerPlayer.clearChallenges();
 

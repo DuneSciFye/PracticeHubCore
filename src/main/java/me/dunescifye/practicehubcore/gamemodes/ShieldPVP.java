@@ -37,11 +37,24 @@ public class ShieldPVP extends Gamemode {
     private static final HashMap<String, List<Location>> schematics = new HashMap<>();
     private static int spacing;
     private static final ArrayList<Location> grid = new ArrayList<>();
+    private final Player p1;
+    private final Player p2;
 
-    public static void startGame(Player p, Player p2) {
+    public static void setup() {
+
+    }
+
+    public ShieldPVP(Player p1, Player p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+        PracticeHubCore.gamemodes.put(p1.getUniqueId(), this);
+        PracticeHubCore.gamemodes.put(p2.getUniqueId(), this);
+    }
+
+    public void start() {
         Plugin plugin = PracticeHubCore.getPlugin();
         Logger logger = plugin.getLogger();
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId()), player2 = PracticeHubPlayer.linkedPlayers.get(p2.getUniqueId());
+        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p1.getUniqueId()), player2 = PracticeHubPlayer.linkedPlayers.get(p2.getUniqueId());
         player.setGamemode("Shield PVP");
         player2.setGamemode("Shield PVP");
 
@@ -61,14 +74,14 @@ public class ShieldPVP extends Gamemode {
         ClipboardFormat format = ClipboardFormats.findByFile(file);
 
         if (format == null) {
-            logger.severe("Schematic " + fileName + " not found for Portal Build gamemode.");
+            logger.severe("Schematic " + fileName + " not found for Shield PVP gamemode.");
             return;
         }
 
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             clipboard = reader.read();
         } catch (IOException e) {
-            p.sendMessage("There was nothing on the clipboard! Report to an administrator!");
+            p1.sendMessage("There was nothing on the clipboard! Report to an administrator!");
             throw new RuntimeException(e);
         }
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(PortalBuildConfig.portalBuildWorld))) {
@@ -80,7 +93,7 @@ public class ShieldPVP extends Gamemode {
                 .build();
             Operations.complete(operation);
         } catch (WorldEditException e) {
-            p.sendMessage("An error occurred! Report to an administrator!");
+            p1.sendMessage("An error occurred! Report to an administrator!");
             throw new RuntimeException(e);
         }
 
@@ -89,7 +102,7 @@ public class ShieldPVP extends Gamemode {
         //Setting up inventory
         player.saveInventory();
         player2.saveInventory();
-        PlayerInventory inventory = p.getInventory();
+        PlayerInventory inventory = p1.getInventory();
         inventory.setItemInOffHand(new ItemStack(Material.SHIELD));
         inventory.setItem(0, new ItemStack(Material.IRON_AXE));
         inventory = p2.getInventory();
@@ -98,12 +111,12 @@ public class ShieldPVP extends Gamemode {
 
         //Teleport Player
         List<Location> teleportLoc = PortalBuildConfig.lavaPools.get(fileName);
-        p.teleport(teleportLoc.get(ThreadLocalRandom.current().nextInt(teleportLoc.size())));
+        p1.teleport(teleportLoc.get(ThreadLocalRandom.current().nextInt(teleportLoc.size())));
         p2.teleport(teleportLoc.get(ThreadLocalRandom.current().nextInt(teleportLoc.size())));
 
         //Other
         player.setStartTime(Instant.now());
-        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
+        PracticeHubPlayer.linkedPlayers.put(p1.getUniqueId(), player);
 
     }
 
@@ -116,8 +129,7 @@ public class ShieldPVP extends Gamemode {
         challenged.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.challengedMessage.replace("%player%", challenger.getName())));
     }
 
-    public static void endGame(Player p) {
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p);
+    public void end() {
     }
 
     public static void addSchematic(String fileName, List<Location> spawnLocations) {

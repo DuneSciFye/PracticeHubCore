@@ -4,7 +4,6 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import me.dunescifye.practicehubcore.PracticeHubCore;
 import me.dunescifye.practicehubcore.gamemodes.BowAim;
-import me.dunescifye.practicehubcore.gamemodes.ShieldPVP;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -96,8 +95,7 @@ public class BowAimConfig {
                         Material material = Material.valueOf(matName);
                         blocks.add(material);
                     }
-                    BowAim bowAim = new BowAim(file, playerSpawnLocations, blockSpawnLocations, numberOfBlocks, blocks);
-                    BowAim.schematics.add(bowAim);
+                    BowAim.setup(file, playerSpawnLocations, blockSpawnLocations, numberOfBlocks, blocks);
                 }
             }
 

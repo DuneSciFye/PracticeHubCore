@@ -1,12 +1,14 @@
 package me.dunescifye.practicehubcore.gamemodes;
 
 import me.dunescifye.practicehubcore.PracticeHubCore;
+import me.dunescifye.practicehubcore.commands.BowBoostCommand;
 import me.dunescifye.practicehubcore.files.Config;
 import me.dunescifye.practicehubcore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -14,38 +16,75 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.logging.Logger;
 
-public class BowBoost implements Listener {
+public class BowBoost extends Gamemode implements Listener {
 
-    private static boolean enabled = true;
-    private static String[] commandAliases;
-    public static String bowBoostCopyWorld = null;
-    public static String bowBoost100mCopyWorld = null;
-    public static String hitMessage = "&fHit!";
-    public static int startTime100m = 5;
+    private final Player p;
+    private int hits = 0;
 
-    public static void startBowBoostGame(Player p, String minigame) {
-        PracticeHubPlayer player = new PracticeHubPlayer(p);
+    public static String hitMessage;
+    public static int startTime100m;
+    public static ItemStack[] inventory;
 
+    public BowBoost() {
+        this.p = null;
+    }
+    public BowBoost(Player p) {
+        this.p = p;
+        PracticeHubCore.gamemodes.put(p.getUniqueId(), this);
+    }
+
+    public static void setup(PracticeHubCore plugin) {
+
+        File configFile = new File(plugin.getDataFolder(), "gamemodes/BowBoost/config.yml");
+        Logger logger = plugin.getLogger();
+
+        if (!configFile.exists()) {
+            configFile.getParentFile().mkdirs();
+            plugin.saveResource("gamemodes/BowBoost/config.yml", false);
+        }
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        enabled = config.getBoolean("Enabled", true);
+        if (!enabled) return;
+        worldName = config.getString("BowBoostCopyWorld", "baseBowBoost");
+        world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            logger.severe("World \"" + worldName + "\" not found! Bow Boost gamemode disabled until fixed.");
+            return;
+        }
+        startTime100m = config.getInt("StartTime100m", 5);
+        commandAliases = config.getStringList("CommandAliases").toArray(new String[0]);
+        hitMessage = config.getString("Messages.HitMessage", "&fHit!");
+        BowBoostCommand.register();
+        BowBoost.registerEvents(plugin);
+    }
+
+    @Override
+    public void start() {
         //Setting up world
         World world;
         Location teleportLocation;
+        /*
         if (minigame.equals("100m")) {
             PracticeHubCore.worldManager.cloneWorld(bowBoost100mCopyWorld, "bowBoost100m" + p.getName());
-            player.setWorldName("bowBoost100m" + p.getName());
+            String worldName = "bowBoost100m" + p.getName();
             world = Bukkit.getWorld("bowBoost100m" + p.getName());
-            player.setWorld(world);
             if (world == null) {
                 p.sendMessage(Component.text("Invalid world. Please contact an administrator."));
                 return;
             }
-            teleportLocation = new Location(player.getWorld(), 0, 100, 0);
+            teleportLocation = new Location(world, 0, 100, 0);
             new BukkitRunnable() {
                 int seconds = startTime100m;
 
@@ -71,41 +110,38 @@ public class BowBoost implements Listener {
                 }
             }.runTaskTimer(PracticeHubCore.getPlugin(), 20L, 20L);
         } else {
-            PracticeHubCore.worldManager.cloneWorld(bowBoostCopyWorld, "bowBoost" + p.getName());
-            player.setWorldName("bowBoost" + p.getName());
-            world = Bukkit.getWorld("bowBoost" + p.getName());
-            teleportLocation = new Location(world, 0, -60, 0);
         }
+
+         */
+        PracticeHubCore.worldManager.cloneWorld(worldName, "bowBoost" + p.getName());
+        world = Bukkit.getWorld("bowBoost" + p.getName());
+        teleportLocation = new Location(world, 0, -60, 0);
         p.setGameMode(GameMode.SURVIVAL);
         p.setFoodLevel(20);
         p.teleport(teleportLocation);
 
         //Setting up inventory
         ItemStack bow = new ItemStack(Material.BOW);
-        bow.addEnchantment(Enchantment.KNOCKBACK, 2);
         bow.addEnchantment(Enchantment.INFINITY, 1);
         ItemMeta meta = bow.getItemMeta();
         meta.setUnbreakable(true);
         bow.setItemMeta(meta);
-        player.saveInventory(bow,
-            new ItemStack(Material.ARROW));
-
-        //Everything works
-        player.setGamemode("BowBoost");
-        PracticeHubPlayer.linkedPlayers.put(p.getUniqueId(), player);
-
+        Inventory inventory = p.getInventory();
+        savedInventory = inventory.getContents();
+        inventory.clear();
+        inventory.addItem(bow, new ItemStack(Material.ARROW));
     }
 
-    public static void endBowBridgeGame(Player p) {
+    @Override
+    public void end() {
         p.getInventory().clear();
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
-        p.getInventory().setContents(player.getSavedInventory());
+        p.getInventory().setContents(savedInventory);
         p.sendMessage(Component.text("Ended game!"));
         p.teleport(Config.spawn);
-        PracticeHubCore.worldManager.deleteWorld(player.getWorldName());
+        PracticeHubCore.worldManager.deleteWorld(worldName);
     }
 
-    private static void check100mWin(Player p, Instant startTime) {
+    private void check100mWin(Player p, Instant startTime) {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -114,29 +150,28 @@ public class BowBoost implements Listener {
                     p.sendMessage(Component.text("You win!"));
                     p.sendMessage("Time: " + Utils.getFormattedTime(Duration.between(startTime, Instant.now())));
                     PracticeHubPlayer.linkedPlayers.remove(p.getUniqueId());
-                    Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> endBowBridgeGame(p), 40L);
+                    Bukkit.getScheduler().runTaskLater(PracticeHubCore.getPlugin(), () -> end(), 40L);
                 }
             }
         }.runTaskTimer(PracticeHubCore.getPlugin(), 0L, 1L);
     }
 
-    public void registerEvents(PracticeHubCore plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+    public static void registerEvents(PracticeHubCore plugin) {
+        Bukkit.getPluginManager().registerEvents(new BowBoost(), plugin);
     }
 
     @EventHandler
-    public void onArrowHit(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Arrow arrow) || !(arrow.getShooter() instanceof Player p) || p != e.getEntity()) return;
-        PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
-        if (player == null || !player.getGamemode().equals("BowBoost")) return;
+    public static void onArrowHit(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Arrow arrow) || !(arrow.getShooter() instanceof Player player) || player != e.getEntity()) return;
+        if (!(PracticeHubCore.gamemodes.get(player.getUniqueId()) instanceof BowBoost bowBoost)) return;
 
-        player.increaseSuccesses();
+        bowBoost.hits++;
         arrow.remove();
-        p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(hitMessage));
+        player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(hitMessage));
     }
 
     @EventHandler
-    public void onArrowLaunch(EntityShootBowEvent e) {
+    public static void onArrowLaunch(EntityShootBowEvent e) {
         if (!(e.getEntity() instanceof Player p)) return;
         PracticeHubPlayer player = PracticeHubPlayer.linkedPlayers.get(p.getUniqueId());
         if (player == null || !player.getGamemode().equals("BowBoost")) return;
@@ -145,21 +180,6 @@ public class BowBoost implements Listener {
         p.sendMessage("Your pitch was " + p.getPitch());
         p.sendMessage("Your bow force was " + e.getForce());
 
-    }
-    public static boolean isEnabled() {
-        return enabled;
-    }
-
-    public static void setEnabled(boolean enabled) {
-        BowBoost.enabled = enabled;
-    }
-
-    public static String[] getCommandAliases() {
-        return commandAliases;
-    }
-
-    public static void setCommandAliases(String[] commandAliases) {
-        BowBoost.commandAliases = commandAliases;
     }
 
 }
